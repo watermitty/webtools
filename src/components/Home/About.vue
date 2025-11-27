@@ -29,10 +29,6 @@ const siteAddr = ref(import.meta.env.VITE_MY_SITE_ADDR || '')
               </li>
             </ul>
         </div>
-      <h1 class="text-2xl font-bold mt-6 mb-6">发现了 Bug？</h1>
-      <p>
-        <el-text>如果您发现了 Bug，或者某些功能未能按预期工作，请在 GitHub 仓库的 <el-link type="primary" target="_blank" :href="gitUrl + ''" class="">issues</el-link> 中提交错误报告。</el-text>
-      </p>
       <template v-if="siteAddr">
       <h1 class="text-2xl font-bold mt-6 mb-6">站长信息</h1>
       <p>
