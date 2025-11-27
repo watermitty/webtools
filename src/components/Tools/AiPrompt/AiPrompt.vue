@@ -867,7 +867,7 @@ const handleActionAndClose = (prompt: string, type: string) => {
         <br>4. 点击复制按钮获取提示词
         <br>5. 文生图提示词点击"生成图片"跳转到AI生图页面
         <br>6. 文生文提示词点击"文生文"跳转到AI对话页面并自动发起对话
-        <br>7. 如果你有好的提示词，欢迎提交到<a style="color: blue;" :href="gitUrl+'/issues/new'" target="_blank">GitHub</a>，我们会尽快审核并添加到提示词仓库中
+        <br>7. 如果你有好的提示词，欢迎提交到<a style="color: blue;" :href="gitUrl+''" target="_blank">GitHub</a>，我们会尽快审核并添加到提示词仓库中
       </el-text>
     </ToolDetail>
   </div>
