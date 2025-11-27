@@ -1,7 +1,7 @@
 // vite.config.ts
-import { defineConfig, loadEnv } from "file:///D:/dev/nodejs/tools-web/node_modules/.pnpm/vite@4.5.14_@types+node@24._22a97f0843ce623999e90deb969a4892/node_modules/vite/dist/node/index.js";
-import vue from "file:///D:/dev/nodejs/tools-web/node_modules/.pnpm/@vitejs+plugin-vue@4.6.2_vi_5c2199a4ed6292edcac824902be6ecbc/node_modules/@vitejs/plugin-vue/dist/index.mjs";
-import { createSvgIconsPlugin } from "file:///D:/dev/nodejs/tools-web/node_modules/.pnpm/vite-plugin-svg-icons@2.0.1_e1ef0a285f0ca7417e848fabd0bd27a1/node_modules/vite-plugin-svg-icons/dist/index.mjs";
+import { defineConfig, loadEnv } from "file:///D:/dev/nodejs/toolsonline/node_modules/.pnpm/vite@4.5.14_@types+node@24._22a97f0843ce623999e90deb969a4892/node_modules/vite/dist/node/index.js";
+import vue from "file:///D:/dev/nodejs/toolsonline/node_modules/.pnpm/@vitejs+plugin-vue@4.6.2_vi_5c2199a4ed6292edcac824902be6ecbc/node_modules/@vitejs/plugin-vue/dist/index.mjs";
+import { createSvgIconsPlugin } from "file:///D:/dev/nodejs/toolsonline/node_modules/.pnpm/vite-plugin-svg-icons@2.0.1_e1ef0a285f0ca7417e848fabd0bd27a1/node_modules/vite-plugin-svg-icons/dist/index.mjs";
 import path from "path";
 
 // src/router/router.ts
@@ -547,7 +547,7 @@ var constantRoute = [
     meta: {
       title: "\u7528\u6237\u767B\u5F55",
       keywords: "\u7528\u6237\u767B\u5F55,\u8D26\u53F7\u767B\u5F55,\u5DE5\u5177\u7BB1\u767B\u5F55",
-      description: "Tools-Web\u5DE5\u5177\u7BB1\u7528\u6237\u767B\u5F55\u9875\u9762\uFF0C\u767B\u5F55\u540E\u4EAB\u53D7\u66F4\u591A\u4E2A\u6027\u5316\u529F\u80FD"
+      description: "ToolsOnline\u5DE5\u5177\u7BB1\u7528\u6237\u767B\u5F55\u9875\u9762\uFF0C\u767B\u5F55\u540E\u4EAB\u53D7\u66F4\u591A\u4E2A\u6027\u5316\u529F\u80FD"
     }
   },
   //其他路由
@@ -788,7 +788,7 @@ var constantRoute = [
 ];
 
 // ssr.config.ts
-import vitePluginSeoPrerender from "file:///D:/dev/nodejs/tools-web/node_modules/.pnpm/vite-plugin-seo-prerender@0_489146577398603755f79f59968f4869/node_modules/vite-plugin-seo-prerender/dist/index.js";
+import vitePluginSeoPrerender from "file:///D:/dev/nodejs/toolsonline/node_modules/.pnpm/vite-plugin-seo-prerender@0_489146577398603755f79f59968f4869/node_modules/vite-plugin-seo-prerender/dist/index.js";
 function seoperender() {
   const filterPath = [
     "/:pathMatch(.*)*",
@@ -815,7 +815,7 @@ function seoperender() {
 }
 
 // vite.config.ts
-var __vite_injected_original_dirname = "D:\\dev\\nodejs\\tools-web";
+var __vite_injected_original_dirname = "D:\\dev\\nodejs\\toolsonline";
 var vite_config_default = defineConfig(({ command, mode }) => {
   let env = loadEnv(mode, process.cwd());
   return {

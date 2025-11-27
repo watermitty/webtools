@@ -1,7 +1,7 @@
 // vite.config.ts
-import { defineConfig, loadEnv } from "file:///D:/dev/nodejs/tools-web/node_modules/.pnpm/vite@4.5.14_@types+node@24._22a97f0843ce623999e90deb969a4892/node_modules/vite/dist/node/index.js";
-import vue from "file:///D:/dev/nodejs/tools-web/node_modules/.pnpm/@vitejs+plugin-vue@4.6.2_vi_5c2199a4ed6292edcac824902be6ecbc/node_modules/@vitejs/plugin-vue/dist/index.mjs";
-import { createSvgIconsPlugin } from "file:///D:/dev/nodejs/tools-web/node_modules/.pnpm/vite-plugin-svg-icons@2.0.1_e1ef0a285f0ca7417e848fabd0bd27a1/node_modules/vite-plugin-svg-icons/dist/index.mjs";
+import { defineConfig, loadEnv } from "file:///D:/dev/nodejs/toolsonline/node_modules/.pnpm/vite@4.5.14_@types+node@24._22a97f0843ce623999e90deb969a4892/node_modules/vite/dist/node/index.js";
+import vue from "file:///D:/dev/nodejs/toolsonline/node_modules/.pnpm/@vitejs+plugin-vue@4.6.2_vi_5c2199a4ed6292edcac824902be6ecbc/node_modules/@vitejs/plugin-vue/dist/index.mjs";
+import { createSvgIconsPlugin } from "file:///D:/dev/nodejs/toolsonline/node_modules/.pnpm/vite-plugin-svg-icons@2.0.1_e1ef0a285f0ca7417e848fabd0bd27a1/node_modules/vite-plugin-svg-icons/dist/index.mjs";
 import path from "path";
 
 // src/router/router.ts
@@ -12,8 +12,8 @@ var constantRoute = [
     component: () => import("@/components/Home/Home.vue"),
     name: "home",
     meta: {
-      keywords: "tools-web,\u5728\u7EBF\u5DE5\u5177,\u5F00\u53D1\u4EBA\u5458\u5DE5\u5177,\u65F6\u95F4\u6233\u8F6C\u6362,\u52A0\u5BC6,\u89E3\u5BC6,md5,\u8FDB\u5236\u8F6C\u6362,\u4E8C\u7EF4\u7801,\u6B63\u5219\u8868\u8FBE\u5F0F,json\u683C\u5F0F\u5316,\u7167\u7247\u5904\u7406,\u5B57\u6570\u7EDF\u8BA1",
-      description: "tools-web,\u5728\u7EBF\u5DE5\u5177,\u5728\u7EBF\u5DE5\u5177\u5927\u5168,\u5F00\u53D1\u4EBA\u5458\u5DE5\u5177,\u65E5\u5E38\u751F\u6D3B\u5DE5\u5177,\u529E\u516C\u52A9\u624B,\u65F6\u95F4\u6233\u8F6C\u6362,\u52A0\u5BC6,\u89E3\u5BC6,md5,\u8FDB\u5236\u8F6C\u6362,\u4E8C\u7EF4\u7801,\u6B63\u5219\u8868\u8FBE\u5F0F,json\u683C\u5F0F\u5316,\u7167\u7247\u5904\u7406,\u5B57\u6570\u7EDF\u8BA1"
+      keywords: "toolsonline,\u5728\u7EBF\u5DE5\u5177,\u5F00\u53D1\u4EBA\u5458\u5DE5\u5177,\u65F6\u95F4\u6233\u8F6C\u6362,\u52A0\u5BC6,\u89E3\u5BC6,md5,\u8FDB\u5236\u8F6C\u6362,\u4E8C\u7EF4\u7801,\u6B63\u5219\u8868\u8FBE\u5F0F,json\u683C\u5F0F\u5316,\u7167\u7247\u5904\u7406,\u5B57\u6570\u7EDF\u8BA1",
+      description: "toolsonline,\u5728\u7EBF\u5DE5\u5177,\u5728\u7EBF\u5DE5\u5177\u5927\u5168,\u5F00\u53D1\u4EBA\u5458\u5DE5\u5177,\u65E5\u5E38\u751F\u6D3B\u5DE5\u5177,\u529E\u516C\u52A9\u624B,\u65F6\u95F4\u6233\u8F6C\u6362,\u52A0\u5BC6,\u89E3\u5BC6,md5,\u8FDB\u5236\u8F6C\u6362,\u4E8C\u7EF4\u7801,\u6B63\u5219\u8868\u8FBE\u5F0F,json\u683C\u5F0F\u5316,\u7167\u7247\u5904\u7406,\u5B57\u6570\u7EDF\u8BA1"
     }
   },
   //工具
@@ -616,7 +616,7 @@ var constantRoute = [
 ];
 
 // ssr.config.ts
-import vitePluginSeoPrerender from "file:///D:/dev/nodejs/tools-web/node_modules/.pnpm/vite-plugin-seo-prerender@0_489146577398603755f79f59968f4869/node_modules/vite-plugin-seo-prerender/dist/index.js";
+import vitePluginSeoPrerender from "file:///D:/dev/nodejs/toolsonline/node_modules/.pnpm/vite-plugin-seo-prerender@0_489146577398603755f79f59968f4869/node_modules/vite-plugin-seo-prerender/dist/index.js";
 function seoperender() {
   const filterPath = ["/:pathMatch(.*)*", "/404"];
   return vitePluginSeoPrerender({
@@ -627,7 +627,7 @@ function seoperender() {
 }
 
 // vite.config.ts
-var __vite_injected_original_dirname = "D:\\dev\\nodejs\\tools-web";
+var __vite_injected_original_dirname = "D:\\dev\\nodejs\\toolsonline";
 var vite_config_default = defineConfig(({ command, mode }) => {
   let env = loadEnv(mode, process.cwd());
   return {
