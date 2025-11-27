@@ -260,7 +260,7 @@ async function exchangeCodeForToken(code, env) {
                 headers: {
                     'Accept': 'application/json',
                     'Content-Type': 'application/x-www-form-urlencoded',
-                    'User-Agent': 'Tools-Web/1.0'
+                    'User-Agent': 'ToolsOnline/1.0'
                 },
                 body: requestBody.toString(),
                 signal: controller.signal
@@ -366,7 +366,7 @@ async function fetchUserInfo(accessToken) {
                 headers: {
                     'Authorization': `Bearer ${accessToken}`,
                     'Accept': 'application/vnd.github.v3+json',
-                    'User-Agent': 'Tools-Web/1.0',
+                    'User-Agent': 'ToolsOnline/1.0',
                     'X-GitHub-Api-Version': '2022-11-28'
                 },
                 signal: controller.signal
@@ -407,7 +407,7 @@ async function fetchUserInfo(accessToken) {
                     headers: {
                         'Authorization': `Bearer ${accessToken}`,
                         'Accept': 'application/vnd.github.v3+json',
-                        'User-Agent': 'Tools-Web/1.0',
+                        'User-Agent': 'ToolsOnline/1.0',
                         'X-GitHub-Api-Version': '2022-11-28'
                     },
                     signal: emailController.signal

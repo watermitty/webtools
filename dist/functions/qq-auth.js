@@ -176,7 +176,7 @@ async function exchangeCodeForToken(code, env) {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/x-www-form-urlencoded',
-                'User-Agent': 'Tools-Web/1.0'
+                'User-Agent': 'ToolsOnline/1.0'
             },
             body: params
         });
@@ -218,7 +218,7 @@ async function getOpenId(accessToken) {
 
         const response = await fetch(openIdEndpoint, {
             headers: {
-                'User-Agent': 'Tools-Web/1.0'
+                'User-Agent': 'ToolsOnline/1.0'
             }
         });
 
@@ -263,7 +263,7 @@ async function fetchUserInfo(accessToken, openId, clientId) {
 
         const response = await fetch(userEndpoint, {
             headers: {
-                'User-Agent': 'Tools-Web/1.0'
+                'User-Agent': 'ToolsOnline/1.0'
             }
         });
 

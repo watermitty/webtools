@@ -167,7 +167,7 @@ async function exchangeCodeForToken(code, env) {
             headers: {
                 'Content-Type': 'application/x-www-form-urlencoded',
                 'Accept': 'application/json',
-                'User-Agent': 'Tools-Web/1.0'
+                'User-Agent': 'ToolsOnline/1.0'
             },
             body: params
         });
@@ -209,7 +209,7 @@ async function fetchUserInfo(accessToken) {
         const response = await fetch(userEndpoint, {
             headers: {
                 'Accept': 'application/json',
-                'User-Agent': 'Tools-Web/1.0'
+                'User-Agent': 'ToolsOnline/1.0'
             }
         });
 

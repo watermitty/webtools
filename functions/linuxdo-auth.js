@@ -156,7 +156,7 @@ async function exchangeCodeForToken(code, env) {
       headers: {
         'Authorization': `Basic ${credentials}`,
         'Content-Type': 'application/x-www-form-urlencoded',
-        'User-Agent': 'Tools-Web/1.0'
+        'User-Agent': 'ToolsOnline/1.0'
       },
       body: new URLSearchParams({
         grant_type: 'authorization_code',
@@ -195,7 +195,7 @@ async function fetchUserInfo(accessToken) {
     const response = await fetch(userEndpoint, {
       headers: {
         'Authorization': `Bearer ${accessToken}`,
-        'User-Agent': 'Tools-Web/1.0'
+        'User-Agent': 'ToolsOnline/1.0'
       }
     });
     
