@@ -11,7 +11,7 @@ const siteAddr = ref(import.meta.env.VITE_MY_SITE_ADDR || '')
     <div class="p-5 w-2/3">
       <h1 class="text-2xl font-bold">关于 {{appTitle}}</h1>
       <p class="mt-6">
-        <el-text>本站是基于（<el-link :href="gitUrl" target="_blank" type="primary">ToolsOnline</el-link> 是一款免费开源的轻量在线工具箱，包含开发、文本、媒体、图表、生活、查询等实用工具；如果对您有帮助，请将其分享给您的朋友，并且添加到收藏夹中！（<el-link :href="rawGitUrl" target="_blank" type="primary"></el-link>）！）二次开发，部署在Cloudflare上，因为是纯前端，所以请求外部第三方接口用的Cloudflare 的functions实现。</el-text>
+        <el-text>本站是基于（<el-link :href="gitUrl" target="_blank" type="primary">ToolsOnline</el-link> 是一款免费开源的轻量在线工具箱，包含开发、文本、媒体、图表、生活、查询等实用工具；如果对您有帮助，请将其分享给您的朋友，并且添加到收藏夹中！（<el-link :href="rawGitUrl" target="_blank" type="primary"></el-link>）！）</el-text>
       </p>
 
       <h1 class="text-2xl font-bold mt-6 mb-6">技术</h1>
