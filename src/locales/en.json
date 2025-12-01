@@ -1,0 +1,15 @@
+{
+  "header": {
+    "login": "Log in",
+    "user_tooltip": "User login",
+    "personal_center": "Profile",
+    "logout": "Log out",
+    "loading": "Loading..."
+  },
+  "message": {
+    "logout_success": "Logged out"
+  },
+  "footer": {
+    "copyright": "A lightweight online toolbox © 2019 - 2025"
+  }
+}

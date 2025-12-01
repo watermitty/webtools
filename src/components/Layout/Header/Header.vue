@@ -1,5 +1,7 @@
 <script setup lang="ts">
 import { ref, reactive, onMounted, computed, onUnmounted, nextTick } from 'vue'
+import { useI18n } from 'vue-i18n'
+import LanguageSwitcher from '@/components/LanguageSwitcher/LanguageSwitcher.vue'
 import { Search } from '@element-plus/icons-vue';
 import { ElMessage } from 'element-plus'
 import { useToolsStore } from '@/store/modules/tools'
@@ -12,6 +14,7 @@ import { useRouter } from 'vue-router'
 
 const router = useRouter()
 const routeLoading = ref(false)
+const { t } = useI18n()
 
 // 监听路由变化，显示加载状态
 router.beforeEach((_to, _from, next) => {
@@ -242,16 +245,16 @@ onUnmounted(() => {
         <li class="ml-3 relative user-menu-container">
           <!-- 未登录状态：显示登录按钮 -->
           <router-link v-if="!isLoggedIn" to="/login">
-            <el-tooltip
-              class="box-item"
-              effect="dark"
-              content="用户登录"
-              placement="bottom"
-            >
-              <el-button type="primary" size="large" class="bg-gradient-to-r from-warm-500 to-orange-500 hover:from-warm-600 hover:to-orange-600 w-20 border-none">
-                登录
-              </el-button>
-            </el-tooltip>
+              <el-tooltip
+                class="box-item"
+                effect="dark"
+                :content="t('header.user_tooltip')"
+                placement="bottom"
+              >
+                <el-button type="primary" size="large" class="bg-gradient-to-r from-warm-500 to-orange-500 hover:from-warm-600 hover:to-orange-600 w-20 border-none">
+                  {{ t('header.login') }}
+                </el-button>
+              </el-tooltip>
           </router-link>
           
           <!-- 已登录状态：显示用户名和下拉菜单 -->
@@ -278,26 +281,29 @@ onUnmounted(() => {
                   class="px-4 py-2 hover:bg-warm-100 cursor-pointer text-warm-700"
                   @click.stop="goToUserInfo"
                 >
-                  个人中心
+                  {{ t('header.personal_center') }}
                 </div>
                 <div 
                   class="px-4 py-2 hover:bg-warm-100 cursor-pointer text-red-600"
                   @click.stop="handleLogout"
                 >
-                  退出登录
+                  {{ t('header.logout') }}
                 </div>
               </div>
             </div>
           </div>
+        </li>
+        <li class="ml-3">
+          <LanguageSwitcher />
         </li>
       </ul>
     </div>
   </header>
   <!-- 更新加载状态样式 -->
   <div v-if="routeLoading" class="fixed top-0 left-0 w-full h-full bg-warm-900 bg-opacity-40 flex items-center justify-center z-50 loading-overlay">
-    <div class="loading-container">
+      <div class="loading-container">
       <div class="loading-spinner"></div>
-      <div class="loading-text">加载中...</div>
+      <div class="loading-text">{{ t('header.loading') }}</div>
     </div>
   </div>
 </template>

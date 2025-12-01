@@ -69,7 +69,8 @@
     "vue-codemirror": "^6.1.1",
     "vue3-danmaku": "^1.6.0",
     "x-data-spreadsheet": "^1.1.9",
-    "xlsx": "^0.18.5"
+    "xlsx": "^0.18.5",
+    "vue-i18n": "^9.3.0"
   },
   "devDependencies": {
     "@vitejs/plugin-vue": "^4.5.1",
