@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import { ref, reactive } from "vue"
+import { useI18n } from 'vue-i18n'
 import  SignImageCore  from './SignImageCore.vue'
 import DetailHeader from '@/components/Layout/DetailHeader/DetailHeader.vue'
 import ToolDetail from '@/components/Layout/ToolDetail/ToolDetail.vue'
@@ -8,8 +9,9 @@ import { autoDown } from '@/utils/file'
 import { Jh_getTimeStamp } from '@/utils/time'
 
 // 图片处理
+const { t } = useI18n()
 const info = reactive({
-  title:"在线编辑图片",
+  title:"tools.signimage.title",
   //图片地址
   previewsImgUrl:"https://fuss10.elemecdn.com/e/5d/4a731a90594a4af544c0c25941171jpeg.jpeg", 
   //获取处理完的图片
@@ -50,12 +52,12 @@ const saveImg = () => {
 
 <template>
   <div class="flex flex-col mt-3 flex-1">
-    <DetailHeader :title="info.title"></DetailHeader>
+    <DetailHeader :title="$t(info.title)"></DetailHeader>
 
     <div class="flex flex-col mb-3 h-[38rem] p-4 rounded-2xl bg-white">
       <div class="mb-3 flex flex-row-reverse">
         <!-- save -->
-        <el-button type="primary" class="ml-2" @click="saveImg">保存</el-button>
+        <el-button type="primary" class="ml-2" @click="saveImg">{{ $t('tools.signimage.save') }}</el-button>
         <!-- upload -->
         <el-upload
           ref="upload"
@@ -67,7 +69,7 @@ const saveImg = () => {
           :show-file-list="false"
         >
           <template #trigger>
-            <el-button type="primary">选择图片</el-button>
+            <el-button type="primary">{{ $t('tools.signimage.select') }}</el-button>
           </template>
         </el-upload>
       </div>
@@ -76,16 +78,16 @@ const saveImg = () => {
         ref="refSignImageCore"
         :key="info.cKey"
         :dialogVisible.sync="true" 
-        :title="info.title"
+        :title="$t(info.title)"
         :imgUrl="info.previewsImgUrl"
         @getNewImg="info.getNewImg"
       ></SignImageCore>
     </div>
 
     <!-- desc -->
-    <ToolDetail title="描述">
+    <ToolDetail :title="$t('tools.signimage.desc_title')">
       <el-text>
-        在线图片裁剪，图片标注，图片滤镜，图片画笔、图片旋转、图片文字、图片尺寸调整等操作
+        {{ $t('tools.signimage.desc_content') }}
       </el-text> 
     </ToolDetail>
 

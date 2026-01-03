@@ -196,7 +196,7 @@ onMounted(async () => {
               ></path>
             </svg>
             <!-- <el-icon size="22px"><Menu /></el-icon> -->
-            <span class="ml-2">分类</span>
+            <span class="ml-2">{{ $t('sidebar.category') }}</span>
           </template>
           <el-menu-item-group>
             <el-menu-item
@@ -205,7 +205,7 @@ onMounted(async () => {
               v-for="item in toolsStore.cates"
               :key="item.id"
             >
-              {{ item.title }}
+              {{ $t('category.' + item.id) }}
             </el-menu-item>
           </el-menu-item-group>
         </el-sub-menu>
@@ -227,7 +227,7 @@ onMounted(async () => {
                 p-id="5263"
               ></path>
             </svg>
-            <span class="ml-2">关于本站</span>
+            <span class="ml-2">{{ $t('sidebar.about') }}</span>
           </template>
         </el-menu-item>
       </el-menu>

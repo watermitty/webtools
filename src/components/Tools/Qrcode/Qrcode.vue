@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import { reactive, ref, computed, onMounted, onUnmounted } from "vue";
+import { useI18n } from 'vue-i18n'
 import DetailHeader from "@/components/Layout/DetailHeader/DetailHeader.vue";
 import QRCodeVue3 from "qrcode-vue3";
 import { Delete, Plus } from "@element-plus/icons-vue";
@@ -7,8 +8,10 @@ import { ElMessage, type UploadFile } from "element-plus";
 import { v4 as uuidv4 } from "uuid";
 import ToolDetail from '@/components/Layout/ToolDetail/ToolDetail.vue'
 
+const { t } = useI18n()
+
 const info = reactive({
-  title: "二维码生成",
+  title: "tools.qrcode.title",
   content: "hello world",
   width: 200,
   height: 200,
@@ -52,8 +55,8 @@ const info = reactive({
 // 预设配置定义
 const presetConfigs = {
   default: {
-    name: "默认配置",
-    description: "当前默认的渐变配置",
+    nameKey: "tools.qrcode.styles.default_name",
+    descKey: "tools.qrcode.styles.default_desc",
     dotType: "dots", // 当前实际使用的点样式
     cornerSquareType: "square",
     cornerDotType: "square",
@@ -71,8 +74,8 @@ const presetConfigs = {
     preColor: "#000000",
   },
   classic: {
-    name: "经典黑",
-    description: "经典黑白配色，简约大方",
+    nameKey: "tools.qrcode.styles.classic_name",
+    descKey: "tools.qrcode.styles.classic_desc",
     dotType: "square",
     cornerSquareType: "square",
     cornerDotType: "square",
@@ -88,8 +91,8 @@ const presetConfigs = {
     gradientColor2: "#000000",
   },
   modern: {
-    name: "现代蓝",
-    description: "现代蓝色渐变，科技感十足",
+    nameKey: "tools.qrcode.styles.modern_name",
+    descKey: "tools.qrcode.styles.modern_desc",
     dotType: "rounded",
     cornerSquareType: "extra-rounded",
     cornerDotType: "dot",
@@ -107,8 +110,8 @@ const presetConfigs = {
     preColor: "#667eea",
   },
   warm: {
-    name: "温暖橙",
-    description: "温暖橙色系，活力满满",
+    nameKey: "tools.qrcode.styles.warm_name",
+    descKey: "tools.qrcode.styles.warm_desc",
     dotType: "dots",
     cornerSquareType: "extra-rounded",
     cornerDotType: "dot",
@@ -126,8 +129,8 @@ const presetConfigs = {
     preColor: "#ff9a9e",
   },
   elegant: {
-    name: "优雅紫",
-    description: "优雅紫色渐变，高贵典雅",
+    nameKey: "tools.qrcode.styles.elegant_name",
+    descKey: "tools.qrcode.styles.elegant_desc",
     dotType: "classy",
     cornerSquareType: "extra-rounded",
     cornerDotType: "dot",
@@ -145,8 +148,8 @@ const presetConfigs = {
     preColor: "#a8edea",
   },
   tech: {
-    name: "科技绿",
-    description: "科技绿色系，未来感十足",
+    nameKey: "tools.qrcode.styles.tech_name",
+    descKey: "tools.qrcode.styles.tech_desc",
     dotType: "rounded",
     cornerSquareType: "square",
     cornerDotType: "square",
@@ -164,8 +167,8 @@ const presetConfigs = {
     preColor: "#00d4aa",
   },
   sunset: {
-    name: "日落红",
-    description: "温暖日落色调，浪漫温馨",
+    nameKey: "tools.qrcode.styles.sunset_name",
+    descKey: "tools.qrcode.styles.sunset_desc",
     dotType: "dots",
     cornerSquareType: "extra-rounded",
     cornerDotType: "dot",
@@ -183,8 +186,8 @@ const presetConfigs = {
     preColor: "#ff6b6b",
   },
   ocean: {
-    name: "海洋蓝",
-    description: "深邃海洋蓝，宁静致远",
+    nameKey: "tools.qrcode.styles.ocean_name",
+    descKey: "tools.qrcode.styles.ocean_desc",
     dotType: "rounded",
     cornerSquareType: "extra-rounded",
     cornerDotType: "dot",
@@ -202,8 +205,8 @@ const presetConfigs = {
     preColor: "#4facfe",
   },
   forest: {
-    name: "森林绿",
-    description: "自然森林绿，生机勃勃",
+    nameKey: "tools.qrcode.styles.forest_name",
+    descKey: "tools.qrcode.styles.forest_desc",
     dotType: "classy",
     cornerSquareType: "extra-rounded",
     cornerDotType: "dot",
@@ -221,8 +224,8 @@ const presetConfigs = {
     preColor: "#56ab2f",
   },
   gold: {
-    name: "金色奢华",
-    description: "金色渐变，奢华高贵",
+    nameKey: "tools.qrcode.styles.gold_name",
+    descKey: "tools.qrcode.styles.gold_desc",
     dotType: "classy",
     cornerSquareType: "extra-rounded",
     cornerDotType: "dot",
@@ -240,8 +243,8 @@ const presetConfigs = {
     preColor: "#ffd700",
   },
   neon: {
-    name: "霓虹紫",
-    description: "霓虹紫色，炫酷时尚",
+    nameKey: "tools.qrcode.styles.neon_name",
+    descKey: "tools.qrcode.styles.neon_desc",
     dotType: "dots",
     cornerSquareType: "square",
     cornerDotType: "square",
@@ -259,8 +262,8 @@ const presetConfigs = {
     preColor: "#ff00ff",
   },
   vintage: {
-    name: "复古棕",
-    description: "复古棕色系，怀旧经典",
+    nameKey: "tools.qrcode.styles.vintage_name",
+    descKey: "tools.qrcode.styles.vintage_desc",
     dotType: "classy",
     cornerSquareType: "extra-rounded",
     cornerDotType: "dot",
@@ -276,8 +279,8 @@ const presetConfigs = {
     gradientColor2: "#8b4513",
   },
   pastel: {
-    name: "粉彩梦",
-    description: "柔和粉彩色，温柔甜美",
+    nameKey: "tools.qrcode.styles.pastel_name",
+    descKey: "tools.qrcode.styles.pastel_desc",
     dotType: "rounded",
     cornerSquareType: "extra-rounded",
     cornerDotType: "dot",
@@ -295,8 +298,8 @@ const presetConfigs = {
     preColor: "#ffb3ba",
   },
   cyber: {
-    name: "赛博朋克",
-    description: "赛博朋克风格，未来科技",
+    nameKey: "tools.qrcode.styles.cyber_name",
+    descKey: "tools.qrcode.styles.cyber_desc",
     dotType: "square",
     cornerSquareType: "square",
     cornerDotType: "square",
@@ -314,8 +317,8 @@ const presetConfigs = {
     preColor: "#00ff00",
   },
   minimal: {
-    name: "极简白",
-    description: "极简白色系，干净清爽",
+    nameKey: "tools.qrcode.styles.minimal_name",
+    descKey: "tools.qrcode.styles.minimal_desc",
     dotType: "rounded",
     cornerSquareType: "extra-rounded",
     cornerDotType: "dot",
@@ -331,8 +334,8 @@ const presetConfigs = {
     gradientColor2: "#666666",
   },
   fire: {
-    name: "火焰红",
-    description: "炽热火焰红，激情四射",
+    nameKey: "tools.qrcode.styles.fire_name",
+    descKey: "tools.qrcode.styles.fire_desc",
     dotType: "dots",
     cornerSquareType: "extra-rounded",
     cornerDotType: "dot",
@@ -350,8 +353,8 @@ const presetConfigs = {
     preColor: "#ff4500",
   },
   ice: {
-    name: "冰雪蓝",
-    description: "清凉冰雪蓝，纯净透明",
+    nameKey: "tools.qrcode.styles.ice_name",
+    descKey: "tools.qrcode.styles.ice_desc",
     dotType: "rounded",
     cornerSquareType: "extra-rounded",
     cornerDotType: "dot",
@@ -380,7 +383,7 @@ const applyPreset = (presetKey: string) => {
   }
 };
 
-const uploadLogo = ref();
+
 const showQRDialog = ref(false);
 const windowWidth = ref(800); // 默认宽度
 
@@ -467,8 +470,8 @@ onMounted(() => {
 
   // 在组件初始化时，将当前配置设置为默认预设
   presetConfigs.default = {
-    name: "默认配置",
-    description: "当前默认的渐变配置",
+    nameKey: "tools.qrcode.styles.default_name",
+    descKey: "tools.qrcode.styles.default_desc",
     dotType: info.dotType,
     cornerSquareType: info.cornerSquareType,
     cornerDotType: info.cornerDotType,
@@ -495,7 +498,7 @@ onUnmounted(() => {
 // 上传达到上限触发
 const handleExceed = () => {
   ElMessage({
-    message: "上传数量已达上限，请清除后重新上传",
+    message: t('tools.qrcode.msg_upload_limit'),
     type: "warning",
   });
 };
@@ -588,7 +591,7 @@ const clearContent = () => {
 // 查看大图
 const viewLargeQR = () => {
   if (!info.content) {
-    ElMessage.warning("请先生成二维码");
+    ElMessage.warning(t('tools.qrcode.msg_generate_first'));
     return;
   }
   showQRDialog.value = true;
@@ -663,14 +666,14 @@ const cornersDotOptions = computed(() => {
 // 下载二维码功能
 const downloadQR = () => {
   if (!info.content) {
-    ElMessage.warning("请先生成二维码");
+    ElMessage.warning(t('tools.qrcode.msg_generate_first'));
     return;
   }
   
   // 查找二维码图片元素
   const qrImage = document.querySelector('.qr-code-image') as HTMLImageElement;
   if (!qrImage) {
-    ElMessage.error("二维码元素未找到");
+    ElMessage.error(t('tools.qrcode.msg_element_not_found'));
     return;
   }
   
@@ -702,27 +705,27 @@ const downloadQR = () => {
           a.click();
           document.body.removeChild(a);
           URL.revokeObjectURL(url);
-          ElMessage.success("下载成功");
+          ElMessage.success(t('tools.qrcode.msg_download_success'));
         }
       }, 'image/png');
     };
     
     img.onerror = () => {
-      ElMessage.error("图片生成失败");
+      ElMessage.error(t('tools.qrcode.msg_image_generate_fail'));
     };
     
     // 直接使用二维码图片的src
     img.src = qrImage.src;
   } catch (error) {
     console.error('下载失败:', error);
-    ElMessage.error("下载失败，请重试");
+    ElMessage.error(t('tools.qrcode.msg_download_fail'));
   }
 };
 </script>
 
 <template>
   <div class="flex flex-col mt-3 ml-4 flex-1 mr-3">
-    <DetailHeader :title="info.title"></DetailHeader>
+    <DetailHeader :title="$t('tools.qrcode.title')"></DetailHeader>
 
     <!-- 桌面端布局：左右分栏 -->
     <div
@@ -734,13 +737,13 @@ const downloadQR = () => {
           <!-- 内容输入 -->
           <div class="space-y-2">
             <label class="text-sm font-medium text-gray-700"
-              >内容（网站链接，扫码会直接打开，暂不支持中文）</label
+              >{{ $t('tools.qrcode.label_content') }}</label
             >
             <el-input
               v-model="info.content"
               type="textarea"
               :rows="4"
-              placeholder="输入文字或网址生成二维码，支持中文内容"
+              :placeholder="$t('tools.qrcode.placeholder')"
               class="w-full"
               @input="handleContentChange"
             />
@@ -749,44 +752,44 @@ const downloadQR = () => {
           <!-- 清除内容按钮 -->
           <div class="flex gap-3">
             <el-button @click="clearContent" class="flex-1">
-              清除内容
+              {{ $t('tools.qrcode.btn_clear') }}
             </el-button>
           </div>
 
           <!-- 尺寸设置 -->
           <div class="space-y-2">
-            <label class="text-sm font-medium text-gray-700">尺寸</label>
+            <label class="text-sm font-medium text-gray-700">{{ $t('tools.qrcode.label_size') }}</label>
             <el-select
               v-model="info.size"
               class="w-full"
               @change="handleSizeChange"
             >
-              <el-option label="小尺寸 128px" value="128" />
-              <el-option label="常规 200px" value="200" />
-              <el-option label="适中 300px" value="300" />
-              <el-option label="较大 400px" value="400" />
-              <el-option label="大尺寸 500px" value="500" />
+              <el-option :label="$t('tools.qrcode.size_small')" value="128" />
+              <el-option :label="$t('tools.qrcode.size_normal')" value="200" />
+              <el-option :label="$t('tools.qrcode.size_medium')" value="300" />
+              <el-option :label="$t('tools.qrcode.size_large')" value="400" />
+              <el-option :label="$t('tools.qrcode.size_xlarge')" value="500" />
             </el-select>
           </div>
 
           <!-- 纠错级别 -->
           <div class="space-y-2">
-            <label class="text-sm font-medium text-gray-700">纠错级别</label>
+            <label class="text-sm font-medium text-gray-700">{{ $t('tools.qrcode.label_error_level') }}</label>
             <el-select
               v-model="info.errorCorrectionLevel"
               class="w-full"
               @change="handleErrorCorrectionChange"
             >
-              <el-option label="L - 可遮挡 7%" value="L" />
-              <el-option label="M - 可遮挡 15%" value="M" />
-              <el-option label="Q - 可遮挡 25%" value="Q" />
-              <el-option label="H - 可遮挡 30%" value="H" />
+              <el-option :label="$t('tools.qrcode.error_l')" value="L" />
+              <el-option :label="$t('tools.qrcode.error_m')" value="M" />
+              <el-option :label="$t('tools.qrcode.error_q')" value="Q" />
+              <el-option :label="$t('tools.qrcode.error_h')" value="H" />
             </el-select>
           </div>
 
           <!-- Logo上传 -->
           <div class="space-y-2">
-            <label class="text-sm font-medium text-gray-700">Logo</label>
+            <label class="text-sm font-medium text-gray-700">{{ $t('tools.qrcode.label_logo') }}</label>
             <el-upload
               ref="uploadLogo"
               action="#"
@@ -832,9 +835,9 @@ const downloadQR = () => {
 
           <!-- 配置模式选择 -->
           <div class="space-y-2">
-            <label class="text-sm font-medium text-gray-700">样式配置</label>
+            <label class="text-sm font-medium text-gray-700">{{ $t('tools.qrcode.label_style_config') }}</label>
             <el-tabs v-model="info.configMode" class="w-full">
-              <el-tab-pane label="预设" name="preset">
+              <el-tab-pane :label="$t('tools.qrcode.tab_preset')" name="preset">
                 <div class="space-y-4">
                   <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
                     <div
@@ -870,19 +873,19 @@ const downloadQR = () => {
                         />
                       </div>
                       <div class="preset-info">
-                        <h4 class="preset-name">{{ preset.name }}</h4>
-                        <p class="preset-desc">{{ preset.description }}</p>
+                        <h4 class="preset-name">{{ $t(preset.nameKey) }}</h4>
+                        <p class="preset-desc">{{ $t(preset.descKey) }}</p>
                       </div>
                     </div>
                   </div>
                 </div>
               </el-tab-pane>
               
-              <el-tab-pane label="自定义配置" name="custom">
+              <el-tab-pane :label="$t('tools.qrcode.tab_custom')" name="custom">
                 <div class="space-y-4">
           <!-- 点样式设置 -->
           <div class="space-y-2">
-            <label class="text-sm font-medium text-gray-700">点样式</label>
+            <label class="text-sm font-medium text-gray-700">{{ $t('tools.qrcode.label_dot_style') }}</label>
             <el-select
               v-model="info.dotType"
               class="w-full"
@@ -899,23 +902,23 @@ const downloadQR = () => {
 
           <!-- 颜色设置 -->
           <div class="space-y-2">
-            <label class="text-sm font-medium text-gray-700">颜色设置</label>
+            <label class="text-sm font-medium text-gray-700">{{ $t('tools.qrcode.label_color_settings') }}</label>
             
             <div class="border border-gray-200 rounded-lg p-4 bg-gray-50">
               <!-- 颜色模式选择 -->
               <el-tabs v-model="info.colorMode" @tab-change="handleColorModeChange">
-                <el-tab-pane label="单色" name="single">
+                <el-tab-pane :label="$t('tools.qrcode.tab_single')" name="single">
                   <div class="space-y-2">
                     <div class="flex gap-4">
                       <div class="flex-1">
-                        <label class="text-xs text-gray-500 mb-1 block">前景色</label>
+                        <label class="text-xs text-gray-500 mb-1 block">{{ $t('tools.qrcode.label_fg') }}</label>
                         <el-color-picker
                           v-model="info.preColor"
                           @change="handleColorChange"
                         />
                       </div>
                       <div class="flex-1">
-                        <label class="text-xs text-gray-500 mb-1 block">背景色</label>
+                        <label class="text-xs text-gray-500 mb-1 block">{{ $t('tools.qrcode.label_bg') }}</label>
                         <el-color-picker
                           v-model="info.bgColor"
                           @change="handleColorChange"
@@ -925,11 +928,11 @@ const downloadQR = () => {
                   </div>
                 </el-tab-pane>
                 
-                <el-tab-pane label="渐变色" name="gradient">
+                <el-tab-pane :label="$t('tools.qrcode.tab_gradient')" name="gradient">
                   <div class="space-y-3">
                     <!-- 渐变类型 -->
                     <div>
-                      <label class="text-xs text-gray-500 mb-1 block">渐变类型</label>
+                      <label class="text-xs text-gray-500 mb-1 block">{{ $t('tools.qrcode.label_gradient_type') }}</label>
                       <el-select
                         v-model="info.gradientType"
                         class="w-full"
@@ -958,14 +961,14 @@ const downloadQR = () => {
                     <!-- 渐变色选择 -->
                     <div class="flex gap-4">
                       <div class="flex-1">
-                        <label class="text-xs text-gray-500 mb-1 block">起始色</label>
+                        <label class="text-xs text-gray-500 mb-1 block">{{ $t('tools.qrcode.label_start_color') }}</label>
                         <el-color-picker
                           v-model="info.gradientColor1"
                           @change="handleGradientChange"
                         />
                       </div>
                       <div class="flex-1">
-                        <label class="text-xs text-gray-500 mb-1 block">结束色</label>
+                        <label class="text-xs text-gray-500 mb-1 block">{{ $t('tools.qrcode.label_end_color') }}</label>
                         <el-color-picker
                           v-model="info.gradientColor2"
                           @change="handleGradientChange"
@@ -975,7 +978,7 @@ const downloadQR = () => {
                     
                     <!-- 背景色 -->
                     <div>
-                      <label class="text-xs text-gray-500 mb-1 block">背景色</label>
+                      <label class="text-xs text-gray-500 mb-1 block">{{ $t('tools.qrcode.label_bg') }}</label>
                       <el-color-picker
                         v-model="info.bgColor"
                         @change="handleColorChange"
@@ -989,28 +992,28 @@ const downloadQR = () => {
 
           <!-- 角落方块设置 -->
           <div class="space-y-2">
-            <label class="text-sm font-medium text-gray-700">角落方块</label>
+            <label class="text-sm font-medium text-gray-700">{{ $t('tools.qrcode.label_corner_square') }}</label>
             
             <div class="border border-gray-200 rounded-lg p-4 bg-gray-50">
               <!-- 角落方块样式 -->
               <div class="mb-3">
-                <label class="text-xs text-gray-500 mb-1 block">样式</label>
+                <label class="text-xs text-gray-500 mb-1 block">{{ $t('tools.qrcode.label_style') }}</label>
                 <el-select
                   v-model="info.cornerSquareType"
                   class="w-full"
                   @change="handleDotTypeChange"
                 >
-                  <el-option label="方形" value="square" />
-                  <el-option label="圆点" value="dot" />
-                  <el-option label="超圆角" value="extra-rounded" />
+                  <el-option :label="$t('tools.qrcode.dot_styles.square')" value="square" />
+                  <el-option :label="$t('tools.qrcode.dot_styles.dot')" value="dot" />
+                  <el-option :label="$t('tools.qrcode.dot_styles.extra_rounded')" value="extra-rounded" />
                 </el-select>
               </div>
               
               <!-- 角落方块颜色设置 -->
               <el-tabs v-model="info.cornerSquareColorMode" @tab-change="handleCornerSquareColorModeChange">
-                <el-tab-pane label="单色" name="single">
+                <el-tab-pane :label="$t('tools.qrcode.tab_single')" name="single">
                   <div class="space-y-2">
-                    <label class="text-xs text-gray-500 mb-1 block">颜色</label>
+                    <label class="text-xs text-gray-500 mb-1 block">{{ $t('tools.qrcode.label_color') }}</label>
                     <el-color-picker
                       v-model="info.cornerSquareColor"
                       @change="handleCornerSquareGradientChange"
@@ -1018,11 +1021,11 @@ const downloadQR = () => {
                   </div>
                 </el-tab-pane>
                 
-                <el-tab-pane label="渐变色" name="gradient">
+                <el-tab-pane :label="$t('tools.qrcode.tab_gradient')" name="gradient">
                   <div class="space-y-3">
                     <!-- 渐变类型 -->
                     <div>
-                      <label class="text-xs text-gray-500 mb-1 block">渐变类型</label>
+                      <label class="text-xs text-gray-500 mb-1 block">{{ $t('tools.qrcode.label_gradient_type') }}</label>
                       <el-select
                         v-model="info.cornerSquareGradientType"
                         class="w-full"
@@ -1051,14 +1054,14 @@ const downloadQR = () => {
                     <!-- 渐变色选择 -->
                     <div class="flex gap-4">
                       <div class="flex-1">
-                        <label class="text-xs text-gray-500 mb-1 block">起始色</label>
+                        <label class="text-xs text-gray-500 mb-1 block">{{ $t('tools.qrcode.label_start_color') }}</label>
                         <el-color-picker
                           v-model="info.cornerSquareGradientColor1"
                           @change="handleCornerSquareGradientChange"
                         />
                       </div>
                       <div class="flex-1">
-                        <label class="text-xs text-gray-500 mb-1 block">结束色</label>
+                        <label class="text-xs text-gray-500 mb-1 block">{{ $t('tools.qrcode.label_end_color') }}</label>
                         <el-color-picker
                           v-model="info.cornerSquareGradientColor2"
                           @change="handleCornerSquareGradientChange"
@@ -1073,12 +1076,12 @@ const downloadQR = () => {
 
           <!-- 角落点设置 -->
           <div class="space-y-2">
-            <label class="text-sm font-medium text-gray-700">角落点</label>
+            <label class="text-sm font-medium text-gray-700">{{ $t('tools.qrcode.label_corner_dot') }}</label>
             
             <div class="border border-gray-200 rounded-lg p-4 bg-gray-50">
               <!-- 角落点样式 -->
               <div class="mb-3">
-                <label class="text-xs text-gray-500 mb-1 block">样式</label>
+                <label class="text-xs text-gray-500 mb-1 block">{{ $t('tools.qrcode.label_style') }}</label>
                 <el-select
                   v-model="info.cornerDotType"
                   class="w-full"
@@ -1091,9 +1094,9 @@ const downloadQR = () => {
               
               <!-- 角落点颜色设置 -->
               <el-tabs v-model="info.cornerDotColorMode" @tab-change="handleCornerDotColorModeChange">
-                <el-tab-pane label="单色" name="single">
+                <el-tab-pane :label="$t('tools.qrcode.tab_single')" name="single">
                   <div class="space-y-2">
-                    <label class="text-xs text-gray-500 mb-1 block">颜色</label>
+                    <label class="text-xs text-gray-500 mb-1 block">{{ $t('tools.qrcode.label_color') }}</label>
                     <el-color-picker
                       v-model="info.cornerDotColor"
                       @change="handleCornerDotGradientChange"
@@ -1101,11 +1104,11 @@ const downloadQR = () => {
                   </div>
                 </el-tab-pane>
                 
-                <el-tab-pane label="渐变色" name="gradient">
+                <el-tab-pane :label="$t('tools.qrcode.tab_gradient')" name="gradient">
                   <div class="space-y-3">
                     <!-- 渐变类型 -->
                     <div>
-                      <label class="text-xs text-gray-500 mb-1 block">渐变类型</label>
+                      <label class="text-xs text-gray-500 mb-1 block">{{ $t('tools.qrcode.label_gradient_type') }}</label>
                       <el-select
                         v-model="info.cornerDotGradientType"
                         class="w-full"
@@ -1134,14 +1137,14 @@ const downloadQR = () => {
                     <!-- 渐变色选择 -->
                     <div class="flex gap-4">
                       <div class="flex-1">
-                        <label class="text-xs text-gray-500 mb-1 block">起始色</label>
+                        <label class="text-xs text-gray-500 mb-1 block">{{ $t('tools.qrcode.label_start_color') }}</label>
                         <el-color-picker
                           v-model="info.cornerDotGradientColor1"
                           @change="handleCornerDotGradientChange"
                         />
                       </div>
                       <div class="flex-1">
-                        <label class="text-xs text-gray-500 mb-1 block">结束色</label>
+                        <label class="text-xs text-gray-500 mb-1 block">{{ $t('tools.qrcode.label_end_color') }}</label>
                         <el-color-picker
                           v-model="info.cornerDotGradientColor2"
                           @change="handleCornerDotGradientChange"
@@ -1168,8 +1171,8 @@ const downloadQR = () => {
         <div class="flex flex-col items-center space-y-4 lg:w-80">
           <template v-if="info.content && info.content.trim()">
             <div class="text-center">
-              <h3 class="text-lg font-medium text-gray-900 mb-2">二维码预览</h3>
-              <p class="text-sm text-gray-500">点击二维码查看大图</p>
+              <h3 class="text-lg font-medium text-gray-900 mb-2">{{ $t('tools.qrcode.preview_title') }}</h3>
+              <p class="text-sm text-gray-500">{{ $t('tools.qrcode.preview_desc') }}</p>
             </div>
             <div class="qr-code bg-white p-4 rounded-lg border border-gray-200">
               <div class="qr-code-wrapper" @click="viewLargeQR">
@@ -1204,7 +1207,7 @@ const downloadQR = () => {
                 class="qr-download-btn"
                 @click="downloadQR"
               >
-                下载二维码
+                {{ $t('tools.qrcode.btn_download') }}
               </button>
             </div>
           </template>
@@ -1226,8 +1229,8 @@ const downloadQR = () => {
         <div class="flex flex-col items-center space-y-4">
           <template v-if="info.content && info.content.trim()">
             <div class="text-center">
-              <h3 class="text-lg font-medium text-gray-900 mb-2">二维码预览</h3>
-              <p class="text-sm text-gray-500">点击二维码查看大图</p>
+              <h3 class="text-lg font-medium text-gray-900 mb-2">{{ $t('tools.qrcode.preview_title') }}</h3>
+              <p class="text-sm text-gray-500">{{ $t('tools.qrcode.preview_desc') }}</p>
             </div>
 
             <div class="qr-code bg-white p-4 rounded-lg border border-gray-200">
@@ -1263,7 +1266,7 @@ const downloadQR = () => {
                 class="qr-download-btn"
                 @click="downloadQR"
               >
-                下载二维码
+                {{ $t('tools.qrcode.btn_download') }}
               </button>
             </div>
           </template>
@@ -1283,13 +1286,13 @@ const downloadQR = () => {
           <!-- 内容输入 -->
           <div class="space-y-2">
             <label class="text-sm font-medium text-gray-700"
-              >内容（网站链接，扫码会直接打开，暂不支持中文）</label
+              >{{ $t('tools.qrcode.label_content') }}</label
             >
             <el-input
               v-model="info.content"
               type="textarea"
               :rows="4"
-              placeholder="输入文字或网址生成二维码，支持中文内容"
+              :placeholder="$t('tools.qrcode.placeholder')"
               class="w-full"
               @input="handleContentChange"
             />
@@ -1298,46 +1301,45 @@ const downloadQR = () => {
           <!-- 清除内容按钮 -->
           <div class="flex gap-3">
             <el-button @click="clearContent" class="flex-1">
-              清除内容
+              {{ $t('tools.qrcode.btn_clear') }}
             </el-button>
           </div>
 
           <!-- 尺寸设置 -->
           <div class="space-y-2">
-            <label class="text-sm font-medium text-gray-700">尺寸</label>
+            <label class="text-sm font-medium text-gray-700">{{ $t('tools.qrcode.label_size') }}</label>
             <el-select
               v-model="info.size"
               class="w-full"
               @change="handleSizeChange"
             >
-              <el-option label="小尺寸 128px" value="128" />
-              <el-option label="常规 200px" value="200" />
-              <el-option label="适中 300px" value="300" />
-              <el-option label="较大 400px" value="400" />
-              <el-option label="大尺寸 500px" value="500" />
+              <el-option :label="$t('tools.qrcode.size_small')" value="128" />
+              <el-option :label="$t('tools.qrcode.size_normal')" value="200" />
+              <el-option :label="$t('tools.qrcode.size_medium')" value="300" />
+              <el-option :label="$t('tools.qrcode.size_large')" value="400" />
+              <el-option :label="$t('tools.qrcode.size_xlarge')" value="500" />
             </el-select>
           </div>
 
           <!-- 纠错级别 -->
           <div class="space-y-2">
-            <label class="text-sm font-medium text-gray-700">纠错级别</label>
+            <label class="text-sm font-medium text-gray-700">{{ $t('tools.qrcode.label_error_level') }}</label>
             <el-select
               v-model="info.errorCorrectionLevel"
               class="w-full"
               @change="handleErrorCorrectionChange"
             >
-              <el-option label="L - 可遮挡 7%" value="L" />
-              <el-option label="M - 可遮挡 15%" value="M" />
-              <el-option label="Q - 可遮挡 25%" value="Q" />
-              <el-option label="H - 可遮挡 30%" value="H" />
+              <el-option :label="$t('tools.qrcode.error_l')" value="L" />
+              <el-option :label="$t('tools.qrcode.error_m')" value="M" />
+              <el-option :label="$t('tools.qrcode.error_q')" value="Q" />
+              <el-option :label="$t('tools.qrcode.error_h')" value="H" />
             </el-select>
           </div>
 
           <!-- Logo上传 -->
           <div class="space-y-2">
-            <label class="text-sm font-medium text-gray-700">Logo</label>
+            <label class="text-sm font-medium text-gray-700">{{ $t('tools.qrcode.label_logo') }}</label>
             <el-upload
-              ref="uploadLogo"
               action="#"
               :auto-upload="false"
               :limit="1"
@@ -1381,9 +1383,9 @@ const downloadQR = () => {
 
           <!-- 配置模式选择 -->
           <div class="space-y-2">
-            <label class="text-sm font-medium text-gray-700">样式配置</label>
+            <label class="text-sm font-medium text-gray-700">{{ $t('tools.qrcode.label_style_config') }}</label>
             <el-tabs v-model="info.configMode" class="w-full">
-              <el-tab-pane label="预设" name="preset">
+              <el-tab-pane :label="$t('tools.qrcode.tab_preset')" name="preset">
                 <div class="space-y-4">
                   <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
                     <div
@@ -1419,8 +1421,8 @@ const downloadQR = () => {
                         />
           </div>
                       <div class="preset-info">
-                        <h4 class="preset-name">{{ preset.name }}</h4>
-                        <p class="preset-desc">{{ preset.description }}</p>
+                        <h4 class="preset-name">{{ $t(preset.nameKey) }}</h4>
+                        <p class="preset-desc">{{ $t(preset.descKey) }}</p>
         </div>
       </div>
                   </div>
@@ -1431,40 +1433,40 @@ const downloadQR = () => {
                 <div class="space-y-4">
                   <!-- 点样式设置 -->
                   <div class="space-y-2">
-                    <label class="text-sm font-medium text-gray-700">点样式</label>
+                    <label class="text-sm font-medium text-gray-700">{{ $t('tools.qrcode.label_dot_style') }}</label>
                     <el-select
                       v-model="info.dotType"
                       class="w-full"
                       @change="handleDotTypeChange"
                     >
-                      <el-option label="方形" value="square" />
-                      <el-option label="圆角" value="rounded" />
-                      <el-option label="圆点" value="dots" />
-                      <el-option label="经典" value="classy" />
-                      <el-option label="经典圆角" value="classy-rounded" />
-                      <el-option label="超圆角" value="extra-rounded" />
+                      <el-option :label="$t('tools.qrcode.dot_styles.square')" value="square" />
+                          <el-option :label="$t('tools.qrcode.dot_styles.rounded')" value="rounded" />
+                          <el-option :label="$t('tools.qrcode.dot_styles.dots')" value="dots" />
+                          <el-option :label="$t('tools.qrcode.dot_styles.classy')" value="classy" />
+                          <el-option :label="$t('tools.qrcode.dot_styles.classy_rounded')" value="classy-rounded" />
+                          <el-option :label="$t('tools.qrcode.dot_styles.extra_rounded')" value="extra-rounded" />
                     </el-select>
           </div>
 
                   <!-- 颜色设置 -->
                   <div class="space-y-2">
-                    <label class="text-sm font-medium text-gray-700">颜色设置</label>
+                    <label class="text-sm font-medium text-gray-700">{{ $t('tools.qrcode.label_color_settings') }}</label>
                     
                     <div class="border border-gray-200 rounded-lg p-4 bg-gray-50">
                       <!-- 颜色模式选择 -->
                       <el-tabs v-model="info.colorMode" @tab-change="handleColorModeChange">
-                        <el-tab-pane label="单色" name="single">
+                        <el-tab-pane :label="$t('tools.qrcode.tab_single')" name="single">
                           <div class="space-y-2">
                             <div class="flex gap-4">
                               <div class="flex-1">
-                                <label class="text-xs text-gray-500 mb-1 block">前景色</label>
+                                <label class="text-xs text-gray-500 mb-1 block">{{ $t('tools.qrcode.label_fg') }}</label>
                                 <el-color-picker
                                   v-model="info.preColor"
                                   @change="handleColorChange"
                                 />
                               </div>
                               <div class="flex-1">
-                                <label class="text-xs text-gray-500 mb-1 block">背景色</label>
+                                <label class="text-xs text-gray-500 mb-1 block">{{ $t('tools.qrcode.label_bg') }}</label>
                                 <el-color-picker
                                   v-model="info.bgColor"
                                   @change="handleColorChange"
@@ -1474,25 +1476,25 @@ const downloadQR = () => {
                           </div>
                         </el-tab-pane>
                         
-                        <el-tab-pane label="渐变色" name="gradient">
+                        <el-tab-pane :label="$t('tools.qrcode.tab_gradient')" name="gradient">
                           <div class="space-y-3">
                             <!-- 渐变类型 -->
                             <div>
-                              <label class="text-xs text-gray-500 mb-1 block">渐变类型</label>
+                              <label class="text-xs text-gray-500 mb-1 block">{{ $t('tools.qrcode.label_gradient_type') }}</label>
                               <el-select
                                 v-model="info.gradientType"
                                 class="w-full"
                                 @change="handleGradientChange"
                               >
-                                <el-option label="线性渐变" value="linear" />
-                                <el-option label="径向渐变" value="radial" />
+                                <el-option :label="$t('tools.qrcode.gradient_linear')" value="linear" />
+                                <el-option :label="$t('tools.qrcode.gradient_radial')" value="radial" />
                               </el-select>
                             </div>
                             
                             <!-- 渐变角度（线性渐变时显示） -->
                             <div v-if="info.gradientType === 'linear'">
                               <label class="text-xs text-gray-500 mb-1 block">
-                                渐变角度: {{ info.gradientRotation }}°
+                                {{ $t('tools.qrcode.label_gradient_angle') }}: {{ info.gradientRotation }}°
                               </label>
                               <el-slider
                                 v-model="info.gradientRotation"
@@ -1507,14 +1509,14 @@ const downloadQR = () => {
                             <!-- 渐变色选择 -->
                             <div class="flex gap-4">
                               <div class="flex-1">
-                                <label class="text-xs text-gray-500 mb-1 block">起始色</label>
+                                <label class="text-xs text-gray-500 mb-1 block">{{ $t('tools.qrcode.label_start_color') }}</label>
                                 <el-color-picker
                                   v-model="info.gradientColor1"
                                   @change="handleGradientChange"
                                 />
                               </div>
                               <div class="flex-1">
-                                <label class="text-xs text-gray-500 mb-1 block">结束色</label>
+                                <label class="text-xs text-gray-500 mb-1 block">{{ $t('tools.qrcode.label_end_color') }}</label>
                                 <el-color-picker
                                   v-model="info.gradientColor2"
                                   @change="handleGradientChange"
@@ -1524,7 +1526,7 @@ const downloadQR = () => {
                             
                             <!-- 背景色 -->
                             <div>
-                              <label class="text-xs text-gray-500 mb-1 block">背景色</label>
+                              <label class="text-xs text-gray-500 mb-1 block">{{ $t('tools.qrcode.label_bg') }}</label>
                               <el-color-picker
                                 v-model="info.bgColor"
                                 @change="handleColorChange"
@@ -1538,28 +1540,28 @@ const downloadQR = () => {
 
                   <!-- 角落方块设置 -->
                   <div class="space-y-2">
-                    <label class="text-sm font-medium text-gray-700">角落方块</label>
+                    <label class="text-sm font-medium text-gray-700">{{ $t('tools.qrcode.label_corner_square') }}</label>
                     
                     <div class="border border-gray-200 rounded-lg p-4 bg-gray-50">
                       <!-- 角落方块样式 -->
                       <div class="mb-3">
-                        <label class="text-xs text-gray-500 mb-1 block">样式</label>
+                        <label class="text-xs text-gray-500 mb-1 block">{{ $t('tools.qrcode.label_style') }}</label>
                         <el-select
                           v-model="info.cornerSquareType"
                           class="w-full"
                           @change="handleDotTypeChange"
                         >
-                          <el-option label="方形" value="square" />
-                          <el-option label="圆点" value="dot" />
-                          <el-option label="超圆角" value="extra-rounded" />
+                          <el-option :label="$t('tools.qrcode.dot_styles.square')" value="square" />
+                          <el-option :label="$t('tools.qrcode.dot_styles.dot')" value="dot" />
+                          <el-option :label="$t('tools.qrcode.dot_styles.extra_rounded')" value="extra-rounded" />
                         </el-select>
                       </div>
                       
                       <!-- 角落方块颜色设置 -->
                       <el-tabs v-model="info.cornerSquareColorMode" @tab-change="handleCornerSquareColorModeChange">
-                        <el-tab-pane label="单色" name="single">
+                        <el-tab-pane :label="$t('tools.qrcode.tab_single')" name="single">
                           <div class="space-y-2">
-                            <label class="text-xs text-gray-500 mb-1 block">颜色</label>
+                            <label class="text-xs text-gray-500 mb-1 block">{{ $t('tools.qrcode.label_color') }}</label>
                             <el-color-picker
                               v-model="info.cornerSquareColor"
                               @change="handleCornerSquareGradientChange"
@@ -1567,25 +1569,25 @@ const downloadQR = () => {
                           </div>
                         </el-tab-pane>
                         
-                        <el-tab-pane label="渐变色" name="gradient">
+                        <el-tab-pane :label="$t('tools.qrcode.tab_gradient')" name="gradient">
                           <div class="space-y-3">
                             <!-- 渐变类型 -->
                             <div>
-                              <label class="text-xs text-gray-500 mb-1 block">渐变类型</label>
+                              <label class="text-xs text-gray-500 mb-1 block">{{ $t('tools.qrcode.label_gradient_type') }}</label>
                               <el-select
                                 v-model="info.cornerSquareGradientType"
                                 class="w-full"
                                 @change="handleCornerSquareGradientChange"
                               >
-                                <el-option label="线性渐变" value="linear" />
-                                <el-option label="径向渐变" value="radial" />
+                                <el-option :label="$t('tools.qrcode.gradient_linear')" value="linear" />
+                                <el-option :label="$t('tools.qrcode.gradient_radial')" value="radial" />
                               </el-select>
                             </div>
                             
                             <!-- 渐变角度（线性渐变时显示） -->
                             <div v-if="info.cornerSquareGradientType === 'linear'">
                               <label class="text-xs text-gray-500 mb-1 block">
-                                渐变角度: {{ info.cornerSquareGradientRotation }}°
+                                {{ $t('tools.qrcode.label_gradient_angle') }}: {{ info.cornerSquareGradientRotation }}°
                               </label>
                               <el-slider
                                 v-model="info.cornerSquareGradientRotation"
@@ -1600,14 +1602,14 @@ const downloadQR = () => {
                             <!-- 渐变色选择 -->
                             <div class="flex gap-4">
                               <div class="flex-1">
-                                <label class="text-xs text-gray-500 mb-1 block">起始色</label>
+                                <label class="text-xs text-gray-500 mb-1 block">{{ $t('tools.qrcode.label_start_color') }}</label>
                                 <el-color-picker
                                   v-model="info.cornerSquareGradientColor1"
                                   @change="handleCornerSquareGradientChange"
                                 />
                               </div>
                               <div class="flex-1">
-                                <label class="text-xs text-gray-500 mb-1 block">结束色</label>
+                                <label class="text-xs text-gray-500 mb-1 block">{{ $t('tools.qrcode.label_end_color') }}</label>
                                 <el-color-picker
                                   v-model="info.cornerSquareGradientColor2"
                                   @change="handleCornerSquareGradientChange"
@@ -1627,22 +1629,22 @@ const downloadQR = () => {
                     <div class="border border-gray-200 rounded-lg p-4 bg-gray-50">
                       <!-- 角落点样式 -->
                       <div class="mb-3">
-                        <label class="text-xs text-gray-500 mb-1 block">样式</label>
+                        <label class="text-xs text-gray-500 mb-1 block">{{ $t('tools.qrcode.label_style') }}</label>
                         <el-select
                           v-model="info.cornerDotType"
                           class="w-full"
                           @change="handleDotTypeChange"
                         >
-                          <el-option label="圆点" value="dot" />
-                          <el-option label="方形" value="square" />
+                          <el-option :label="$t('tools.qrcode.dot_styles.dot')" value="dot" />
+                          <el-option :label="$t('tools.qrcode.dot_styles.square')" value="square" />
                         </el-select>
                       </div>
                       
                       <!-- 角落点颜色设置 -->
                       <el-tabs v-model="info.cornerDotColorMode" @tab-change="handleCornerDotColorModeChange">
-                        <el-tab-pane label="单色" name="single">
+                        <el-tab-pane :label="$t('tools.qrcode.tab_single')" name="single">
                           <div class="space-y-2">
-                            <label class="text-xs text-gray-500 mb-1 block">颜色</label>
+                            <label class="text-xs text-gray-500 mb-1 block">{{ $t('tools.qrcode.label_color') }}</label>
                             <el-color-picker
                               v-model="info.cornerDotColor"
                               @change="handleCornerDotGradientChange"
@@ -1650,25 +1652,25 @@ const downloadQR = () => {
                           </div>
                         </el-tab-pane>
                         
-                        <el-tab-pane label="渐变色" name="gradient">
+                        <el-tab-pane :label="$t('tools.qrcode.tab_gradient')" name="gradient">
                           <div class="space-y-3">
                             <!-- 渐变类型 -->
                             <div>
-                              <label class="text-xs text-gray-500 mb-1 block">渐变类型</label>
+                              <label class="text-xs text-gray-500 mb-1 block">{{ $t('tools.qrcode.label_gradient_type') }}</label>
                               <el-select
                                 v-model="info.cornerDotGradientType"
                                 class="w-full"
                                 @change="handleCornerDotGradientChange"
                               >
-                                <el-option label="线性渐变" value="linear" />
-                                <el-option label="径向渐变" value="radial" />
+                                <el-option :label="$t('tools.qrcode.gradient_linear')" value="linear" />
+                                <el-option :label="$t('tools.qrcode.gradient_radial')" value="radial" />
                               </el-select>
                             </div>
                             
                             <!-- 渐变角度（线性渐变时显示） -->
                             <div v-if="info.cornerDotGradientType === 'linear'">
                               <label class="text-xs text-gray-500 mb-1 block">
-                                渐变角度: {{ info.cornerDotGradientRotation }}°
+                                {{ $t('tools.qrcode.label_gradient_angle') }}: {{ info.cornerDotGradientRotation }}°
                               </label>
                               <el-slider
                                 v-model="info.cornerDotGradientRotation"
@@ -1683,14 +1685,14 @@ const downloadQR = () => {
                             <!-- 渐变色选择 -->
                             <div class="flex gap-4">
                               <div class="flex-1">
-                                <label class="text-xs text-gray-500 mb-1 block">起始色</label>
+                                <label class="text-xs text-gray-500 mb-1 block">{{ $t('tools.qrcode.label_start_color') }}</label>
                                 <el-color-picker
                                   v-model="info.cornerDotGradientColor1"
                                   @change="handleCornerDotGradientChange"
                                 />
                               </div>
                               <div class="flex-1">
-                                <label class="text-xs text-gray-500 mb-1 block">结束色</label>
+                                <label class="text-xs text-gray-500 mb-1 block">{{ $t('tools.qrcode.label_end_color') }}</label>
                                 <el-color-picker
                                   v-model="info.cornerDotGradientColor2"
                                   @change="handleCornerDotGradientChange"
@@ -1713,7 +1715,7 @@ const downloadQR = () => {
     <!-- 大图弹窗 -->
     <el-dialog
       v-model="showQRDialog"
-      title="二维码大图预览"
+      :title="$t('tools.qrcode.preview_title')"
       width="auto"
       :close-on-click-modal="true"
       :show-close="true"
@@ -1747,10 +1749,41 @@ const downloadQR = () => {
     </el-dialog>
 
     <!-- 页面底部 ToolDetail，始终显示 -->
-    <ToolDetail title="描述">
-      <el-text>
-        本工具支持生成高颜值二维码，支持丰富的自定义样式（点样式、渐变、角落方块、角落点等）、多种精美预设、一键切换风格，并可上传Logo。扫码可直达目标链接，适用于宣传、分享、名片等多种场景。
-      </el-text>
+    <ToolDetail :title="$t('tools.qrcode.detail.title')">
+      <div class="text-gray-600 leading-7">
+        <h3 class="text-lg font-bold text-gray-800 mb-2">{{ $t('tools.qrcode.detail.intro_title') }}</h3>
+        <p class="mb-4">
+          {{ $t('tools.qrcode.detail.intro_content') }}
+        </p>
+
+        <h3 class="text-lg font-bold text-gray-800 mb-2">{{ $t('tools.qrcode.detail.level_title') }}</h3>
+        <p class="mb-2">{{ $t('tools.qrcode.detail.level_intro') }}</p>
+        <ul class="list-disc list-inside mb-4 space-y-1">
+          <li><strong>{{ $t('tools.qrcode.detail.level_l') }}</strong></li>
+          <li><strong>{{ $t('tools.qrcode.detail.level_m') }}</strong></li>
+          <li><strong>{{ $t('tools.qrcode.detail.level_q') }}</strong></li>
+          <li><strong>{{ $t('tools.qrcode.detail.level_h') }}</strong></li>
+        </ul>
+
+        <h3 class="text-lg font-bold text-gray-800 mb-2">{{ $t('tools.qrcode.detail.best_title') }}</h3>
+        <ul class="list-disc list-inside mb-4 space-y-1">
+          <li><strong>{{ $t('tools.qrcode.detail.best_contrast') }}</strong></li>
+          <li><strong>{{ $t('tools.qrcode.detail.best_quiet') }}</strong></li>
+          <li><strong>{{ $t('tools.qrcode.detail.best_size') }}</strong></li>
+        </ul>
+
+        <h3 class="text-lg font-bold text-gray-800 mb-2">{{ $t('tools.qrcode.detail.faq') }}</h3>
+        <div class="space-y-4">
+          <div>
+            <h4 class="font-medium text-gray-900">{{ $t('tools.qrcode.detail.q1') }}</h4>
+            <p>{{ $t('tools.qrcode.detail.a1') }}</p>
+          </div>
+          <div>
+            <h4 class="font-medium text-gray-900">{{ $t('tools.qrcode.detail.q2') }}</h4>
+            <p>{{ $t('tools.qrcode.detail.a2') }}</p>
+          </div>
+        </div>
+      </div>
     </ToolDetail>
   </div>
 </template>
@@ -1912,15 +1945,13 @@ const downloadQR = () => {
 }
 
 /* 修改下载按钮文本为"下载二维码" */
-:deep(.qr-download-btn) {
-  font-size: 0; /* 隐藏原始文本 */
-}
 
-:deep(.qr-download-btn::before) {
+
+/* :deep(.qr-download-btn::before) {
   content: "下载二维码";
   font-size: 14px;
   display: inline-block;
-}
+} */
 
 /* 二维码容器样式 */
 :deep(.qr-code-container) {
@@ -1990,15 +2021,13 @@ const downloadQR = () => {
   box-shadow: 0 4px 15px rgba(102, 126, 234, 0.4);
 }
 
-:deep(.qr-download-btn-large) {
-  font-size: 0;
-}
 
-:deep(.qr-download-btn-large::before) {
+
+/* :deep(.qr-download-btn-large::before) {
   content: "下载二维码";
   font-size: 16px;
   display: inline-block;
-}
+} */
 
 /* 让el-slider的输入框变窄，滑块更宽 */
 :deep(.el-slider__input) {

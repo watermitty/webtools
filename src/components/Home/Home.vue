@@ -170,7 +170,7 @@ watch(() => toolsStore.cates.length, () => {
         :id="'cate_' + cate.id"
         @click="gotoAnchor('cate_' + cate.id)"
       >
-        {{ cate.title }}
+        {{ $t('category.' + cate.id) }}
       </div>
       <!-- card -->
       <div class="flex justify-between flex-wrap self-card-div c-xs:ml-0" :gutter="10">
@@ -179,7 +179,7 @@ watch(() => toolsStore.cates.length, () => {
               <el-image :src="item.logo" class="w-10 h-10 min-h-[2.5rem] min-w-[2.5rem]"></el-image>
               <div class="flex flex-col ml-2 w-full">
                 <div class="flex">
-                  <div class="font-semibold text-lg line-clamp-1 text-warm-900">{{ item.title }}</div>
+                  <div class="font-semibold text-lg line-clamp-1 text-warm-900">{{ $t('tools.' + item.name + '.title') }}</div>
                 </div>
                 <div class="flex justify-between">
                   <el-text size="small" class="text-warm-700">{{ item.cate }}</el-text>
@@ -187,7 +187,7 @@ watch(() => toolsStore.cates.length, () => {
               </div>
             </div>
             <div class="flex items-center justify-between mt-2">
-              <el-text line-clamp="2" class="text-warm-800">{{ item.desc }}</el-text>
+              <el-text line-clamp="2" class="text-warm-800">{{ $t('tools.' + item.name + '.desc') }}</el-text>
             </div>
           </router-link>
           <!-- 占位 div -->

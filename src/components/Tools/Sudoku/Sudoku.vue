@@ -1,11 +1,14 @@
 <script setup lang="ts">
 import { reactive, ref, onMounted, computed, onUnmounted } from 'vue'
+import { useI18n } from 'vue-i18n'
 import DetailHeader from '@/components/Layout/DetailHeader/DetailHeader.vue'
 import ToolDetail from '@/components/Layout/ToolDetail/ToolDetail.vue'
 import { Refresh, Edit, Check } from '@element-plus/icons-vue'
 
+const { t } = useI18n()
+
 const info = reactive({
-  title: "数独游戏",
+  title: "tools.sudoku.title",
 })
 
 interface Cell {
@@ -488,33 +491,35 @@ onMounted(() => {
       <!-- 游戏控制 -->
       <div class="flex flex-wrap gap-4 mb-6 items-center">
         <div class="flex items-center gap-2">
-          <span class="text-sm font-medium">难度：</span>
+          <span class="text-sm font-medium">{{ $t('tools.sudoku.label_difficulty') }}</span>
           <el-select v-model="gameState.difficulty" @change="changeDifficulty" style="width: 100px">
-            <el-option label="简单" value="easy" />
-            <el-option label="中等" value="medium" />
-            <el-option label="困难" value="hard" />
+            <el-option :label="$t('tools.sudoku.diff_easy')" value="easy" />
+            <el-option :label="$t('tools.sudoku.diff_medium')" value="medium" />
+            <el-option :label="$t('tools.sudoku.diff_hard')" value="hard" />
           </el-select>
         </div>
         
         <el-button type="primary" @click="restartGame" :icon="Refresh">
-          重新开始
+        <el-button type="primary" @click="restartGame" :icon="Refresh">
+          {{ $t('tools.sudoku.btn_restart') }}
         </el-button>
         
         <el-button :type="noteMode ? 'success' : 'default'" @click="noteMode = !noteMode" :icon="Edit">
-          {{ noteMode ? '笔记模式' : '输入模式' }}
+          {{ noteMode ? $t('tools.sudoku.mode_note') : $t('tools.sudoku.mode_input') }}
         </el-button>
         
         <el-button type="warning" @click="getHint" :icon="Check" :disabled="!gameState.selectedCell">
-          提示 ({{ gameState.hints }})
+        <el-button type="warning" @click="getHint" :icon="Check" :disabled="!gameState.selectedCell">
+          {{ $t('tools.sudoku.btn_hint') }} ({{ gameState.hints }})
         </el-button>
         
         <div class="flex gap-4 text-sm">
           <div class="flex items-center gap-1">
-            <span class="text-gray-600">时间：</span>
+            <span class="text-gray-600">{{ $t('tools.sudoku.label_time') }}</span>
             <span class="font-bold text-green-600">{{ formatTime(gameState.time) }}</span>
           </div>
           <div class="flex items-center gap-1">
-            <span class="text-gray-600">错误：</span>
+            <span class="text-gray-600">{{ $t('tools.sudoku.label_mistakes') }}</span>
             <span class="font-bold text-red-600">{{ gameState.mistakes }}</span>
           </div>
         </div>
@@ -576,7 +581,8 @@ onMounted(() => {
           <el-button @click="inputNumber(0)" 
                      :type="gameState.selectedCell ? 'danger' : 'default'"
                      :disabled="!gameState.selectedCell">
-            清除
+                     :disabled="!gameState.selectedCell">
+            {{ $t('tools.sudoku.btn_clear') }}
           </el-button>
         </div>
       </div>
@@ -584,49 +590,17 @@ onMounted(() => {
       <!-- 完成提示 -->
       <div v-if="gameState.isCompleted" 
            class="mt-6 p-4 bg-green-50 border border-green-200 rounded-lg text-center">
-        <div class="text-green-800 font-bold text-lg mb-2">🎉 恭喜完成！</div>
+        <div class="text-green-800 font-bold text-lg mb-2">{{ $t('tools.sudoku.congrats') }}</div>
         <div class="text-green-600">
-          用时：{{ formatTime(gameState.time) }} | 错误：{{ gameState.mistakes }} | 提示：{{ gameState.hints }}
+          {{ $t('tools.sudoku.time_used') }}{{ formatTime(gameState.time) }} | {{ $t('tools.sudoku.label_mistakes') }}{{ gameState.mistakes }} | {{ $t('tools.sudoku.label_hints') }}{{ gameState.hints }}
         </div>
       </div>
     </div>
 
     <!-- 描述 -->
-    <ToolDetail title="游戏说明">
+    <ToolDetail :title="$t('tools.sudoku.desc_title')">
       <el-text>
-        数独是一款经典的逻辑推理游戏，起源于瑞士，后来在日本流行并传遍世界。游戏目标是在9x9的网格中填入数字1-9，使每行、每列和每个3x3宫格都包含1-9且不重复。
-        <br><br>
-        <strong>游戏规则：</strong>
-        <br>• 在9x9的网格中填入数字1-9
-        <br>• 每行、每列、每个3x3宫格都不能有重复数字
-        <br>• 灰色数字是固定的，不能修改
-        <br>• 白色格子可以填入数字
-        <br><br>
-        <strong>操作方法：</strong>
-        <br>• 点击白色格子选中要填写的单元格
-        <br>• 点击数字按钮填入数字，如果是电脑端，可以按数字键1-9填入数字
-        <br>• 点击"清除"按钮删除已填数字
-        <br>• 笔记模式：可以记录可能的数字
-        <br>• 提示功能：获得一个数字的提示
-        <br><br>
-        <strong>解题技巧：</strong>
-        <br>• <strong>唯一候选法</strong>：某个格子只能填一个数字
-        <br>• <strong>排除法</strong>：通过已知数字排除不可能的数字
-        <br>• <strong>区块法</strong>：利用3x3宫格的限制条件
-        <br>• <strong>X-Wing法</strong>：高级技巧，寻找特定模式
-        <br>• <strong>笔记法</strong>：记录每个格子可能的数字
-        <br><br>
-        <strong>难度说明：</strong>
-        <br>• <strong>简单</strong>：适合初学者，主要使用基础技巧
-        <br>• <strong>中等</strong>：需要一些高级技巧，有一定挑战性
-        <br>• <strong>困难</strong>：需要多种高级技巧，考验逻辑推理能力
-        <br><br>
-        <strong>游戏特色：</strong>
-        <br>• 自动错误检测：实时检查填入数字的正确性
-        <br>• 笔记功能：记录可能的数字组合
-        <br>• 提示系统：在困难时获得帮助
-        <br>• 计时统计：记录解题时间和错误次数
-        <br>• 多种难度：适合不同水平的玩家
+        {{ $t('tools.sudoku.desc_content') }}
       </el-text>
     </ToolDetail>
   </div>

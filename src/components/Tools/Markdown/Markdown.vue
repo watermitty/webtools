@@ -1,9 +1,12 @@
 <script setup lang="ts">
 import { reactive } from 'vue'
+import { useI18n } from 'vue-i18n'
 import DetailHeader from '@/components/Layout/DetailHeader/DetailHeader.vue'
 import ToolDetail from '@/components/Layout/ToolDetail/ToolDetail.vue'
+
+const { t } = useI18n()
 const info = reactive({
-  title: "在线markdown编辑器",
+  title: "tools.markdown.title",
   content: '',
 })
 
@@ -16,16 +19,16 @@ const info = reactive({
 
 <template>
   <div class="flex flex-col mt-3 flex-1">
-    <DetailHeader :title="info.title"></DetailHeader>
+    <DetailHeader :title="$t(info.title)"></DetailHeader>
 
     <div class="">
       <v-md-editor v-model="info.content" height="500px"></v-md-editor>
     </div>
 
     <!-- desc -->
-    <ToolDetail title="描述">
+    <ToolDetail :title="$t('tools.markdown.detail_title')">
       <el-text>
-        在线编辑markdown
+        {{ $t('tools.markdown.desc') }}
       </el-text> 
     </ToolDetail>
 

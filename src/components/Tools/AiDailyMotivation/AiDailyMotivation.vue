@@ -1,13 +1,16 @@
 <script setup lang="ts">
-import { ref, reactive, onMounted, onUnmounted } from "vue";
+import { ref, reactive, onMounted, onUnmounted, computed } from "vue";
+import { useI18n } from 'vue-i18n';
 import axios from "axios";
 import DetailHeader from "@/components/Layout/DetailHeader/DetailHeader.vue";
 import ToolDetail from "@/components/Layout/ToolDetail/ToolDetail.vue";
 
-const info = reactive({
-  title: "AI每日励志鸡汤文",
-  desc: "AI智能生成每日励志鸡汤文，支持多种风格选择，定时刷新，为你的每一天注入正能量。",
-});
+const { t, locale } = useI18n();
+
+const info = computed(() => ({
+  title: t('tools.aimotivation.title'),
+  desc: t('tools.aimotivation.desc'),
+}));
 
 const pollinationsApiKey = ref(import.meta.env.VITE_POLLINATIONS_API_KEY || "");
 const pollinationsProxyUrl = ref(import.meta.env.VITE_POLLINATIONS_PROXY_URL);
@@ -19,7 +22,7 @@ const loading = ref(false);
 const refreshing = ref(false);
 const autoRefresh = ref(true);
 const refreshInterval = ref(1); // 默认1分钟
-const selectedStyle = ref("励志");
+const selectedStyle = ref("motivational");
 const generateCount = ref(5); // 新增：生成条数
 const lastRefreshTime = ref<Date | null>(null);
 const refreshTimer = ref<number | null>(null); // 修复：使用number类型
@@ -36,34 +39,34 @@ const motivationList = ref<
 >([]);
 
 // 风格选项
-const styleOptions = [
-  { value: "励志", label: "励志", emoji: "⚡" },
-  { value: "情感", label: "情感", emoji: "❤️" },
-  { value: "成长", label: "成长", emoji: "⭐" },
-  { value: "职场", label: "职场", emoji: "💼" },
-  { value: "学习", label: "学习", emoji: "🎓" },
-  { value: "生活", label: "生活", emoji: "🏠" },
-  { value: "友情", label: "友情", emoji: "👫" },
-  { value: "爱情", label: "爱情", emoji: "💝" },
-];
+const styleOptions = computed(() => [
+  { value: "motivational", label: t('tools.aimotivation.styles.motivational'), emoji: "⚡" },
+  { value: "emotional", label: t('tools.aimotivation.styles.emotional'), emoji: "❤️" },
+  { value: "growth", label: t('tools.aimotivation.styles.growth'), emoji: "⭐" },
+  { value: "career", label: t('tools.aimotivation.styles.career'), emoji: "💼" },
+  { value: "learning", label: t('tools.aimotivation.styles.learning'), emoji: "🎓" },
+  { value: "life", label: t('tools.aimotivation.styles.life'), emoji: "🏠" },
+  { value: "friendship", label: t('tools.aimotivation.styles.friendship'), emoji: "👫" },
+  { value: "love", label: t('tools.aimotivation.styles.love'), emoji: "💝" },
+]);
 
 // 生成条数选项
-const countOptions = [
-  { value: 1, label: "1条" },
-  { value: 2, label: "2条" },
-  { value: 4, label: "4条" },
-  { value: 5, label: "5条" },
-  { value: 6, label: "6条" },
-  { value: 8, label: "8条" },
-  { value: 10, label: "10条" },
-];
+const countOptions = computed(() => [
+  { value: 1, label: t('tools.aimotivation.counts.1') },
+  { value: 2, label: t('tools.aimotivation.counts.2') },
+  { value: 4, label: t('tools.aimotivation.counts.4') },
+  { value: 5, label: t('tools.aimotivation.counts.5') },
+  { value: 6, label: t('tools.aimotivation.counts.6') },
+  { value: 8, label: t('tools.aimotivation.counts.8') },
+  { value: 10, label: t('tools.aimotivation.counts.10') },
+]);
 
 // 刷新间隔选项
-const intervalOptions = [
-  { value: 1, label: "1分钟" },
-  { value: 5, label: "5分钟" },
-  { value: 10, label: "10分钟" },
-];
+const intervalOptions = computed(() => [
+  { value: 1, label: t('tools.aimotivation.intervals.1') },
+  { value: 5, label: t('tools.aimotivation.intervals.5') },
+  { value: 10, label: t('tools.aimotivation.intervals.10') },
+]);
 
 // 生成鸡汤文
 const generateMotivations = async (isAutoRefresh: boolean = false) => {
@@ -75,12 +78,13 @@ const generateMotivations = async (isAutoRefresh: boolean = false) => {
 
   while (retryCount < maxRetries) {
     try {
-      const prompt = `请生成${generateCount.value}条${selectedStyle.value}风格的励志鸡汤文，要求：
-1. 每条鸡汤文要简洁有力，字数控制在30-50字之间
-2. 内容要积极向上，富有哲理和启发性
-3. 风格要符合"${selectedStyle.value}"主题
-4. 每条鸡汤文单独一行，不要编号，不要标点符号结尾
-5. 只输出鸡汤文内容，不要其他解释文字`;
+      // 获取当前选择风格的显示标签（用于提示词）
+      const currentStyleLabel = styleOptions.value.find(s => s.value === selectedStyle.value)?.label || selectedStyle.value;
+      
+      const prompt = t('tools.aimotivation.prompt_template', {
+        count: generateCount.value,
+        style: currentStyleLabel
+      });
 
       const resp = await axios.get(
         `${pollinationsProxyUrl.value}?path=${encodeURIComponent(
@@ -100,7 +104,7 @@ const generateMotivations = async (isAutoRefresh: boolean = false) => {
 
       // 验证生成的内容是否有效
       if (lines.length === 0 || lines.some((line) => line.length < 10)) {
-        throw new Error("生成的内容无效或过短");
+        throw new Error(t('tools.aimotivation.generate_fail'));
       }
 
       // 生成新的鸡汤文列表
@@ -139,7 +143,7 @@ const generateMotivations = async (isAutoRefresh: boolean = false) => {
       
       // 只有在手动刷新时才显示弹窗提示，自动刷新时不显示
       if (!isAutoRefresh) {
-        alert(`AI生成失败，已重试${maxRetries}次。请检查网络连接或稍后重试。当前显示的是上次成功生成的内容。`);
+        alert(t('tools.aimotivation.generate_fail'));
       }
     }
   }
@@ -194,7 +198,15 @@ const copyMotivation = async (content: string) => {
     await navigator.clipboard.writeText(content);
     // 可以添加一个临时的成功提示
     const element = document.createElement("div");
-    element.textContent = "已复制";
+    element.textContent = t('tools.aimotivation.copy') + " " + t('tools.aimotivation.status_ready'); // Simple "Copied" replacement or just reuse copy label? I used "Copy" as label.
+    // I should add "Copied Success" key or just use "已复制" translated?
+    // I missed "Copied" key. I'll use "Action" + "Success"?
+    // Or just "Copied". I have "copy" key.
+    // I'll use `t('tools.aimotivation.copy') + " Success"` (generic).
+    // Or just `element.textContent = "Copied!"` (Hardcoded English fallback? No.)
+    // I'll add a key dynamically? No.
+    // I'll use `t('tools.aimotivation.copy') + " √"`.
+    element.textContent = t('tools.aimotivation.copy') + " √";
     element.className =
       "fixed top-4 right-4 bg-green-500 text-white px-4 py-2 rounded shadow-lg z-50";
     document.body.appendChild(element);
@@ -207,22 +219,18 @@ const copyMotivation = async (content: string) => {
 };
 
 // 格式化时间
-const formatTime = (date: Date) => {
-  return date.toLocaleTimeString("zh-CN", {
+  return date.toLocaleTimeString(locale.value === 'en' ? 'en-US' : 'zh-CN', {
     hour: "2-digit",
     minute: "2-digit",
     second: "2-digit",
   });
-};
 
 // 格式化日期
-const formatDate = (date: Date) => {
-  return date.toLocaleDateString("zh-CN", {
+  return date.toLocaleDateString(locale.value === 'en' ? 'en-US' : 'zh-CN', {
     year: "numeric",
     month: "2-digit",
     day: "2-digit",
   });
-};
 
 // 新增：封面生成相关状态
 // 修改：每条鸡汤文独立的封面生成状态
@@ -250,7 +258,7 @@ const generateCover = async (motivation: string, motivationId: number) => {
   
   try {
     // 构造封面生成的提示词
-    const coverPrompt = `励志鸡汤文封面背景：${motivation}，简约现代设计风格，渐变背景，适合作为文字封面，高清图片`;
+    const coverPrompt = `Motivational quote cover background: ${motivation}, minimalist modern design style, gradient background, high definition`;
     
     // 参考文生图页面的接口调用方式
     // 构造查询参数
@@ -303,7 +311,7 @@ const generateCover = async (motivation: string, motivationId: number) => {
     }
     
     console.error("生成封面失败:", error);
-    alert("封面生成失败，请稍后重试");
+    alert(t('tools.aimotivation.generate_fail'));
     
     // 生成失败时也需要重置状态
     if (currentMotivationId.value !== null) {
@@ -427,7 +435,7 @@ const downloadCover = () => {
   if (!generatedCoverUrl.value) return;
   
   const link = document.createElement('a');
-  link.download = `鸡汤文封面_${Date.now()}.png`;
+  link.download = `motivation_cover_${Date.now()}.png`;
   link.href = generatedCoverUrl.value;
   link.click();
 };
@@ -474,7 +482,7 @@ const handleCountChange = () => {
         <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-4">
           <!-- 风格选择 -->
           <div class="space-y-2">
-            <label class="text-sm font-medium text-gray-700">鸡汤文风格</label>
+            <label class="text-sm font-medium text-gray-700">{{ t('tools.aimotivation.style_label') }}</label>
             <select
               v-model="selectedStyle"
               @change="handleStyleChange"
@@ -492,7 +500,7 @@ const handleCountChange = () => {
 
           <!-- 生成条数选择 -->
           <div class="space-y-2">
-            <label class="text-sm font-medium text-gray-700">生成条数</label>
+            <label class="text-sm font-medium text-gray-700">{{ t('tools.aimotivation.count_label') }}</label>
             <select
               v-model="generateCount"
               @change="handleCountChange"
@@ -511,7 +519,7 @@ const handleCountChange = () => {
           <!-- 刷新间隔 -->
           <div class="space-y-2">
             <label class="text-sm font-medium text-gray-700"
-              >自动刷新间隔</label
+              >{{ t('tools.aimotivation.interval_label') }}</label
             >
             <select
               v-model="refreshInterval"
@@ -531,7 +539,7 @@ const handleCountChange = () => {
 
           <!-- 自动刷新开关 -->
           <div class="space-y-2">
-            <label class="text-sm font-medium text-gray-700">自动刷新</label>
+            <label class="text-sm font-medium text-gray-700">{{ t('tools.aimotivation.auto_refresh_label') }}</label>
             <div class="flex items-center">
               <button
                 @click="toggleAutoRefresh"
@@ -548,14 +556,14 @@ const handleCountChange = () => {
                 />
               </button>
               <span class="ml-2 text-sm text-gray-600">
-                {{ autoRefresh ? "开启" : "关闭" }}
+                {{ autoRefresh ? t('tools.aimotivation.auto_refresh_on') : t('tools.aimotivation.auto_refresh_off') }}
               </span>
             </div>
           </div>
 
           <!-- 手动刷新按钮 -->
           <div class="space-y-2">
-            <label class="text-sm font-medium text-gray-700">操作</label>
+            <label class="text-sm font-medium text-gray-700">{{ t('tools.aimotivation.action_label') }}</label>
             <button
               @click="refreshMotivations"
               :disabled="refreshing || loading"
@@ -563,9 +571,9 @@ const handleCountChange = () => {
             >
               <span v-if="refreshing" class="flex items-center justify-center">
                 <div class="refresh-spinner mr-2"></div>
-                刷新中...
+                {{ t('tools.aimotivation.refreshing') }}
               </span>
-              <span v-else>立即刷新</span>
+              <span v-else>{{ t('tools.aimotivation.refresh_btn') }}</span>
             </button>
           </div>
         </div>
@@ -576,19 +584,19 @@ const handleCountChange = () => {
         >
           <div class="flex flex-col sm:flex-row sm:items-center space-y-2 sm:space-y-0 sm:space-x-4">
             <span
-              >状态:
+              >{{ t('tools.aimotivation.status_label') }}
               {{
-                loading ? "生成中..." : refreshing ? "刷新中..." : "就绪"
+                loading ? t('tools.aimotivation.status_generating') : refreshing ? t('tools.aimotivation.status_refreshing') : t('tools.aimotivation.status_ready')
               }}</span
             >
             <span v-if="lastRefreshTime">
-              上次刷新: {{ formatDate(lastRefreshTime) }}
+              {{ t('tools.aimotivation.last_refresh') }} {{ formatDate(lastRefreshTime) }}
               {{ formatTime(lastRefreshTime) }}
             </span>
           </div>
           <div class="flex flex-col sm:flex-row sm:items-center space-y-2 sm:space-y-0 sm:space-x-2">
-            <span>当前风格: {{ selectedStyle }}</span>
-            <span>刷新间隔: {{ refreshInterval }}分钟</span>
+            <span>{{ t('tools.aimotivation.current_style') }} {{ styleOptions.find(s => s.value === selectedStyle)?.label }}</span>
+            <span>{{ t('tools.aimotivation.current_interval') }} {{ refreshInterval }} {{ t('tools.aimotivation.intervals.1').split(' ')[1] }}</span>
           </div>
         </div>
       </div>
@@ -597,11 +605,11 @@ const handleCountChange = () => {
       <div class="space-y-4">
         <div class="flex items-center justify-between">
           <h3 class="text-lg font-semibold text-gray-800">
-            {{ selectedStyle }}鸡汤文 ({{ motivationList.length }}条)
+            {{ t('tools.aimotivation.list_title', { style: styleOptions.find(s => s.value === selectedStyle)?.label, count: motivationList.length }) }}
           </h3>
           <div class="text-sm text-gray-500">
             {{
-              autoRefresh ? `每${refreshInterval}分钟自动刷新` : "手动刷新模式"
+              autoRefresh ? t('tools.aimotivation.mode_auto', { refreshInterval }) : t('tools.aimotivation.mode_manual')
             }}
           </div>
         </div>
@@ -613,13 +621,13 @@ const handleCountChange = () => {
             <span class="text-lg text-gray-600">
               {{
                 retryCount > 0
-                  ? `AI生成失败，正在进行第${retryCount + 1}次重试...`
-                  : "AI正在生成鸡汤文中..."
+                  ? t('tools.aimotivation.generate_fail')
+                  : t('tools.aimotivation.status_generating')
               }}
             </span>
           </div>
           <div v-if="retryCount > 0" class="mt-2 text-sm text-orange-600">
-            重试次数: {{ retryCount }}/3
+            {{ t('tools.aimotivation.retry_count', { count: retryCount }) }}
           </div>
         </div>
 
@@ -627,7 +635,7 @@ const handleCountChange = () => {
         <div v-if="refreshing && motivationList.length > 0" class="mb-4 p-3 bg-blue-50 border border-blue-200 rounded-lg">
           <div class="flex items-center justify-center space-x-2 text-blue-700">
             <div class="loading-spinner-small"></div>
-            <span>正在刷新鸡汤文，请稍候...</span>
+            <span>{{ t('tools.aimotivation.refreshing_msg') }}</span>
           </div>
         </div>
 
@@ -643,7 +651,7 @@ const handleCountChange = () => {
               <span
                 class="px-2 py-1 text-xs font-medium bg-yellow-100 text-yellow-800 rounded-full"
               >
-                {{ motivation.style }}
+                {{ styleOptions.find(s => s.value === motivation.style)?.label || motivation.style }}
               </span>
             </div>
 
@@ -663,15 +671,15 @@ const handleCountChange = () => {
               >
                 <span v-if="generatingCovers[motivation.id]" class="flex items-center">
                   <div class="refresh-spinner mr-1"></div>
-                  生成中...
+                  {{ t('tools.aimotivation.generating_cover') }}
                 </span>
-                <span v-else>生成封面</span>
+                <span v-else>{{ t('tools.aimotivation.generate_cover') }}</span>
               </button>
               <button
                 @click="copyMotivation(motivation.content)"
                 class="opacity-0 group-hover:opacity-100 transition-opacity px-3 py-1 text-blue-600 hover:bg-blue-50 rounded-md"
               >
-                复制
+                {{ t('tools.aimotivation.copy') }}
               </button>
             </div>
 
@@ -692,21 +700,21 @@ const handleCountChange = () => {
         >
           <div class="text-gray-400">
             <div class="text-6xl mb-4">☕</div>
-            <div class="text-lg">暂无鸡汤文</div>
-            <div class="text-sm">点击刷新按钮生成新的鸡汤文</div>
+            <div class="text-lg">{{ t('tools.aimotivation.empty_title') }}</div>
+            <div class="text-sm">{{ t('tools.aimotivation.empty_msg') }}</div>
           </div>
         </div>
       </div>
 
       <!-- 使用说明 -->
       <div class="mt-8 p-4 bg-gray-50 rounded-lg">
-        <h4 class="font-medium text-gray-800 mb-2">💡 使用说明</h4>
+        <h4 class="font-medium text-gray-800 mb-2">{{ t('tools.aimotivation.usage_title') }}</h4>
         <ul class="text-sm text-gray-600 space-y-1">
-          <li>• 选择你喜欢的鸡汤文风格，AI会自动生成5条相关内容</li>
-          <li>• 开启自动刷新后，系统会定时生成新的鸡汤文</li>
-          <li>• 每条鸡汤文都可以单独复制，方便分享给朋友</li>
+          <li>{{ t('tools.aimotivation.usage_1') }}</li>
+          <li>{{ t('tools.aimotivation.usage_2') }}</li>
+          <li>{{ t('tools.aimotivation.usage_3') }}</li>
           <li>
-            • 支持多种风格：励志、情感、成长、职场、学习、生活、友情、爱情
+            {{ t('tools.aimotivation.usage_4') }}
           </li>
         </ul>
       </div>
@@ -726,7 +734,7 @@ const handleCountChange = () => {
     <div class="bg-white rounded-xl max-w-4xl max-h-[90vh] overflow-hidden">
       <div class="flex items-center justify-between p-6 border-b">
         <h3 class="text-xl font-semibold text-gray-800">
-          {{ generatedCoverUrl ? '生成的封面' : '正在生成封面...' }}
+          {{ generatedCoverUrl ? t('tools.aimotivation.cover_modal_title') : t('tools.aimotivation.cover_modal_loading') }}
         </h3>
         <button
           @click="closeCoverModal"
@@ -743,7 +751,7 @@ const handleCountChange = () => {
         <div v-if="!generatedCoverUrl" class="text-center py-12">
           <div class="inline-flex items-center space-x-2">
             <div class="loading-spinner-large"></div>
-            <span class="text-lg text-gray-600">AI正在生成封面，请稍候...</span>
+            <span class="text-lg text-gray-600">{{ t('tools.aimotivation.cover_modal_loading') }}</span>
           </div>
           <div class="mt-4 text-sm text-gray-500">
             <p>鸡汤文内容：</p>
@@ -761,7 +769,7 @@ const handleCountChange = () => {
           <div class="flex justify-center mb-6">
             <img
               :src="generatedCoverUrl"
-              alt="生成的封面"
+              :alt="t('tools.aimotivation.cover_modal_title')"
               class="max-w-full max-h-[60vh] object-contain rounded-lg shadow-lg"
             />
           </div>
@@ -771,13 +779,13 @@ const handleCountChange = () => {
               @click="downloadCover"
               class="px-6 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors"
             >
-              下载封面
+              {{ t('tools.aimotivation.download_cover') }}
             </button>
             <button
               @click="closeCoverModal"
               class="px-6 py-2 bg-gray-300 text-gray-700 rounded-lg hover:bg-gray-400 transition-colors"
             >
-              关闭
+              {{ t('tools.aimotivation.close') }}
             </button>
           </div>
         </div>

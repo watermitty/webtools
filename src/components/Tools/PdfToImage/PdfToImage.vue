@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import { ref, reactive, onMounted } from 'vue'
+import { useI18n } from 'vue-i18n'
 import DetailHeader from '@/components/Layout/DetailHeader/DetailHeader.vue'
 import ToolDetail from '@/components/Layout/ToolDetail/ToolDetail.vue'
 import { ElMessage } from 'element-plus'
@@ -14,8 +15,10 @@ GlobalWorkerOptions.workerSrc = worker
 // PDF.js 相关
 let pdfjsLib: any = null
 
+const { t } = useI18n()
+
 const info = reactive({
-  title: "PDF转图片",
+  title: "tools.pdftoimage.title",
 })
 
 // 状态管理
@@ -44,7 +47,7 @@ const loadPDFJS = async () => {
     
   } catch (error) {
     console.error('PDF.js 加载失败:', error)
-    ElMessage.error('PDF.js 库加载失败，请刷新页面重试')
+    ElMessage.error(t('tools.pdftoimage.load_error'))
   }
 }
 
@@ -59,7 +62,7 @@ const handleFileSelect = (files: FileList | null) => {
   
   const file = files[0]
   if (file.type !== 'application/pdf') {
-    ElMessage.error('请选择PDF文件')
+    ElMessage.error(t('tools.pdftoimage.select_error'))
     return
   }
   
@@ -74,7 +77,7 @@ const handleFileChange = (uploadFile: any) => {
   
   const file = uploadFile.raw as File
   if (file.type !== 'application/pdf') {
-    ElMessage.error('请选择PDF文件')
+    ElMessage.error(t('tools.pdftoimage.select_error'))
     return
   }
   
@@ -86,13 +89,13 @@ const handleFileChange = (uploadFile: any) => {
 // PDF转图片核心功能
 const convertPdfToImages = async (file: File) => {
   if (!pdfjsLib) {
-    ElMessage.error('PDF.js 库未加载完成，请稍后重试')
+    ElMessage.error(t('tools.pdftoimage.lib_not_ready'))
     return
   }
   
   isLoading.value = true
   convertedImages.value = []
-  progressText.value = '正在读取PDF文件...'
+  progressText.value = t('tools.pdftoimage.reading_file')
   currentProgress.value = 0
   
   try {
@@ -100,7 +103,7 @@ const convertPdfToImages = async (file: File) => {
     const arrayBuffer = await file.arrayBuffer()
     console.log('PDF文件读取完成, 大小:', arrayBuffer.byteLength)
     
-    progressText.value = '正在解析PDF结构...'
+    progressText.value = t('tools.pdftoimage.parsing_pdf')
     console.log('开始解析PDF...')
     
     // 使用最简单的配置
@@ -110,11 +113,11 @@ const convertPdfToImages = async (file: File) => {
     
     const numPages = pdf.numPages
     console.log('PDF解析完成, 总页数:', numPages)
-    ElMessage.success(`PDF加载成功，共${numPages}页，开始转换...`)
+    ElMessage.success(t('tools.pdftoimage.load_success', { num: numPages }))
     
     // 转换每一页
     for (let pageNum = 1; pageNum <= numPages; pageNum++) {
-      progressText.value = `正在转换第 ${pageNum}/${numPages} 页...`
+      progressText.value = t('tools.pdftoimage.converting_page', { current: pageNum, total: numPages })
       currentProgress.value = Math.round((pageNum - 1) / numPages * 100)
       
       console.log(`开始转换第${pageNum}页`)
@@ -152,17 +155,17 @@ const convertPdfToImages = async (file: File) => {
       await new Promise(resolve => setTimeout(resolve, 10))
     }
     
-    progressText.value = '转换完成！'
+    progressText.value = t('tools.pdftoimage.convert_complete')
     console.log('所有页面转换完成')
-    ElMessage.success(`转换完成！共生成${numPages}张图片`)
+    ElMessage.success(t('tools.pdftoimage.convert_complete'))
     
   } catch (error) {
     console.error('PDF转换失败:', error)
-    progressText.value = '转换失败'
+    progressText.value = t('tools.pdftoimage.convert_fail')
     
     // 修复TypeScript错误：添加类型检查
-    const errorMessage = error instanceof Error ? error.message : '未知错误'
-    ElMessage.error(`PDF转换失败: ${errorMessage}`)
+    const errorMessage = error instanceof Error ? error.message : t('tools.pdftoimage.unknown_error')
+    ElMessage.error(`${t('tools.pdftoimage.convert_fail')}: ${errorMessage}`)
   } finally {
     isLoading.value = false
     currentProgress.value = 0
@@ -216,33 +219,33 @@ const clearResults = () => {
 
 <template>
   <div class="flex flex-col mt-3 flex-1">
-    <DetailHeader :title="info.title"></DetailHeader>
+    <DetailHeader :title="$t(info.title)"></DetailHeader>
 
     <div class="p-4 rounded-2xl bg-white space-y-4">
       
       <!-- 转换设置 -->
-      <div class="grid grid-cols-1 md:grid-cols-3 gap-4 p-4 bg-gray-50 rounded-lg">
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-4 p-4 bg-gray-50 rounded-lg">
         <div>
-          <label class="block text-sm font-medium text-gray-700 mb-2">分辨率 (DPI)</label>
+          <label class="block text-sm font-medium text-gray-700 mb-2">{{ $t('tools.pdftoimage.settings_dpi') }}</label>
           <el-select v-model="settings.dpi" class="w-full">
-            <el-option label="150 DPI (标准)" :value="150" />
-            <el-option label="300 DPI (高清)" :value="300" />
-            <el-option label="600 DPI (超高清)" :value="600" />
+            <el-option label="150 DPI" :value="150" />
+            <el-option label="300 DPI" :value="300" />
+            <el-option label="600 DPI" :value="600" />
           </el-select>
         </div>
         <div>
-          <label class="block text-sm font-medium text-gray-700 mb-2">输出格式</label>
+          <label class="block text-sm font-medium text-gray-700 mb-2">{{ $t('tools.pdftoimage.settings_format') }}</label>
           <el-select v-model="settings.format" class="w-full">
-            <el-option label="PNG (推荐)" value="png" />
+            <el-option label="PNG" value="png" />
             <el-option label="JPG" value="jpeg" />
           </el-select>
         </div>
         <div>
-          <label class="block text-sm font-medium text-gray-700 mb-2">图片质量</label>
+          <label class="block text-sm font-medium text-gray-700 mb-2">{{ $t('tools.pdftoimage.settings_quality') }}</label>
           <el-select v-model="settings.quality" class="w-full">
-            <el-option label="高质量" :value="1.0" />
-            <el-option label="中等质量" :value="0.8" />
-            <el-option label="压缩质量" :value="0.6" />
+            <el-option :label="$t('tools.pdftoimage.quality_high')" :value="1.0" />
+            <el-option :label="$t('tools.pdftoimage.quality_medium')" :value="0.8" />
+            <el-option :label="$t('tools.pdftoimage.quality_low')" :value="0.6" />
           </el-select>
         </div>
       </div>
@@ -260,8 +263,8 @@ const clearResults = () => {
             <Document />
           </el-icon>
           <div>
-            <p class="text-lg text-gray-600 mb-2">拖拽PDF文件到此处，或点击选择文件</p>
-            <p class="text-sm text-gray-400">支持单个PDF文件，自动转换所有页面</p>
+            <p class="text-lg text-gray-600 mb-2">{{ $t('tools.pdftoimage.drop_text') }}</p>
+            <p class="text-sm text-gray-400">{{ $t('tools.pdftoimage.drop_subtext') }}</p>
           </div>
           <el-upload
             class="upload-demo"
@@ -271,7 +274,7 @@ const clearResults = () => {
             accept=".pdf"
             :disabled="isLoading"
           >
-            <el-button type="primary" :loading="isLoading">选择PDF文件</el-button>
+            <el-button type="primary" :loading="isLoading">{{ $t('tools.pdftoimage.select_btn') }}</el-button>
           </el-upload>
         </div>
       </div>
@@ -290,19 +293,19 @@ const clearResults = () => {
 
       <!-- 当前PDF信息 -->
       <div v-if="currentPdfName && !isLoading" class="p-3 bg-blue-50 rounded-lg">
-        <p class="text-sm text-blue-800">当前文件: {{ currentPdfName }}</p>
+        <p class="text-sm text-blue-800">{{ $t('tools.pdftoimage.current_file') }} {{ currentPdfName }}</p>
       </div>
 
       <!-- 转换结果 -->
       <div v-if="convertedImages.length > 0" class="space-y-4">
         <div class="flex justify-between items-center">
-          <h3 class="text-lg font-semibold">转换结果 ({{ convertedImages.length }}张图片)</h3>
+          <h3 class="text-lg font-semibold">{{ $t('tools.pdftoimage.result_title', { count: convertedImages.length }) }}</h3>
           <div class="space-x-2">
             <el-button @click="downloadAllImages" type="primary">
               <el-icon><Download /></el-icon>
-              下载全部
+              {{ $t('tools.pdftoimage.download_all') }}
             </el-button>
-            <el-button @click="clearResults">清除结果</el-button>
+            <el-button @click="clearResults">{{ $t('tools.pdftoimage.clear_result') }}</el-button>
           </div>
         </div>
         
@@ -322,7 +325,7 @@ const clearResults = () => {
               />
             </div>
             <div class="p-2 bg-white">
-              <p class="text-xs text-gray-600 mb-2">第 {{ index + 1 }} 页</p>
+              <p class="text-xs text-gray-600 mb-2">{{ $t('tools.pdftoimage.page_n', { n: index + 1 }) }}</p>
               <el-button 
                 @click="downloadImage(imageUrl, index)" 
                 size="small" 
@@ -330,7 +333,7 @@ const clearResults = () => {
                 class="w-full text-xs"
               >
                 <el-icon class="text-xs"><Download /></el-icon>
-                下载
+                {{ $t('tools.pdftoimage.download') }}
               </el-button>
             </div>
           </div>
@@ -340,40 +343,21 @@ const clearResults = () => {
     </div>
 
     <!-- 工具说明 -->
-    <ToolDetail title="功能说明">
+    <ToolDetail :title="$t('tools.pdftoimage.detail_features')">
       <el-text>
-        <ul class="space-y-2 text-gray-700">
-          <li>• <strong>高清转换</strong>：支持150-600 DPI分辨率，确保图片清晰度</li>
-          <li>• <strong>多页处理</strong>：自动转换PDF中的所有页面</li>
-          <li>• <strong>格式选择</strong>：支持PNG和JPG格式输出</li>
-          <li>• <strong>质量控制</strong>：可调节图片质量，平衡文件大小和清晰度</li>
-          <li>• <strong>图片预览</strong>：点击图片可放大预览，支持缩放和全屏查看</li>
-          <li>• <strong>批量下载</strong>：支持单页下载和批量下载</li>
-          <li>• <strong>本地处理</strong>：所有转换在浏览器本地完成，保护文件隐私</li>
-        </ul>
+        <span v-html="$t('tools.pdftoimage.features_list')"></span>
       </el-text>
     </ToolDetail>
 
-    <ToolDetail title="使用说明">
+    <ToolDetail :title="$t('tools.pdftoimage.detail_usage')">
       <el-text>
-        <ol class="space-y-2 text-gray-700">
-          <li>1. 选择转换设置（分辨率、格式、质量）</li>
-          <li>2. 拖拽或点击上传PDF文件</li>
-          <li>3. 等待自动转换完成</li>
-          <li>4. 点击图片放大预览或直接下载</li>
-          <li>5. 下载单页图片或批量下载所有图片</li>
-        </ol>
+         <span v-html="$t('tools.pdftoimage.usage_list')"></span>
       </el-text>
     </ToolDetail>
 
-    <ToolDetail title="注意事项">
+    <ToolDetail :title="$t('tools.pdftoimage.detail_notice')">
       <el-text>
-        <ul class="space-y-1 text-gray-600 text-sm">
-          <li>• 首次使用需要加载PDF.js库，可能需要等待几秒</li>
-          <li>• 大文件或高分辨率转换需要较长时间，请耐心等待</li>
-          <li>• 暂不支持密码保护的PDF文件</li>
-          <li>• 建议使用现代浏览器以获得最佳体验</li>
-        </ul>
+         <span v-html="$t('tools.pdftoimage.notice_list')"></span>
       </el-text>
     </ToolDetail>
   </div>

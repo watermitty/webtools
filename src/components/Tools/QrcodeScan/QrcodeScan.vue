@@ -2,15 +2,18 @@
 import { reactive, ref } from 'vue'
 import { QrcodeStream, QrcodeDropZone, QrcodeCapture } from 'qrcode-reader-vue3'
 import { ElMessage } from 'element-plus'
+import { useI18n } from 'vue-i18n'
 import DetailHeader from '@/components/Layout/DetailHeader/DetailHeader.vue'
 import ToolDetail from '@/components/Layout/ToolDetail/ToolDetail.vue'
 import { Camera, Upload, CopyDocument, Delete } from '@element-plus/icons-vue'
 
+const { t } = useI18n()
+
 const info = reactive({
-  title: "二维码识别",
+  title: "tools.qrscan.title",
   scanResult: '',
   isScanning: false,
-  activeTab: 'upload', // 改为默认显示图片识别
+  activeTab: 'upload', 
 })
 
 // 识别结果
@@ -20,13 +23,13 @@ const isScanning = ref(false)
 // 识别二维码功能
 const handleScan = (result: string) => {
   scanResult.value = result
-  ElMessage.success('二维码识别成功！')
+  ElMessage.success(t('tools.qrscan.msg_success'))
   isScanning.value = false
 }
 
 const handleError = (error: any) => {
   console.error('扫描错误:', error)
-  ElMessage.error('扫描失败，请重试')
+  ElMessage.error(t('tools.qrscan.msg_fail'))
 }
 
 const startScan = () => {
@@ -40,22 +43,22 @@ const stopScan = () => {
 // 复制结果
 const copyResult = async () => {
   if (!scanResult.value) {
-    ElMessage.warning('没有可复制的内容')
+    ElMessage.warning(t('tools.qrscan.msg_no_content'))
     return
   }
   
   try {
     await navigator.clipboard.writeText(scanResult.value)
-    ElMessage.success('复制成功！')
+    ElMessage.success(t('tools.qrscan.msg_copy_success'))
   } catch (error) {
-    ElMessage.error('复制失败，请手动复制')
+    ElMessage.error(t('tools.qrscan.msg_copy_fail'))
   }
 }
 
 // 清空结果
 const clearResult = () => {
   scanResult.value = ''
-  ElMessage.success('已清空结果')
+  ElMessage.success(t('tools.qrscan.msg_clear'))
 }
 
 // 打开链接
@@ -66,14 +69,14 @@ const openLink = (url: string) => {
 
 <template>
   <div class="flex flex-col mt-3 ml-4 flex-1 mr-3">
-    <DetailHeader :title="info.title"></DetailHeader>
+    <DetailHeader :title="$t('tools.qrscan.title')"></DetailHeader>
 
     <div class="p-6 rounded-2xl bg-white shadow-sm">
       <!-- 识别方式选择 -->
       <el-tabs v-model="info.activeTab" class="mb-6">
-        <el-tab-pane label="图片识别" name="upload">
+        <el-tab-pane :label="$t('tools.qrscan.tab_image')" name="upload">
           <div class="text-center">
-            <h3 class="text-lg font-medium text-gray-900 mb-4">图片识别</h3>
+            <h3 class="text-lg font-medium text-gray-900 mb-4">{{ $t('tools.qrscan.heading_image') }}</h3>
             
             <div class="border-2 border-dashed border-gray-300 rounded-lg p-8 max-w-md mx-auto">
               <!-- 使用 QrcodeCapture 处理文件上传 -->
@@ -88,8 +91,8 @@ const openLink = (url: string) => {
                     <Upload />
                   </el-icon>
                   <div class="text-gray-500">
-                    <p>点击选择图片或拖拽图片到此处</p>
-                    <p class="text-sm">支持 PNG、JPG、JPEG 等格式</p>
+                    <p>{{ $t('tools.qrscan.drag_hint') }}</p>
+                    <p class="text-sm">{{ $t('tools.qrscan.format_hint') }}</p>
                   </div>
                 </div>
               </QrcodeCapture>
@@ -101,16 +104,16 @@ const openLink = (url: string) => {
                 class="w-full h-32 mt-4 border-2 border-dashed border-gray-300 rounded-lg flex items-center justify-center"
               >
                 <div class="text-center">
-                  <p class="text-gray-500 text-sm">或拖拽图片到此处</p>
+                  <p class="text-gray-500 text-sm">{{ $t('tools.qrscan.drag_hint_2') }}</p>
                 </div>
               </QrcodeDropZone>
             </div>
           </div>
         </el-tab-pane>
 
-        <el-tab-pane label="摄像头扫描" name="camera">
+        <el-tab-pane :label="$t('tools.qrscan.tab_camera')" name="camera">
           <div class="text-center">
-            <h3 class="text-lg font-medium text-gray-900 mb-4">摄像头扫描识别</h3>
+            <h3 class="text-lg font-medium text-gray-900 mb-4">{{ $t('tools.qrscan.heading_camera') }}</h3>
             
             <!-- 扫描区域 -->
             <div class="border-2 border-dashed border-gray-300 rounded-lg p-4 mb-4 max-w-md mx-auto">
@@ -124,7 +127,7 @@ const openLink = (url: string) => {
                 <el-icon class="text-4xl text-gray-400 mb-4">
                   <Camera />
                 </el-icon>
-                <p class="text-gray-500">点击开始扫描按钮开始识别二维码</p>
+                <p class="text-gray-500">{{ $t('tools.qrscan.scan_hint') }}</p>
               </div>
             </div>
 
@@ -135,13 +138,13 @@ const openLink = (url: string) => {
                 @click="startScan"
                 :disabled="isScanning"
               >
-                开始扫描
+                {{ $t('tools.qrscan.btn_start') }}
               </el-button>
               <el-button 
                 @click="stopScan"
                 :disabled="!isScanning"
               >
-                停止扫描
+                {{ $t('tools.qrscan.btn_stop') }}
               </el-button>
             </div>
           </div>
@@ -151,7 +154,7 @@ const openLink = (url: string) => {
       <!-- 识别结果 -->
       <div v-if="scanResult" class="border-t pt-6">
         <div class="flex items-center justify-between mb-4">
-          <h4 class="text-lg font-medium text-gray-900">识别结果：</h4>
+          <h4 class="text-lg font-medium text-gray-900">{{ $t('tools.qrscan.result_title') }}</h4>
           <div class="space-x-2">
             <el-button 
               size="small" 
@@ -159,7 +162,7 @@ const openLink = (url: string) => {
               type="danger"
             >
               <el-icon><Delete /></el-icon>
-              清空结果
+              {{ $t('tools.qrscan.btn_clear') }}
             </el-button>
             <el-button 
               size="small" 
@@ -167,7 +170,7 @@ const openLink = (url: string) => {
               @click="copyResult"
             >
               <el-icon><CopyDocument /></el-icon>
-              复制结果
+              {{ $t('tools.qrscan.btn_copy') }}
             </el-button>
           </div>
         </div>
@@ -182,21 +185,16 @@ const openLink = (url: string) => {
             type="success" 
             @click="openLink(scanResult)"
           >
-            打开链接
+            {{ $t('tools.qrscan.btn_open') }}
           </el-button>
         </div>
       </div>
     </div>
 
     <!-- 工具详情 -->
-    <ToolDetail title="描述">
+    <ToolDetail :title="$t('tools.qrscan.detail_title')">
       <el-text>
-        二维码识别工具，支持多种识别方式：<br><br>
-        
-        摄像头扫描：实时扫描识别二维码，适用于手机、电脑等设备<br>
-        图片识别：支持点击上传或拖拽图片进行识别<br><br>
-        
-        支持识别各种类型的二维码内容，包括网址、文本、联系方式等。识别结果支持复制和直接打开链接。
+        <div v-html="$t('tools.qrscan.detail_content')"></div>
       </el-text>
     </ToolDetail>
   </div>

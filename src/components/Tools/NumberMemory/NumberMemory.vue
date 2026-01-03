@@ -1,10 +1,13 @@
 <script setup lang="ts">
 import { reactive, ref, onMounted, onUnmounted, computed, watch } from 'vue'
+import { useI18n } from 'vue-i18n'
 import DetailHeader from '@/components/Layout/DetailHeader/DetailHeader.vue'
 import ToolDetail from '@/components/Layout/ToolDetail/ToolDetail.vue'
 
+const { t } = useI18n()
+
 const info = reactive({
-  title: "数字序号记忆",
+  title: "tools.numbermemory.title",
 })
 
 // 游戏状态
@@ -387,30 +390,30 @@ onUnmounted(() => {
 
 <template>
   <div class="flex flex-col mt-3 ml-4 flex-1 mr-3">
-    <DetailHeader :title="info.title"></DetailHeader>
+    <DetailHeader :title="$t(info.title)"></DetailHeader>
 
     <div class="p-6 rounded-2xl bg-white shadow-sm border border-gray-200">
       <div class="max-w-4xl mx-auto">
         <!-- 游戏信息 -->
         <div class="grid grid-cols-2 md:grid-cols-5 gap-4 mb-6">
           <div class="text-center bg-blue-50 p-3 rounded-lg border border-blue-200">
-            <h3 class="text-sm font-medium text-blue-900">得分</h3>
+            <h3 class="text-sm font-medium text-blue-900">{{ $t('tools.numbermemory.score') }}</h3>
             <p class="text-xl font-bold text-blue-600">{{ gameState.score }}</p>
           </div>
           <div class="text-center bg-green-50 p-3 rounded-lg border border-green-200">
-            <h3 class="text-sm font-medium text-green-900">最高分</h3>
+            <h3 class="text-sm font-medium text-green-900">{{ $t('tools.numbermemory.high_score') }}</h3>
             <p class="text-xl font-bold text-green-600">{{ gameState.highScore }}</p>
           </div>
           <div class="text-center bg-purple-50 p-3 rounded-lg border border-purple-200">
-            <h3 class="text-sm font-medium text-purple-900">关卡</h3>
+            <h3 class="text-sm font-medium text-purple-900">{{ $t('tools.numbermemory.level') }}</h3>
             <p class="text-xl font-bold text-purple-600">{{ gameState.level }}</p>
           </div>
           <div class="text-center bg-orange-50 p-3 rounded-lg border border-orange-200">
-            <h3 class="text-sm font-medium text-orange-900">数字数量</h3>
+            <h3 class="text-sm font-medium text-orange-900">{{ $t('tools.numbermemory.number_count') }}</h3>
             <p class="text-xl font-bold text-orange-600">{{ currentNumberCount }}</p>
           </div>
           <div class="text-center bg-indigo-50 p-3 rounded-lg border border-indigo-200">
-            <h3 class="text-sm font-medium text-indigo-900">网格大小</h3>
+            <h3 class="text-sm font-medium text-indigo-900">{{ $t('tools.numbermemory.grid_size') }}</h3>
             <div v-if="isMobile" class="text-xl font-bold text-indigo-600">
               {{ currentGridSize }}×{{ currentGridSize }}
             </div>
@@ -428,7 +431,7 @@ onUnmounted(() => {
                   :value="option.value"
                 />
               </el-select>
-              <span class="text-xs text-indigo-500">最大{{ maxNumbersForCurrentGrid }}个</span>
+              <span class="text-xs text-indigo-500">{{ $t('tools.numbermemory.max_count', { count: maxNumbersForCurrentGrid }) }}</span>
             </div>
           </div>
         </div>
@@ -443,8 +446,8 @@ onUnmounted(() => {
                 <div class="flex items-center gap-2">
                   <el-switch
                     v-model="showCoordinates"
-                    active-text="显示坐标"
-                    inactive-text="隐藏坐标"
+                    :active-text="$t('tools.numbermemory.show_coords')"
+                    :inactive-text="$t('tools.numbermemory.hide_coords')"
                   />
                 </div>
               </div>
@@ -453,9 +456,9 @@ onUnmounted(() => {
             <!-- 游戏状态提示 -->
             <div v-if="gameState.isPlaying" class="mb-4">
               <div v-if="gameState.isShowingNumbers" class="bg-blue-50 border-2 border-blue-300 rounded-lg p-4">
-                <h3 class="text-lg font-medium text-blue-900 mb-2">记住数字位置！</h3>
+                <h3 class="text-lg font-medium text-blue-900 mb-2">{{ $t('tools.numbermemory.remember') }}</h3>
                 <div class="flex items-center justify-center gap-2 mb-3">
-                  <span class="text-blue-600">剩余时间:</span>
+                  <span class="text-blue-600">{{ $t('tools.numbermemory.time_left') }}</span>
                   <span 
                     class="text-2xl font-bold transition-colors duration-300"
                     :class="{
@@ -467,7 +470,7 @@ onUnmounted(() => {
                   >
                     {{ remainingSeconds }}
                   </span>
-                  <span class="text-blue-600">秒</span>
+                  <span class="text-blue-600">{{ $t('tools.numbermemory.seconds') }}</span>
                 </div>
                 <div class="mb-3">
                   <el-button 
@@ -476,29 +479,29 @@ onUnmounted(() => {
                     size="small"
                     class="bg-green-500 hover:bg-green-600 border-green-600 w-full"
                   >
-                    立即开始
+                    {{ $t('tools.numbermemory.start_now') }}
                   </el-button>
                 </div>
-                <p class="text-blue-600 text-sm">网格大小: {{ currentGridSize }}×{{ currentGridSize }}</p>
-                <p class="text-blue-600 text-sm">数字数量: {{ currentNumberCount }}个</p>
-                <p class="text-blue-600 text-sm">最大数字: {{ maxNumbersForCurrentGrid }}个</p>
+                <p class="text-blue-600 text-sm">{{ $t('tools.numbermemory.grid_size') }}: {{ currentGridSize }}×{{ currentGridSize }}</p>
+                <p class="text-blue-600 text-sm">{{ $t('tools.numbermemory.number_count') }}: {{ currentNumberCount }}</p>
+                <p class="text-blue-600 text-sm">{{ $t('tools.numbermemory.max_count', { count: maxNumbersForCurrentGrid }) }}</p>
               </div>
               <div v-else-if="gameState.isWaitingClick" class="bg-green-50 border-2 border-green-300 rounded-lg p-4">
-                <h3 class="text-lg font-medium text-green-900 mb-2">按数字顺序点击！</h3>
-                <p class="text-green-600">下一个数字: {{ gameState.currentClickIndex + 1 }}</p>
+                <h3 class="text-lg font-medium text-green-900 mb-2">{{ $t('tools.numbermemory.click_order') }}</h3>
+                <p class="text-green-600">{{ $t('tools.numbermemory.next_num') }} {{ gameState.currentClickIndex + 1 }}</p>
               </div>
             </div>
 
             <!-- 游戏结束提示 -->
             <div v-if="gameState.gameOver" class="mb-4">
               <div class="bg-red-50 border-2 border-red-300 rounded-lg p-4 shadow-md">
-                <h3 class="text-lg font-medium text-red-900 mb-2">游戏结束！</h3>
-                <p class="text-red-600 text-sm">最终得分: {{ gameState.score }}</p>
-                <p class="text-red-600 text-sm">到达关卡: {{ gameState.level }}</p>
-                <p class="text-red-600 text-sm">网格大小: {{ currentGridSize }}×{{ currentGridSize }}</p>
-                <p class="text-red-600 text-sm">最大数字: {{ maxNumbersForCurrentGrid }}个</p>
+                <h3 class="text-lg font-medium text-red-900 mb-2">{{ $t('tools.numbermemory.game_over') }}</h3>
+                <p class="text-red-600 text-sm">{{ $t('tools.numbermemory.final_score') }} {{ gameState.score }}</p>
+                <p class="text-red-600 text-sm">{{ $t('tools.numbermemory.level_reached') }} {{ gameState.level }}</p>
+                <p class="text-red-600 text-sm">{{ $t('tools.numbermemory.grid_size') }}: {{ currentGridSize }}×{{ currentGridSize }}</p>
+                <p class="text-red-600 text-sm">{{ $t('tools.numbermemory.max_count', { count: maxNumbersForCurrentGrid }) }}</p>
                 <p v-if="gameState.score === gameState.highScore && gameState.score > 0" class="text-yellow-600 font-medium mt-2 text-sm">
-                  新纪录！恭喜你创造了新的最高分！
+                  {{ $t('tools.numbermemory.new_record') }}
                 </p>
               </div>
             </div>
@@ -513,7 +516,7 @@ onUnmounted(() => {
                   type="primary"
                   class="bg-blue-500 hover:bg-blue-600 border-blue-600 w-full h-full"
                 >
-                  开始游戏
+                  {{ $t('tools.numbermemory.start_game') }}
                 </el-button>
                 
                 <el-button 
@@ -522,7 +525,7 @@ onUnmounted(() => {
                   type="warning"
                   class="bg-orange-500 hover:bg-orange-600 border-orange-600 w-full h-full"
                 >
-                  重新开始
+                  {{ $t('tools.numbermemory.restart') }}
                 </el-button>
                 
                 <el-button 
@@ -531,7 +534,7 @@ onUnmounted(() => {
                   type="success"
                   class="bg-green-500 hover:bg-green-600 border-green-600 w-full h-full"
                 >
-                  再来一局
+                  {{ $t('tools.numbermemory.play_again') }}
                 </el-button>
               </div>
               
@@ -543,7 +546,7 @@ onUnmounted(() => {
                   type="info"
                   class="bg-gray-500 hover:bg-gray-600 border-gray-600 w-full h-full"
                 >
-                  重置游戏
+                  {{ $t('tools.numbermemory.reset') }}
                 </el-button>
               </div>
             </div>
@@ -628,46 +631,38 @@ onUnmounted(() => {
 
         <!-- 游戏说明 -->
         <div class="bg-gray-50 rounded-lg p-4 border-2 border-gray-200 shadow-sm">
-          <h3 class="text-lg font-medium text-gray-900 mb-3">游戏说明</h3>
+          <h3 class="text-lg font-medium text-gray-900 mb-3">{{ $t('tools.numbermemory.instructions_title') }}</h3>
           <div class="grid grid-cols-1 md:grid-cols-2 gap-4 text-sm text-gray-600">
             <div class="bg-white p-3 rounded border border-gray-200">
-              <p><strong class="text-blue-600">游戏目标：</strong>记住数字位置，按顺序点击</p>
-              <p><strong class="text-blue-600">操作方式：</strong>先记住数字在网格中的位置，然后按1、2、3...顺序点击</p>
+              <p><strong class="text-blue-600">{{ $t('tools.numbermemory.goal_label') }}</strong>{{ $t('tools.numbermemory.goal_text') }}</p>
+              <p><strong class="text-blue-600">{{ $t('tools.numbermemory.how_label') }}</strong>{{ $t('tools.numbermemory.how_text') }}</p>
             </div>
             <div class="bg-white p-3 rounded border border-gray-200">
-              <p><strong class="text-green-600">得分规则：</strong>正确点击+10分，完成关卡有额外奖励</p>
-              <p><strong class="text-red-600">失败条件：</strong>点击错误位置或顺序错误</p>
+              <p><strong class="text-green-600">{{ $t('tools.numbermemory.score_rule_label') }}</strong>{{ $t('tools.numbermemory.score_rule_text') }}</p>
+              <p><strong class="text-red-600">{{ $t('tools.numbermemory.fail_label') }}</strong>{{ $t('tools.numbermemory.fail_text') }}</p>
             </div>
           </div>
         </div>
 
         <!-- 网格说明 -->
         <div class="mt-4 bg-blue-50 rounded-lg p-4 border border-blue-200">
-          <h3 class="text-sm font-medium text-blue-900 mb-2">网格设计</h3>
+          <h3 class="text-sm font-medium text-blue-900 mb-2">{{ $t('tools.numbermemory.design_title') }}</h3>
           <div class="text-xs text-blue-700 space-y-1">
-            <p><strong>手机端：</strong>固定4×4网格，最大16个数字</p>
-            <p><strong>PC端：</strong>可选择4×4到10×10网格，最大100个数字</p>
-            <p><strong>无限模式：</strong>达到最大数字数量后，游戏继续进行，只是位置重新随机</p>
-            <p><strong>难度递增：</strong>数字数量逐渐增加，达到网格上限后保持最大数量</p>
-            <p><strong>时间计算：</strong>根据网格大小和数字数量动态调整显示时间</p>
-            <p><strong>坐标显示：</strong>随时可开启/关闭坐标，帮助定位和记忆</p>
-            <p><strong>快速开始：</strong>记忆阶段可点击"立即开始"跳过等待时间</p>
+            <p>{{ $t('tools.numbermemory.design_mobile') }}</p>
+            <p>{{ $t('tools.numbermemory.design_pc') }}</p>
+            <p>{{ $t('tools.numbermemory.design_infinite') }}</p>
+            <p>{{ $t('tools.numbermemory.design_difficulty') }}</p>
+            <p>{{ $t('tools.numbermemory.design_time') }}</p>
+            <p>{{ $t('tools.numbermemory.design_coords') }}</p>
+            <p>{{ $t('tools.numbermemory.design_fast') }}</p>
           </div>
         </div>
       </div>
     </div>
 
-    <!-- 工具详情 -->
-    <ToolDetail title="描述">
+    <ToolDetail :title="$t('tools.numbermemory.description')">
       <el-text>
-        数字序号记忆游戏，挑战你的瞬时记忆力：<br><br>
-        
-        游戏特色：先显示数字位置，隐藏后按顺序点击，难度逐级递增<br>
-        操作方式：记住数字在网格中的位置，然后按1、2、3...的顺序依次点击<br>
-        游戏目标：挑战更高关卡，获得更高分数<br>
-        训练效果：锻炼瞬时记忆力、空间记忆和注意力<br><br>
-        
-        适合所有年龄段，是训练大脑记忆能力和反应速度的益智游戏。
+        <span v-html="$t('tools.numbermemory.desc')"></span>
       </el-text>
     </ToolDetail>
   </div>

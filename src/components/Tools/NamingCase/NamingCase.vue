@@ -1,14 +1,15 @@
 <script setup lang="ts">
 import { reactive, watch } from 'vue'
+import { useI18n } from 'vue-i18n'
 import DetailHeader from '@/components/Layout/DetailHeader/DetailHeader.vue'
 import ToolDetail from '@/components/Layout/ToolDetail/ToolDetail.vue'
 import { copy } from '@/utils/string'
 
-const info = reactive({ title: '命名风格转换' })
+const { t } = useI18n()
 
 const state = reactive({
   input: '',
-  byLine: false, // 逐行转换
+  byLine: false,
 })
 
 const out = reactive({
@@ -97,57 +98,57 @@ watch(() => [state.input, state.byLine], convertAll, { deep: true })
 
 <template>
   <div class="flex flex-col mt-3 flex-1">
-    <DetailHeader :title="info.title" />
+    <DetailHeader :title="$t('tools.namingcase.title')" />
     <div class="p-4 rounded-2xl bg-white">
       <div class="mb-2 text-sm text-gray-500">
-        输入一个名称或多行名称，自动同时生成四种风格。
-        <el-link class="ml-2" type="primary" @click="fillExample">填充示例</el-link>
+        {{ $t('tools.namingcase.hint') }}
+        <el-link class="ml-2" type="primary" @click="fillExample">{{ $t('tools.namingcase.fill_example') }}</el-link>
       </div>
       <div class="flex items-center gap-3 mb-3">
-        <el-switch v-model="state.byLine" active-text="逐行转换" inactive-text="整体转换" />
-        <el-button type="danger" @click="clearAll">清空</el-button>
+        <el-switch v-model="state.byLine" :active-text="$t('tools.namingcase.by_line')" :inactive-text="$t('tools.namingcase.whole')" />
+        <el-button type="danger" @click="clearAll">{{ $t('tools.namingcase.clear') }}</el-button>
       </div>
       <el-input
         type="textarea"
         :rows="6"
         v-model="state.input"
-        placeholder="示例：user_name 或 helloWorld 或 order-item"
+        :placeholder="$t('tools.namingcase.placeholder')"
       />
       <div class="mt-4 grid grid-cols-1 lg:grid-cols-2 gap-4">
         <div>
           <div class="flex items-center justify-between mb-2">
             <div class="text-sm text-gray-600">camelCase</div>
-            <el-button size="small" @click="copyCamel">复制</el-button>
+            <el-button size="small" @click="copyCamel">{{ $t('tools.namingcase.copy') }}</el-button>
           </div>
           <el-input type="textarea" :rows="5" v-model="out.camel" readonly />
         </div>
         <div>
           <div class="flex items-center justify-between mb-2">
             <div class="text-sm text-gray-600">PascalCase</div>
-            <el-button size="small" @click="copyPascal">复制</el-button>
+            <el-button size="small" @click="copyPascal">{{ $t('tools.namingcase.copy') }}</el-button>
           </div>
           <el-input type="textarea" :rows="5" v-model="out.pascal" readonly />
         </div>
         <div>
           <div class="flex items-center justify-between mb-2">
             <div class="text-sm text-gray-600">snake_case</div>
-            <el-button size="small" @click="copySnake">复制</el-button>
+            <el-button size="small" @click="copySnake">{{ $t('tools.namingcase.copy') }}</el-button>
           </div>
           <el-input type="textarea" :rows="5" v-model="out.snake" readonly />
         </div>
         <div>
           <div class="flex items-center justify-between mb-2">
             <div class="text-sm text-gray-600">kebab-case</div>
-            <el-button size="small" @click="copyKebab">复制</el-button>
+            <el-button size="small" @click="copyKebab">{{ $t('tools.namingcase.copy') }}</el-button>
           </div>
           <el-input type="textarea" :rows="5" v-model="out.kebab" readonly />
         </div>
       </div>
     </div>
 
-    <ToolDetail title="描述">
+    <ToolDetail :title="$t('tools.namingcase.detail_title')">
       <el-text>
-        同时生成四种命名风格；支持逐行转换与复制。对驼峰中的大小写边界和下划线/连字符自动分词，适配常见场景。
+        {{ $t('tools.namingcase.detail_content') }}
       </el-text>
     </ToolDetail>
   </div>

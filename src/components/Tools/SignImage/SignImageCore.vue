@@ -1,9 +1,12 @@
 <script setup> 
 import { ref, onMounted, nextTick } from 'vue'
+import { useI18n } from 'vue-i18n'
 import 'tui-image-editor/dist/tui-image-editor.css'
 // import 'tui-color-picker/dist/tui-color-picker.css'
 import { base64ToBlod } from '@/utils/file'
 import ImageEditor from 'tui-image-editor'
+
+const { locale } = useI18n()
 
 // 中文菜单
 const locale_zh = {
@@ -198,7 +201,7 @@ const init = ()=> {
       menu: ['resize', 'crop', 'rotate', 'draw', 'shape', 'icon', 'text', 'filter'], // 底部菜单按钮列表 隐藏镜像flip和遮罩mask
       initMenu: 'none', // 默认打开的菜单项
       menuBarPosition: 'left', // 菜单所在的位置
-      locale: locale_zh, // 本地化语言为中文
+      locale: locale.value === 'zh' ? locale_zh : {}, // 本地化语言
       theme: customTheme // 自定义样式
     },
     cssMaxWidth: 400, // canvas 最大宽度

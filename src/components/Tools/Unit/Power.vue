@@ -1,5 +1,8 @@
 <script setup lang="ts">
 import { reactive } from 'vue'
+import { useI18n } from 'vue-i18n'
+
+const { t } = useI18n()
 
 const info: {
   [key: string]: string|number
@@ -57,58 +60,30 @@ switch (key) {
 <template>
     <div>
       <div>
-        <el-divider content-position="left">功率单位</el-divider>
+        <el-divider content-position="left">{{ $t('tools.unit.power.title') }}</el-divider>
         <!-- group -->
         <div class="custom-box">
           <div class="custom-box-single">
-            <el-text class="custom-box-text">瓦(W)</el-text>
+            <el-text class="custom-box-text">{{ $t('tools.unit.power.w') }}</el-text>
             <el-input
               v-model="info.w"
               placeholder=""
               class="input-with-select"
             >
               <template #append>
-                <el-button @click="tran('w')">转换</el-button>
+                <el-button @click="tran('w')">{{ $t('tools.unit.common.convert') }}</el-button>
               </template>
             </el-input>
           </div>
           <div class="custom-box-single">
-            <el-text class="custom-box-text">毫瓦(mW)</el-text>
-            <el-input
-              v-model="info.mmw"
-              placeholder=""
-              class="input-with-select"
-            >
-              <template #append>
-                <el-button @click="tran('mmw')">转换</el-button>
-              </template>
-            </el-input>
-          </div>
-        </div>
-
-        <!-- group -->
-        <div class="custom-box">
-          <div class="custom-box-single">
-            <el-text class="custom-box-text">千瓦(kW)</el-text>
-            <el-input
-              v-model="info.kw"
-              placeholder=""
-              class="input-with-select"
-            >
-              <template #append>
-                <el-button @click="tran('kw')">转换</el-button>
-              </template>
-            </el-input>
-          </div>
-          <div class="custom-box-single">
-            <el-text class="custom-box-text">兆瓦(MW)</el-text>
+            <el-text class="custom-box-text">{{ $t('tools.unit.power.mw') }}</el-text>
             <el-input
               v-model="info.mw"
               placeholder=""
               class="input-with-select"
             >
               <template #append>
-                <el-button @click="tran('mw')">转换</el-button>
+                <el-button @click="tran('mw')">{{ $t('tools.unit.common.convert') }}</el-button>
               </template>
             </el-input>
           </div>
@@ -117,14 +92,42 @@ switch (key) {
         <!-- group -->
         <div class="custom-box">
           <div class="custom-box-single">
-            <el-text class="custom-box-text">亿瓦(GW)</el-text>
+            <el-text class="custom-box-text">{{ $t('tools.unit.power.kw') }}</el-text>
+            <el-input
+              v-model="info.kw"
+              placeholder=""
+              class="input-with-select"
+            >
+              <template #append>
+                <el-button @click="tran('kw')">{{ $t('tools.unit.common.convert') }}</el-button>
+              </template>
+            </el-input>
+          </div>
+          <div class="custom-box-single">
+            <el-text class="custom-box-text">{{ $t('tools.unit.power.megaw') }}</el-text>
+            <el-input
+              v-model="info.megaw"
+              placeholder=""
+              class="input-with-select"
+            >
+              <template #append>
+                <el-button @click="tran('megaw')">{{ $t('tools.unit.common.convert') }}</el-button>
+              </template>
+            </el-input>
+          </div>
+        </div>
+
+        <!-- group -->
+        <div class="custom-box">
+          <div class="custom-box-single">
+            <el-text class="custom-box-text">{{ $t('tools.unit.power.gw') }}</el-text>
             <el-input
               v-model="info.gw"
               placeholder=""
               class="input-with-select"
             >
               <template #append>
-                <el-button @click="tran('gw')">转换</el-button>
+                <el-button @click="tran('gw')">{{ $t('tools.unit.common.convert') }}</el-button>
               </template>
             </el-input>
           </div>
@@ -133,7 +136,7 @@ switch (key) {
       </div>
 
       <div class="w-full text-center">
-        <el-button type="primary" @click="clear">清除全部</el-button>
+        <el-button type="primary" @click="clear">{{ $t('tools.unit.common.clear') }}</el-button>
       </div>
     </div>
 </template>

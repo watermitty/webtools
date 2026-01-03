@@ -1,13 +1,16 @@
 <script setup lang="ts">
-import { ref, reactive } from "vue";
+import { ref, reactive, computed } from "vue";
+import { useI18n } from 'vue-i18n';
 import axios from "axios";
 import DetailHeader from "@/components/Layout/DetailHeader/DetailHeader.vue";
 import ToolDetail from "@/components/Layout/ToolDetail/ToolDetail.vue";
 
-const info = reactive({
-  title: "AI小学作文",
-  desc: "按年级/题材/关键词生成贴合小学生水平的作文，支持字数、风格与结构控制。",
-});
+const { t } = useI18n();
+
+const info = computed(() => ({
+  title: t('tools.aiessay.title'),
+  desc: t('tools.aiessay.desc'),
+}));
 
 const pollinationsApiKey = ref(import.meta.env.VITE_POLLINATIONS_API_KEY || "");
 const pollinationsProxyUrl = ref(import.meta.env.VITE_POLLINATIONS_PROXY_URL);
@@ -76,7 +79,7 @@ const generate = async () => {
     result.value = text;
   } catch (e) {
     console.error(e);
-    alert("生成失败，请稍后重试");
+    alert(t('tools.aimotivation.generate_fail')); // Reuse generic fail msg or new one? I have generic one.
   } finally {
     loading.value = false;
   }
@@ -85,9 +88,9 @@ const generate = async () => {
 const copyText = async (text: string) => {
   try {
     await navigator.clipboard.writeText(text);
-    alert("已复制");
+    alert(t('tools.aimotivation.copy') + " " + t('tools.aimotivation.status_ready')); // Reuse copy success msg strategy
   } catch {
-    alert("复制失败，请手动复制");
+    alert("Copy failed");
   }
 };
 
@@ -118,75 +121,75 @@ const resetForm = () => {
         <div class="space-y-3">
           <input
             v-model="title"
-            placeholder="题目（可留空，自动生成）"
+            :placeholder="t('tools.aiessay.placeholder_title')"
             class="w-full p-2 border rounded"
           />
           <div class="grid grid-cols-2 gap-2">
             <select v-model="grade" class="w-full p-2 border rounded">
-              <option>一年级</option>
-              <option>二年级</option>
-              <option>三年级</option>
-              <option>四年级</option>
-              <option>五年级</option>
-              <option>六年级</option>
+              <option :value="'一年级'">{{ t('tools.aiessay.grade_1') }}</option>
+              <option :value="'二年级'">{{ t('tools.aiessay.grade_2') }}</option>
+              <option :value="'三年级'">{{ t('tools.aiessay.grade_3') }}</option>
+              <option :value="'四年级'">{{ t('tools.aiessay.grade_4') }}</option>
+              <option :value="'五年级'">{{ t('tools.aiessay.grade_5') }}</option>
+              <option :value="'六年级'">{{ t('tools.aiessay.grade_6') }}</option>
             </select>
             <select v-model="genre" class="w-full p-2 border rounded">
-              <option>写人</option>
-              <option>叙事</option>
-              <option>写景</option>
-              <option>状物</option>
-              <option>应用文</option>
+              <option :value="'写人'">{{ t('tools.aiessay.genre_person') }}</option>
+              <option :value="'叙事'">{{ t('tools.aiessay.genre_narrative') }}</option>
+              <option :value="'写景'">{{ t('tools.aiessay.genre_scenery') }}</option>
+              <option :value="'状物'">{{ t('tools.aiessay.genre_object') }}</option>
+              <option :value="'应用文'">{{ t('tools.aiessay.genre_practical') }}</option>
             </select>
           </div>
           <div class="grid grid-cols-2 gap-2">
             <select v-model="tone" class="w-full p-2 border rounded">
-              <option>童趣活泼</option>
-              <option>真诚朴实</option>
-              <option>优美细腻</option>
-              <option>幽默轻松</option>
+              <option :value="'童趣活泼'">{{ t('tools.aiessay.tone_lively') }}</option>
+              <option :value="'真诚朴实'">{{ t('tools.aiessay.tone_sincere') }}</option>
+              <option :value="'优美细腻'">{{ t('tools.aiessay.tone_beautiful') }}</option>
+              <option :value="'幽默轻松'">{{ t('tools.aiessay.tone_humorous') }}</option>
             </select>
             <select v-model="words" class="w-full p-2 border rounded">
-              <option :value="200">约200字</option>
-              <option :value="300">约300字</option>
-              <option :value="400">约400字</option>
-              <option :value="500">约500字</option>
+              <option :value="200">{{ t('tools.aiessay.words_approx', {n: 200}) }}</option>
+              <option :value="300">{{ t('tools.aiessay.words_approx', {n: 300}) }}</option>
+              <option :value="400">{{ t('tools.aiessay.words_approx', {n: 400}) }}</option>
+              <option :value="500">{{ t('tools.aiessay.words_approx', {n: 500}) }}</option>
             </select>
           </div>
           <textarea
             v-model="keywords"
-            placeholder="关键词（用逗号/空格分隔，可留空）"
+            :placeholder="t('tools.aiessay.placeholder_keywords')"
             class="w-full p-2 border rounded min-h-[80px]"
           ></textarea>
           <textarea
             v-model="customReq"
-            placeholder="自定义要求（可留空），如：避免复杂成语，加入一处对话"
+            :placeholder="t('tools.aiessay.placeholder_custom')"
             class="w-full p-2 border rounded min-h-[60px]"
           ></textarea>
 
           <div class="grid grid-cols-2 gap-2">
             <label class="flex items-center gap-2"
-              ><input type="checkbox" v-model="threePart" />三段式结构</label
+              ><input type="checkbox" v-model="threePart" />{{ t('tools.aiessay.checkbox_three_part') }}</label
             >
             <label class="flex items-center gap-2"
               ><input
                 type="checkbox"
                 v-model="echoBeginningEnd"
-              />首尾呼应</label
+              />{{ t('tools.aiessay.checkbox_echo') }}</label
             >
             <label class="flex items-center gap-2"
-              ><input type="checkbox" v-model="useDialogue" />包含对话</label
+              ><input type="checkbox" v-model="useDialogue" />{{ t('tools.aiessay.checkbox_dialogue') }}</label
             >
             <label class="flex items-center gap-2"
-              ><input type="checkbox" v-model="useMetaphor" />比喻</label
+              ><input type="checkbox" v-model="useMetaphor" />{{ t('tools.aiessay.checkbox_metaphor') }}</label
             >
             <label class="flex items-center gap-2"
-              ><input type="checkbox" v-model="usePersonification" />拟人</label
+              ><input type="checkbox" v-model="usePersonification" />{{ t('tools.aiessay.checkbox_personification') }}</label
             >
             <label class="flex items-center gap-2"
-              ><input type="checkbox" v-model="useParallel" />排比</label
+              ><input type="checkbox" v-model="useParallel" />{{ t('tools.aiessay.checkbox_parallel') }}</label
             >
             <label class="flex items-center gap-2"
-              ><input type="checkbox" v-model="simpleWords" />用词浅显</label
+              ><input type="checkbox" v-model="simpleWords" />{{ t('tools.aiessay.checkbox_simple') }}</label
             >
           </div>
 
@@ -197,19 +200,19 @@ const resetForm = () => {
               class="px-4 py-2 rounded text-white"
               :class="loading ? 'bg-gray-400' : 'bg-blue-600 hover:bg-blue-700'"
             >
-              {{ loading ? "生成中..." : "生成作文" }}
+              {{ loading ? t('tools.aiessay.btn_generating') : t('tools.aiessay.btn_generate') }}
             </button>
             <button
               @click="resetForm"
               class="px-4 py-2 rounded border hover:bg-gray-50"
             >
-              重置
+              {{ t('tools.aiessay.btn_reset') }}
             </button>
             <button
               @click="copyText(result)"
               class="px-4 py-2 rounded border hover:bg-gray-50"
             >
-              复制结果
+              {{ t('tools.aiessay.btn_copy') }}
             </button>
           </div>
         </div>
@@ -219,7 +222,7 @@ const resetForm = () => {
             v-model="result"
             readonly
             class="w-full p-3 border rounded min-h-[320px] bg-gray-50"
-            placeholder="生成的作文将显示在这里"
+            :placeholder="t('tools.aiessay.result_placeholder')"
           ></textarea>
         </div>
       </div>

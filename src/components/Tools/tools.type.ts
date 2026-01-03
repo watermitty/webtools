@@ -11,7 +11,10 @@ export interface ToolsInfo {
   logo: string,
   desc: string,
   url: string,
-  cate: string
+  cate: string,
+  name?: string, // unique key for i18n
+  title_en?: string,
+  desc_en?: string
 }
 
 //tools cate

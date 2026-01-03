@@ -1,7 +1,10 @@
 <script setup lang="ts">
-import { ref, reactive, onUnmounted, onMounted } from 'vue'
+import { ref, reactive, onUnmounted, onMounted, computed } from 'vue'
+import { useI18n } from 'vue-i18n'
 import DetailHeader from '@/components/Layout/DetailHeader/DetailHeader.vue'
 import ToolDetail from '@/components/Layout/ToolDetail/ToolDetail.vue'
+
+const { t } = useI18n()
 
 // 先尝试动态导入Compressor.js，避免导入问题
 let Compressor: any = null
@@ -14,7 +17,7 @@ const loadCompressor = async () => {
     console.log('Compressor.js 加载成功:', Compressor)
   } catch (error) {
     console.error('Compressor.js 加载失败:', error)
-    alert('图片压缩库加载失败，请刷新页面重试')
+    alert(t('tools.imgcompress.msg_lib_fail'))
   }
 }
 
@@ -48,12 +51,11 @@ const handleFileSelect = (files: FileList | null) => {
   )
   
   if (imageFiles.length === 0) {
-    alert('请选择图片文件')
+    alert(t('tools.imgcompress.msg_select_img'))
     return
   }
   
   originalImages.value = [...originalImages.value, ...imageFiles]
-  addDebugInfo(`添加了 ${imageFiles.length} 张图片`)
 }
 
 const handleDrop = (e: DragEvent) => {
@@ -88,13 +90,13 @@ const compressImages = async () => {
   if (originalImages.value.length === 0) return
   
   if (!Compressor) {
-    alert('图片压缩库未加载，请刷新页面重试')
+    alert(t('tools.imgcompress.msg_lib_fail'))
     return
   }
   
   isCompressing.value = true
   compressedImages.value = []
-  addDebugInfo('开始压缩图片...')
+  addDebugInfo(t('tools.imgcompress.debug_start'))
   
   try {
     for (const file of originalImages.value) {
@@ -102,23 +104,22 @@ const compressImages = async () => {
     }
   } catch (error) {
     console.error('压缩失败:', error)
-    addDebugInfo(`压缩失败: ${error}`)
-    alert('压缩过程中出现错误，请重试')
+    addDebugInfo(`${t('tools.imgcompress.debug_fail')}: ${error}`)
+    alert(t('tools.imgcompress.msg_error'))
   } finally {
     isCompressing.value = false
-    addDebugInfo('压缩完成')
+    addDebugInfo(t('tools.imgcompress.debug_complete'))
   }
 }
 
 // 修改压缩函数，移除尺寸调整逻辑
 const compressSingleImage = (file: File): Promise<void> => {
   return new Promise((resolve, reject) => {
-    addDebugInfo(`开始压缩: ${file.name} (${formatFileSize(file.size)})`)
+    addDebugInfo(`${t('tools.imgcompress.debug_compressing')}: ${file.name} (${formatFileSize(file.size)})`)
     
     // 获取图片原始尺寸
     const img = new Image()
     img.onload = () => {
-      addDebugInfo(`原图尺寸: ${img.width}×${img.height}`)
       
       // 智能压缩参数调整
       let quality = compressionConfig.quality
@@ -131,10 +132,7 @@ const compressSingleImage = (file: File): Promise<void> => {
         } else if (sizeMB > 2) {
           quality = Math.min(quality, 0.6)
         }
-        addDebugInfo(`调整后质量: ${Math.round(quality * 100)}%`)
       }
-      
-      addDebugInfo(`压缩参数: 质量=${Math.round(quality * 100)}%, 保持原尺寸`)
       
       // 执行压缩，不设置尺寸限制
       new Compressor(file, {
@@ -144,7 +142,6 @@ const compressSingleImage = (file: File): Promise<void> => {
         retainExif: compressionConfig.retainExif,
         success: (result: File) => {
           const compressionRatio = ((file.size - result.size) / file.size * 100)
-          addDebugInfo(`压缩完成: ${file.name} -> ${formatFileSize(result.size)} (压缩率: ${compressionRatio.toFixed(1)}%)`)
           
           const compressedImage: CompressedImage = {
             id: Date.now().toString() + Math.random(),
@@ -163,7 +160,6 @@ const compressSingleImage = (file: File): Promise<void> => {
           resolve()
         },
         error: (error: any) => {
-          addDebugInfo(`压缩失败: ${file.name} - ${error.message || error}`)
           console.error('压缩失败:', error)
           reject(error)
         }
@@ -171,7 +167,6 @@ const compressSingleImage = (file: File): Promise<void> => {
     }
     
     img.onerror = () => {
-      addDebugInfo(`无法读取图片: ${file.name}`)
       reject(new Error('无法读取图片'))
     }
     
@@ -194,7 +189,7 @@ interface CompressedImage {
 }
 
 const info = reactive({
-  title: "图片压缩",
+  title: "tools.imgcompress.title",
 })
 
 // 下载压缩后的图片
@@ -253,13 +248,13 @@ const formatFileSize = (bytes: number) => {
 const getCompressionSuggestion = (file: File) => {
   const sizeMB = file.size / (1024 * 1024)
   if (sizeMB > 5) {
-    return '建议：大文件推荐质量0.5以下，最大尺寸1200×800'
+    return t('tools.imgcompress.suggestion_large')
   } else if (sizeMB > 2) {
-    return '建议：中等文件推荐质量0.6以下，最大尺寸1200×800'
+    return t('tools.imgcompress.suggestion_medium')
   } else if (sizeMB > 1) {
-    return '建议：小文件推荐质量0.7以下，最大尺寸1200×800'
+    return t('tools.imgcompress.suggestion_small')
   } else {
-    return '建议：小文件可以保持较高质量，但建议关闭EXIF保留'
+    return t('tools.imgcompress.suggestion_tiny')
   }
 }
 
@@ -273,12 +268,12 @@ onUnmounted(() => {
 
 <template>
   <div class="flex flex-col mt-3 flex-1">
-    <DetailHeader :title="info.title"></DetailHeader>
+    <DetailHeader :title="$t('tools.imgcompress.title')"></DetailHeader>
 
     <div class="p-4 rounded-2xl bg-white">
       <!-- 压缩配置 -->
       <div class="mb-6">
-        <h3 class="text-lg font-semibold mb-4">压缩设置</h3>
+        <h3 class="text-lg font-semibold mb-4">{{ $t('tools.imgcompress.settings_title') }}</h3>
         <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
           <!-- 智能压缩开关 -->
           <div class="flex items-center col-span-full">
@@ -289,12 +284,12 @@ onUnmounted(() => {
               class="mr-2"
             />
             <label for="smartCompression" class="text-sm font-medium text-gray-700">
-              智能压缩（根据文件大小自动优化质量参数）
+              {{ $t('tools.imgcompress.label_smart') }}
             </label>
           </div>
           
           <div>
-            <label class="block text-sm font-medium text-gray-700 mb-2">压缩质量</label>
+            <label class="block text-sm font-medium text-gray-700 mb-2">{{ $t('tools.imgcompress.label_quality') }}</label>
             <div class="flex items-center space-x-2">
               <input
                 v-model="compressionConfig.quality"
@@ -307,7 +302,7 @@ onUnmounted(() => {
               <span class="text-sm text-gray-600 w-12">{{ Math.round(compressionConfig.quality * 100) }}%</span>
             </div>
             <p class="text-xs text-gray-600 mt-1">
-              图片将保持原始尺寸，仅调整压缩质量
+              {{ $t('tools.imgcompress.hint_quality') }}
             </p>
           </div>
           
@@ -315,8 +310,8 @@ onUnmounted(() => {
           
           <div>
             <label class="block text-sm font-medium text-gray-700 mb-2">
-              转换阈值
-              <span class="text-xs text-gray-500 ml-1">(超过此大小的图片自动转换为WebP格式)</span>
+              {{ $t('tools.imgcompress.label_threshold') }}
+              <span class="text-xs text-gray-500 ml-1">{{ $t('tools.imgcompress.hint_threshold_small') }}</span>
             </label>
             <div class="space-y-2">
               <input
@@ -333,7 +328,8 @@ onUnmounted(() => {
                 <span>10MB</span>
               </div>
               <p class="text-xs text-gray-600">
-                当前设置：当图片超过 {{ formatFileSize(compressionConfig.convertSize) }} 时，自动转换为WebP格式以获得更好的压缩效果
+                <!-- 简单替换 -->
+                {{ $t('tools.imgcompress.hint_threshold_desc').replace('{size}', formatFileSize(compressionConfig.convertSize)) }}
               </p>
             </div>
           </div>
@@ -345,7 +341,7 @@ onUnmounted(() => {
               id="convertToWebP"
               class="mr-2"
             />
-            <label for="convertToWebP" class="text-sm font-medium text-gray-700">转换为WebP格式</label>
+            <label for="convertToWebP" class="text-sm font-medium text-gray-700">{{ $t('tools.imgcompress.label_webp') }}</label>
           </div>
           
           <div class="flex items-center">
@@ -355,14 +351,14 @@ onUnmounted(() => {
               id="retainExif"
               class="mr-2"
             />
-            <label for="retainExif" class="text-sm font-medium text-gray-700">保留EXIF信息</label>
+            <label for="retainExif" class="text-sm font-medium text-gray-700">{{ $t('tools.imgcompress.label_exif') }}</label>
           </div>
         </div>
       </div>
 
       <!-- 调试信息 -->
       <div v-if="debugInfo.length > 0" class="mb-6 p-4 bg-gray-100 rounded-lg">
-        <h4 class="font-medium mb-2">调试信息:</h4>
+        <h4 class="font-medium mb-2">{{ $t('tools.imgcompress.debug_title') }}</h4>
         <div class="text-xs text-gray-600 max-h-32 overflow-y-auto">
           <div v-for="(info, index) in debugInfo" :key="index" class="mb-1">
             {{ info }}
@@ -382,8 +378,8 @@ onUnmounted(() => {
           ]"
         >
           <div class="text-4xl mb-4">️</div>
-          <p class="text-lg font-medium text-gray-700 mb-2">拖拽图片到此处或点击选择</p>
-          <p class="text-sm text-gray-500 mb-4">支持 JPG、PNG、WebP、GIF 等格式</p>
+          <p class="text-lg font-medium text-gray-700 mb-2">{{ $t('tools.imgcompress.drag_hint') }}</p>
+          <p class="text-sm text-gray-500 mb-4">{{ $t('tools.imgcompress.format_hint') }}</p>
           <input
             type="file"
             multiple
@@ -396,7 +392,7 @@ onUnmounted(() => {
             for="fileInput"
             class="inline-block px-6 py-3 bg-blue-500 text-white rounded-lg hover:bg-blue-600 cursor-pointer transition-colors"
           >
-            选择图片
+            {{ $t('tools.imgcompress.btn_select') }}
           </label>
         </div>
       </div>
@@ -404,16 +400,16 @@ onUnmounted(() => {
       <!-- 原始图片列表 -->
       <div v-if="originalImages.length > 0" class="mb-6">
         <div class="flex justify-between items-center mb-4">
-          <h3 class="text-lg font-semibold">待压缩图片 ({{ originalImages.length }})</h3>
+          <h3 class="text-lg font-semibold">{{ $t('tools.imgcompress.pending_title', { count: originalImages.length }) }}</h3>
           <button
             @click="compressImages"
             :disabled="isCompressing || !Compressor"
             class="px-6 py-2 bg-green-500 text-white rounded-lg hover:bg-green-600 disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
           >
-            <span v-if="!isCompressing">开始压缩</span>
+            <span v-if="!isCompressing">{{ $t('tools.imgcompress.btn_start') }}</span>
             <span v-else class="flex items-center">
               <div class="animate-spin rounded-full h-4 w-4 border-b-2 border-white mr-2"></div>
-              压缩中...
+              {{ $t('tools.imgcompress.btn_compressing') }}
             </span>
           </button>
         </div>
@@ -446,12 +442,12 @@ onUnmounted(() => {
       <!-- 压缩结果 -->
       <div v-if="compressedImages.length > 0" class="mb-6">
         <div class="flex justify-between items-center mb-4">
-          <h3 class="text-lg font-semibold">压缩结果 ({{ compressedImages.length }})</h3>
+          <h3 class="text-lg font-semibold">{{ $t('tools.imgcompress.result_title', { count: compressedImages.length }) }}</h3>
           <button
             @click="downloadAll"
             class="px-4 py-2 bg-blue-500 text-white rounded-lg hover:bg-blue-600 transition-colors"
           >
-            批量下载
+            {{ $t('tools.imgcompress.btn_download_all') }}
           </button>
         </div>
         
@@ -471,30 +467,30 @@ onUnmounted(() => {
             
             <div class="space-y-2 text-sm">
               <div class="flex justify-between">
-                <span class="text-gray-600">原始大小:</span>
+                <span class="text-gray-600">{{ $t('tools.imgcompress.label_original_size') }}</span>
                 <span class="font-medium">{{ formatFileSize(image.originalSize) }}</span>
               </div>
               <div class="flex justify-between">
-                <span class="text-gray-600">压缩后:</span>
+                <span class="text-gray-600">{{ $t('tools.imgcompress.label_compressed_size') }}</span>
                 <span class="font-medium">{{ formatFileSize(image.compressedSize) }}</span>
               </div>
               <div class="flex justify-between">
-                <span class="text-gray-600">压缩率:</span>
+                <span class="text-gray-600">{{ $t('tools.imgcompress.label_ratio') }}</span>
                 <span class="font-medium text-green-600">{{ image.compressionRatio.toFixed(1) }}%</span>
               </div>
             </div>
             
             <!-- 显示实际使用的压缩参数 -->
             <div v-if="image.actualQuality" class="text-xs text-gray-500 border-t pt-2 mt-2">
-              <div>实际质量: {{ Math.round(image.actualQuality * 100) }}%</div>
-              <div>图片尺寸: {{ image.actualMaxWidth }}×{{ image.actualMaxHeight }}</div>
+              <div>{{ $t('tools.imgcompress.label_actual_quality') }} {{ Math.round(image.actualQuality * 100) }}%</div>
+              <div>{{ $t('tools.imgcompress.label_actual_size') }} {{ image.actualMaxWidth }}×{{ image.actualMaxHeight }}</div>
             </div>
             
             <button
               @click="downloadImage(image)"
               class="w-full mt-3 px-4 py-2 bg-green-500 text-white rounded-lg hover:bg-green-600 transition-colors"
             >
-              下载
+              {{ $t('tools.imgcompress.btn_download') }}
             </button>
           </div>
         </div>
@@ -506,96 +502,30 @@ onUnmounted(() => {
           @click="clearAll"
           class="px-4 py-2 text-gray-600 hover:text-gray-800 hover:bg-gray-100 rounded-lg transition-colors"
         >
-          清空所有
+          {{ $t('tools.imgcompress.btn_clear_all') }}
         </button>
       </div>
     </div>
 
     <!-- 描述 -->
-    <ToolDetail title="描述">
+    <ToolDetail :title="$t('tools.imgcompress.detail_title')">
       <el-text>
-        图片压缩工具使用先进的Compressor.js库，支持多种图片格式的在线压缩。
-        可以调节压缩质量、最大尺寸等参数，在保持图片质量的同时有效减小文件大小。
-        支持批量处理，适合网站优化、邮件发送等场景。
+        {{ $t('tools.imgcompress.detail_content') }}
       </el-text> 
     </ToolDetail>
 
-    <ToolDetail title="功能特点">
-      <ul class="list-disc list-inside space-y-2 text-gray-700">
-        <li>支持多种格式：JPG、PNG、WebP、GIF等</li>
-        <li>可调节压缩质量：0.1-1.0，平衡文件大小和质量</li>
-        <li>智能转换：大文件自动转换为WebP格式</li>
-        <li>保留EXIF：可选择保留图片的元数据信息</li>
-        <li>批量处理：支持多张图片同时压缩</li>
-        <li>实时预览：压缩前后对比，显示压缩率</li>
-        <li>拖拽上传：支持拖拽文件到页面</li>
-        <li>保持原尺寸：图片压缩后保持原始宽度和高度</li>
+    <ToolDetail :title="$t('tools.imgcompress.features_title')">
+      <ul class="list-disc list-inside space-y-2 text-gray-700" v-html="$t('tools.imgcompress.features_list')">
       </ul>
     </ToolDetail>
 
-    <ToolDetail title="使用说明">
-      <ol class="list-decimal list-inside space-y-2 text-gray-700">
-        <li>调整压缩参数：设置质量、尺寸等参数</li>
-        <li>上传图片：拖拽或点击选择图片文件</li>
-        <li>开始压缩：点击"开始压缩"按钮</li>
-        <li>查看结果：对比压缩前后的文件大小和压缩率</li>
-        <li>下载图片：单张下载或批量下载压缩后的图片</li>
+    <ToolDetail :title="$t('tools.imgcompress.usage_title')">
+      <ol class="list-decimal list-inside space-y-2 text-gray-700" v-html="$t('tools.imgcompress.usage_list')">
       </ol>
     </ToolDetail>
 
-    <ToolDetail title="为什么有的图片越压缩越大？">
-      <div class="space-y-3 text-gray-700">
-        <p class="text-sm leading-relaxed">
-          图片压缩后文件变大是一个常见现象，主要原因如下：
-        </p>
-        
-        <div class="space-y-2">
-          <h4 class="font-medium text-gray-800">1. 压缩质量设置过高</h4>
-          <p class="text-sm text-gray-600 pl-4">
-            如果压缩质量设置为1.0（100%），实际上没有进行任何压缩，反而可能因为格式转换导致文件变大。
-          </p>
-          
-          <h4 class="font-medium text-gray-800">2. 尺寸限制设置不当</h4>
-          <p class="text-sm text-gray-600 pl-4">
-            如果设置的最大宽度/高度比原图尺寸还大，图片不会被缩小，反而可能因为重新编码而增大。
-          </p>
-          
-          <h4 class="font-medium text-gray-800">3. 格式转换问题</h4>
-          <p class="text-sm text-gray-600 pl-4">
-            某些格式转换（如PNG转JPG）可能会增加文件大小，特别是当原图包含大量透明区域或简单图形时。
-          </p>
-          
-          <h4 class="font-medium text-gray-800">4. EXIF信息保留</h4>
-          <p class="text-sm text-gray-600 pl-4">
-            保留EXIF信息（相机参数、GPS位置等）会增加文件大小，建议关闭此选项以获得更好的压缩效果。
-          </p>
-          
-          <h4 class="font-medium text-gray-800">5. 原图已经高度压缩</h4>
-          <p class="text-sm text-gray-600 pl-4">
-            如果原图已经是高度压缩的格式（如低质量JPG），再次压缩可能无法获得更好的效果。
-          </p>
-        </div>
-        
-        <div class="bg-blue-50 p-3 rounded-lg">
-          <h4 class="font-medium text-blue-800 mb-2">💡 压缩建议</h4>
-          <ul class="text-sm text-blue-700 space-y-1">
-            <li>• 大文件（>5MB）：质量0.5以下，最大尺寸1200×800</li>
-            <li>• 中等文件（2-5MB）：质量0.6以下，最大尺寸1200×800</li>
-            <li>• 小文件（<2MB）：质量0.7以下，关闭EXIF保留</li>
-            <li>• 开启"智能压缩"选项，让工具自动优化参数</li>
-            <li>• 对于PNG图片，考虑转换为WebP格式以获得更好的压缩效果</li>
-          </ul>
-        </div>
-        
-        <div class="bg-yellow-50 p-3 rounded-lg">
-          <h4 class="font-medium text-yellow-800 mb-2">⚠️ 注意事项</h4>
-          <ul class="text-sm text-yellow-700 space-y-1">
-            <li>• 压缩质量越低，文件越小，但图片质量也越差</li>
-            <li>• 尺寸压缩会改变图片分辨率，影响显示效果</li>
-            <li>• 某些特殊格式的图片可能不适合压缩</li>
-            <li>• 建议先压缩少量图片测试效果，再批量处理</li>
-          </ul>
-        </div>
+    <ToolDetail :title="$t('tools.imgcompress.faq_title')">
+      <div class="space-y-3 text-gray-700" v-html="$t('tools.imgcompress.faq_content')">
       </div>
     </ToolDetail>
   </div>

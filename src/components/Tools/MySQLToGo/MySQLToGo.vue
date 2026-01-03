@@ -1,11 +1,14 @@
 <script setup lang="ts">
 import { reactive, ref, watch } from 'vue'
+import { useI18n } from 'vue-i18n'
 import DetailHeader from '@/components/Layout/DetailHeader/DetailHeader.vue'
 import ToolDetail from '@/components/Layout/ToolDetail/ToolDetail.vue'
 import { copy } from '@/utils/string'
 
+const { t } = useI18n()
+
 const info = reactive({
-  title: "MySQL转Go结构体",
+  title: "tools.mysqltogo.title",
 })
 
 // 表单数据
@@ -73,14 +76,14 @@ const validateDDL = (ddl: string): { isValid: boolean, errors: string[], warning
   
   // 检查是否包含CREATE TABLE
   if (!ddl.toUpperCase().includes('CREATE TABLE')) {
-    errors.push('DDL语句必须包含CREATE TABLE关键字')
+    errors.push(t('tools.mysqltogo.validator.no_keyword'))
     return { isValid: false, errors, warnings }
   }
   
   // 检查表名
   const tableNameMatch = ddl.match(/CREATE\s+TABLE\s+(?:`?(\w+)`?|`([^`]+)`)/i)
   if (!tableNameMatch) {
-    errors.push('无法识别表名，请确保CREATE TABLE语句格式正确')
+    errors.push(t('tools.mysqltogo.validator.no_table'))
   }
   
   // 检查是否有字段定义
@@ -103,52 +106,52 @@ const validateDDL = (ddl: string): { isValid: boolean, errors: string[], warning
       
       // 检查字段名
       if (!fieldName) {
-        errors.push(`字段定义错误: ${line}`)
+        errors.push(t('tools.mysqltogo.validator.field_error', { line }))
       }
       
       // 检查字段类型
       if (!fieldType) {
-        errors.push(`字段类型缺失: ${line}`)
+        errors.push(t('tools.mysqltogo.validator.field_type_missing', { line }))
       } else if (!mysqlToGoTypeMap[fieldType.toLowerCase()]) {
-        warnings.push(`未知字段类型 "${fieldType}"，将映射为string类型`)
+        warnings.push(t('tools.mysqltogo.validator.unknown_type', { type: fieldType }))
       }
       
       // 检查字段名格式
       if (fieldName.includes(' ')) {
-        errors.push(`字段名包含空格: ${fieldName}`)
+        errors.push(t('tools.mysqltogo.validator.space_in_name', { name: fieldName }))
       }
     }
   }
   
   if (!hasFields) {
-    errors.push('未找到有效的字段定义')
+    errors.push(t('tools.mysqltogo.validator.no_fields'))
   }
   
   // 检查括号匹配
   const openParens = (ddl.match(/\(/g) || []).length
   const closeParens = (ddl.match(/\)/g) || []).length
   if (openParens !== closeParens) {
-    errors.push('括号不匹配，请检查DDL语句的括号')
+    errors.push(t('tools.mysqltogo.validator.paren_mismatch'))
   }
   
   // 检查引号匹配
   const singleQuotes = (ddl.match(/'/g) || []).length
   const doubleQuotes = (ddl.match(/"/g) || []).length
   if (singleQuotes % 2 !== 0) {
-    errors.push('单引号不匹配')
+    errors.push(t('tools.mysqltogo.validator.squote_mismatch'))
   }
   if (doubleQuotes % 2 !== 0) {
-    errors.push('双引号不匹配')
+    errors.push(t('tools.mysqltogo.validator.dquote_mismatch'))
   }
   
   // 检查明显的语法错误
   if (ddl.includes('121') || ddl.includes('UP1212DATE')) {
-    errors.push('检测到明显的语法错误，如多余的数字或拼写错误')
+    errors.push(t('tools.mysqltogo.validator.syntax_error'))
   }
   
   // 检查ON UPDATE语法
   if (ddl.includes('ON UP') && !ddl.includes('ON UPDATE')) {
-    errors.push('ON UPDATE语法错误，应该是"ON UPDATE CURRENT_TIMESTAMP"')
+    errors.push(t('tools.mysqltogo.validator.on_update_error'))
   }
   
   return { isValid: errors.length === 0, errors, warnings }
@@ -229,7 +232,7 @@ const convertToGoStruct = () => {
   try {
     const fields = parseMySQLDDL(formData.mysqlDDL)
     if (fields.length === 0) {
-      errorMessage.value = '未能解析到有效的字段信息，请检查DDL格式'
+      errorMessage.value = t('tools.mysqltogo.msg.parse_fail')
       result.value = ''
       return
     }
@@ -237,7 +240,7 @@ const convertToGoStruct = () => {
     // 从DDL中提取表名
     const tableName = extractTableName(formData.mysqlDDL)
     if (!tableName) {
-      errorMessage.value = '未能从DDL中提取到表名，请检查CREATE TABLE语句格式'
+      errorMessage.value = t('tools.mysqltogo.msg.table_fail')
       result.value = ''
       return
     }
@@ -326,7 +329,7 @@ const convertToGoStruct = () => {
     
     result.value = goCode
   } catch (error) {
-    errorMessage.value = `转换失败: ${error}`
+    errorMessage.value = t('tools.mysqltogo.msg.convert_fail', { error })
     result.value = ''
   }
 }
@@ -402,12 +405,12 @@ const loadExample = () => {
     <div class="p-4 rounded-2xl bg-white">
       <el-form :model="formData" label-width="120px" class="space-y-4">
         <!-- MySQL DDL -->
-        <el-form-item label="MySQL DDL">
+        <el-form-item :label="$t('tools.mysqltogo.label_ddl')">
           <el-input
             v-model="formData.mysqlDDL"
             type="textarea"
             :rows="8"
-            placeholder="请输入MySQL CREATE TABLE语句"
+            :placeholder="$t('tools.mysqltogo.placeholder_ddl')"
             class="font-mono"
           />
         </el-form-item>
@@ -418,7 +421,7 @@ const loadExample = () => {
             <svg class="w-4 h-4 mr-2" fill="currentColor" viewBox="0 0 20 20">
               <path fill-rule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7 4a1 1 0 11-2 0 1 1 0 012 0zm-1-9a1 1 0 00-1 1v4a1 1 0 102 0V6a1 1 0 00-1-1z" clip-rule="evenodd"></path>
             </svg>
-            <span class="font-medium">错误</span>
+            <span class="font-medium">{{ $t('tools.mysqltogo.label_error') }}</span>
           </div>
           <div>{{ errorMessage }}</div>
         </div>
@@ -429,7 +432,7 @@ const loadExample = () => {
             <svg class="w-4 h-4 mr-2" fill="currentColor" viewBox="0 0 20 20">
               <path fill-rule="evenodd" d="M8.257 3.099c.765-1.36 2.722-1.36 3.486 0l5.58 9.92c.75 1.334-.213 2.98-1.742 2.98H4.42c-1.53 0-2.493-1.646-1.743-2.98l5.58-9.92zM11 13a1 1 0 11-2 0 1 1 0 012 0zm-1-8a1 1 0 00-1 1v3a1 1 0 002 0V6a1 1 0 00-1-1z" clip-rule="evenodd"></path>
             </svg>
-            <span class="font-medium">警告</span>
+            <span class="font-medium">{{ $t('tools.mysqltogo.label_warning') }}</span>
           </div>
           <ul class="list-disc list-inside space-y-1">
             <li v-for="warning in warnings" :key="warning">{{ warning }}</li>
@@ -438,36 +441,36 @@ const loadExample = () => {
 
         <!-- 选项配置 -->
         <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
-          <el-form-item label="JSON标签">
+          <el-form-item :label="$t('tools.mysqltogo.label_json_tag')">
             <el-switch v-model="formData.addJsonTag" />
           </el-form-item>
-          <el-form-item label="GORM标签">
+          <el-form-item :label="$t('tools.mysqltogo.label_gorm_tag')">
             <el-switch v-model="formData.addGormTag" />
           </el-form-item>
-          <el-form-item label="XORM标签">
+          <el-form-item :label="$t('tools.mysqltogo.label_xorm_tag')">
             <el-switch v-model="formData.addXormTag" />
           </el-form-item>
-          <el-form-item label="Gin标签">
+          <el-form-item :label="$t('tools.mysqltogo.label_gin_tag')">
             <el-switch v-model="formData.addGinTag" />
           </el-form-item>
         </div>
 
         <div class="grid grid-cols-2 md:grid-cols-3 gap-4">
-          <el-form-item label="使用指针">
+          <el-form-item :label="$t('tools.mysqltogo.label_pointer')">
             <el-switch v-model="formData.usePointer" />
           </el-form-item>
-          <el-form-item label="使用time包">
+          <el-form-item :label="$t('tools.mysqltogo.label_time_pkg')">
             <el-switch v-model="formData.useTime" />
           </el-form-item>
-          <el-form-item label="可空类型">
+          <el-form-item :label="$t('tools.mysqltogo.label_null')">
             <el-switch v-model="formData.useNull" />
           </el-form-item>
         </div>
 
         <!-- 操作按钮 -->
         <div class="flex flex-wrap gap-2">
-          <el-button @click="loadExample">加载示例</el-button>
-          <el-button @click="clearAll">清空</el-button>
+          <el-button @click="loadExample">{{ $t('tools.mysqltogo.btn_example') }}</el-button>
+          <el-button @click="clearAll">{{ $t('tools.mysqltogo.btn_clear') }}</el-button>
         </div>
       </el-form>
     </div>
@@ -475,42 +478,30 @@ const loadExample = () => {
     <!-- 转换结果 -->
     <div v-if="result" class="p-4 rounded-2xl bg-white">
       <div class="flex justify-between items-center mb-3">
-        <h3 class="text-lg font-semibold">转换结果</h3>
-        <el-button type="primary" @click="copyResult">复制结果</el-button>
+        <h3 class="text-lg font-semibold">{{ $t('tools.mysqltogo.label_result') }}</h3>
+        <el-button type="primary" @click="copyResult">{{ $t('tools.mysqltogo.btn_copy') }}</el-button>
       </div>
       <pre class="bg-gray-100 p-4 rounded-lg overflow-x-auto text-sm font-mono">{{ result }}</pre>
     </div>
 
     <!-- 描述 -->
-    <ToolDetail title="功能说明">
+    <ToolDetail :title="$t('tools.mysqltogo.detail_title')">
       <div class="space-y-2">
-        <p>将MySQL数据表的DDL语句转换为Go语言结构体，支持以下功能：</p>
+        <p>{{ $t('tools.mysqltogo.desc') }}</p>
         <ul class="list-disc list-inside space-y-1 text-sm">
-          <li><strong>实时验证：</strong>输入DDL时实时检查语法错误和格式问题</li>
-          <li><strong>自动转换：</strong>输入DDL后自动转换，无需手动点击按钮</li>
-          <li><strong>自动提取：</strong>自动从DDL中提取表名并转换为结构体名</li>
-          <li><strong>字段类型映射：</strong>自动将MySQL字段类型转换为对应的Go类型</li>
-          <li><strong>标签生成：</strong>支持生成JSON、GORM、XORM、Gin等常用标签</li>
-          <li><strong>命名转换：</strong>将下划线命名转换为PascalCase命名</li>
-          <li><strong>注释保留：</strong>保留字段注释信息</li>
-          <li><strong>错误提示：</strong>详细的错误和警告信息，帮助快速定位问题</li>
+          <li v-for="(feature, idx) in $t('tools.mysqltogo.features')" :key="idx">{{ feature }}</li>
         </ul>
       </div>
     </ToolDetail>
 
     <!-- 使用说明 -->
-    <ToolDetail title="使用说明">
+    <ToolDetail :title="$t('tools.mysqltogo.usage_title')">
       <div class="space-y-2">
         <ol class="list-decimal list-inside space-y-1 text-sm">
-          <li>在"MySQL DDL"文本框中粘贴完整的CREATE TABLE语句</li>
-          <li>系统会实时检查DDL格式，如有问题会显示错误或警告信息</li>
-          <li>系统会自动从DDL中提取表名并转换为结构体名</li>
-          <li>根据需要配置标签选项（JSON、GORM、XORM、Gin等）</li>
-          <li>配置其他选项（指针类型、时间包、可空类型等）</li>
-          <li>转换结果会实时显示，点击"复制结果"按钮复制生成的Go代码</li>
+          <li v-for="(step, idx) in $t('tools.mysqltogo.usage')" :key="idx">{{ step }}</li>
         </ol>
         <p class="text-sm text-gray-600 mt-2">
-          <strong>提示：</strong>可以点击"加载示例"按钮查看示例DDL语句。
+          <strong>{{ $t('tools.mysqltogo.tip') }}</strong>
         </p>
       </div>
     </ToolDetail>

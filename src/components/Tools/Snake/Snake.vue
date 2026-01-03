@@ -1,5 +1,6 @@
 <script setup lang="ts">
-import { reactive, ref, onMounted, onUnmounted } from "vue";
+import { reactive, ref, onMounted, onUnmounted, computed } from "vue";
+import { useI18n } from 'vue-i18n'
 import DetailHeader from "@/components/Layout/DetailHeader/DetailHeader.vue";
 import ToolDetail from "@/components/Layout/ToolDetail/ToolDetail.vue";
 
@@ -9,8 +10,10 @@ interface Position {
   y: number;
 }
 
+const { t } = useI18n()
+
 const info = reactive({
-  title: "贪吃蛇",
+  title: "tools.snake.title",
 });
 
 // 游戏状态
@@ -32,12 +35,12 @@ const config = reactive({
 });
 
 // 速度选项
-const speedOptions = [
-  { label: "慢速", value: 200 },
-  { label: "正常", value: 150 },
-  { label: "快速", value: 100 },
-  { label: "极速", value: 50 },
-];
+const speedOptions = computed(() => [
+  { label: t('tools.snake.speed_slow'), value: 200 },
+  { label: t('tools.snake.speed_normal'), value: 150 },
+  { label: t('tools.snake.speed_fast'), value: 100 },
+  { label: t('tools.snake.speed_extreme'), value: 50 },
+]);
 
 // 生成随机蛇的初始位置
 const getRandomSnakePosition = (): Position[] => {
@@ -460,87 +463,87 @@ const clearHighScore = () => {
 const canvasSize = config.gridSize * config.cellSize;
 
 // 颜色配置选项
-const colorSchemes = [
+const colorSchemes = computed(() => [
   {
-    name: '经典绿色',
-    head: '#15803d',    // green-700 (深绿色蛇头)
-    body: '#22c55e',    // green-500 (浅绿色蛇身)
-    food: '#ef4444'     // red-500
+    name: t('tools.snake.colors.green'),
+    head: '#15803d',
+    body: '#22c55e',
+    food: '#ef4444'
   },
   {
-    name: '蓝色主题',
-    head: '#1d4ed8',    // blue-700 (深蓝色蛇头)
-    body: '#3b82f6',    // blue-500 (浅蓝色蛇身)
-    food: '#f59e0b'     // amber-500
+    name: t('tools.snake.colors.blue'),
+    head: '#1d4ed8',
+    body: '#3b82f6',
+    food: '#f59e0b'
   },
   {
-    name: '紫色主题',
-    head: '#7c3aed',    // purple-700 (深紫色蛇头)
-    body: '#a855f7',    // purple-500 (浅紫色蛇身)
-    food: '#10b981'     // emerald-500
+    name: t('tools.snake.colors.purple'),
+    head: '#7c3aed',
+    body: '#a855f7',
+    food: '#10b981'
   },
   {
-    name: '橙色主题',
-    head: '#c2410c',    // orange-700 (深橙色蛇头)
-    body: '#f97316',    // orange-500 (浅橙色蛇身)
-    food: '#8b5cf6'     // violet-500
+    name: t('tools.snake.colors.orange'),
+    head: '#c2410c',
+    body: '#f97316',
+    food: '#8b5cf6'
   },
   {
-    name: '粉色主题',
-    head: '#be185d',    // pink-700 (深粉色蛇头)
-    body: '#ec4899',    // pink-500 (浅粉色蛇身)
-    food: '#06b6d4'     // cyan-500
+    name: t('tools.snake.colors.pink'),
+    head: '#be185d',
+    body: '#ec4899',
+    food: '#06b6d4'
   },
   {
-    name: '红色主题',
-    head: '#b91c1c',    // red-700 (深红蛇头)
-    body: '#ef4444',    // red-500 (红色蛇身)
-    food: '#10b981'     // emerald-500 (绿色食物)
+    name: t('tools.snake.colors.red'),
+    head: '#b91c1c',
+    body: '#ef4444',
+    food: '#10b981'
   },
   {
-    name: '青色主题',
-    head: '#0f766e',    // teal-700 (深青蛇头)
-    body: '#14b8a6',    // teal-500 (青色蛇身)
-    food: '#f97316'     // orange-500 (橙色食物)
+    name: t('tools.snake.colors.cyan'),
+    head: '#0f766e',
+    body: '#14b8a6',
+    food: '#f97316'
   },
   {
-    name: '黄色主题',
-    head: '#a16207',    // yellow-700 (深黄蛇头)
-    body: '#eab308',    // yellow-500 (黄色蛇身)
-    food: '#8b5cf6'     // violet-500 (紫色食物)
+    name: t('tools.snake.colors.yellow'),
+    head: '#a16207',
+    body: '#eab308',
+    food: '#8b5cf6'
   },
   {
-    name: '灰色主题',
-    head: '#374151',    // gray-700 (深灰蛇头)
-    body: '#6b7280',    // gray-500 (灰色蛇身)
-    food: '#ef4444'     // red-500 (红色食物)
+    name: t('tools.snake.colors.gray'),
+    head: '#374151',
+    body: '#6b7280',
+    food: '#ef4444'
   },
   {
-    name: '靛蓝主题',
-    head: '#3730a3',    // indigo-700 (深靛蓝蛇头)
-    body: '#6366f1',    // indigo-500 (靛蓝蛇身)
-    food: '#f59e0b'     // amber-500 (琥珀色食物)
+    name: t('tools.snake.colors.indigo'),
+    head: '#3730a3',
+    body: '#6366f1',
+    food: '#f59e0b'
   },
   {
-    name: '青绿主题',
-    head: '#047857',    // emerald-700 (深青绿蛇头)
-    body: '#10b981',    // emerald-500 (青绿蛇身)
-    food: '#f97316'     // orange-500 (橙色食物)
+    name: t('tools.snake.colors.teal'),
+    head: '#047857',
+    body: '#10b981',
+    food: '#f97316'
   },
   {
-    name: '玫瑰主题',
-    head: '#be123c',    // rose-700 (深玫瑰蛇头)
-    body: '#f43f5e',    // rose-500 (玫瑰蛇身)
-    food: '#06b6d4'     // cyan-500 (青色食物)
+    name: t('tools.snake.colors.rose'),
+    head: '#be123c',
+    body: '#f43f5e',
+    food: '#06b6d4'
   }
-]
+])
 
 // 当前选中的颜色方案
 const selectedColorScheme = ref(0)
 
 // 获取当前颜色方案
 const getCurrentColorScheme = () => {
-  return colorSchemes[selectedColorScheme.value]
+  return colorSchemes.value[selectedColorScheme.value]
 }
 </script>
 
@@ -555,7 +558,7 @@ const getCurrentColorScheme = () => {
           <div
             class="text-center bg-blue-50 p-4 rounded-lg border border-blue-200 flex-1 mx-2"
           >
-            <h3 class="text-lg font-medium text-blue-900">得分</h3>
+            <h3 class="text-lg font-medium text-blue-900">{{ $t('tools.snake.score') }}</h3>
             <p class="text-2xl font-bold text-blue-600">
               {{ gameState.score }}
             </p>
@@ -563,7 +566,7 @@ const getCurrentColorScheme = () => {
           <div
             class="text-center bg-green-50 p-4 rounded-lg border border-green-200 flex-1 mx-2 relative"
           >
-            <h3 class="text-lg font-medium text-green-900">最高分</h3>
+            <h3 class="text-lg font-medium text-green-900">{{ $t('tools.snake.high_score') }}</h3>
             <div class="flex items-center justify-center space-x-2">
               <p class="text-2xl font-bold text-green-600">
                 {{ gameState.highScore }}
@@ -576,14 +579,14 @@ const getCurrentColorScheme = () => {
                 :disabled="gameState.isPlaying || (!gameState.gameOver && gameState.gameTime > 0)"
                 class="bg-red-500 hover:bg-red-600 border-red-600 text-xs h-6 px-2"
               >
-                清空
+                {{ $t('tools.snake.clear') }}
               </el-button>
             </div>
           </div>
           <div
             class="text-center bg-purple-50 p-4 rounded-lg border border-purple-200 flex-1 mx-2"
           >
-            <h3 class="text-lg font-medium text-purple-900">游戏时间</h3>
+            <h3 class="text-lg font-medium text-purple-900">{{ $t('tools.snake.game_time') }}</h3>
             <p class="text-2xl font-bold text-purple-600">
               {{ formatTime(gameState.gameTime) }}
             </p>
@@ -594,7 +597,7 @@ const getCurrentColorScheme = () => {
         <div class="flex justify-between items-center mb-6">
           <div class="flex items-center space-x-6">
             <div class="flex items-center space-x-3">
-              <label class="text-sm font-medium text-gray-700 whitespace-nowrap">游戏速度：</label>
+              <label class="text-sm font-medium text-gray-700 whitespace-nowrap">{{ $t('tools.snake.label_speed') }}</label>
               <el-select 
                 v-model="config.speed" 
                 @change="handleSpeedChange"
@@ -612,7 +615,7 @@ const getCurrentColorScheme = () => {
             
             <!-- 颜色主题选择 -->
             <div class="flex items-center space-x-3">
-              <label class="text-sm font-medium text-gray-700 whitespace-nowrap">颜色主题：</label>
+              <label class="text-sm font-medium text-gray-700 whitespace-nowrap">{{ $t('tools.snake.label_theme') }}</label>
               <el-select 
                 v-model="selectedColorScheme" 
                 :disabled="gameState.isPlaying"
@@ -714,7 +717,7 @@ const getCurrentColorScheme = () => {
             type="primary"
             class="bg-blue-500 hover:bg-blue-600 border-blue-600"
           >
-            开始游戏
+            {{ $t('tools.snake.btn_start') }}
           </el-button>
           <el-button
             v-if="gameState.isPlaying"
@@ -722,7 +725,7 @@ const getCurrentColorScheme = () => {
             type="warning"
             class="bg-orange-500 hover:bg-orange-600 border-orange-600"
           >
-            暂停
+            {{ $t('tools.snake.btn_pause') }}
           </el-button>
           <el-button
             v-if="!gameState.isPlaying && !gameState.gameOver && gameState.hasStarted"
@@ -730,7 +733,7 @@ const getCurrentColorScheme = () => {
             type="success"
             class="bg-green-500 hover:bg-green-600 border-green-600"
           >
-            继续游戏
+            {{ $t('tools.snake.btn_continue') }}
           </el-button>
           <el-button
             v-if="gameState.gameOver"
@@ -738,7 +741,7 @@ const getCurrentColorScheme = () => {
             type="success"
             class="bg-green-500 hover:bg-green-600 border-green-600"
           >
-            重新开始
+            {{ $t('tools.snake.btn_restart') }}
           </el-button>
         </div>
 
@@ -746,7 +749,7 @@ const getCurrentColorScheme = () => {
         <div class="lg:hidden flex justify-center mb-6">
           <div class="bg-gray-100 rounded-lg p-4 border border-gray-300">
             <h3 class="text-center text-sm font-medium text-gray-700 mb-3">
-              方向控制
+              {{ $t('tools.snake.direction_control') }}
             </h3>
             <div class="grid grid-cols-3 gap-2">
               <!-- 上 -->
@@ -798,16 +801,10 @@ const getCurrentColorScheme = () => {
           <div
             class="bg-red-50 border-2 border-red-300 rounded-lg p-4 shadow-md"
           >
-            <h3 class="text-lg font-medium text-red-900 mb-2">游戏结束</h3>
-            <p class="text-red-600">最终得分: {{ gameState.score }}</p>
-            <p class="text-purple-600">
-              游戏时间: {{ formatTime(gameState.gameTime) }}
-            </p>
-            <p
-              v-if="gameState.score > gameState.highScore"
-              class="text-green-600 font-medium"
-            >
-              新纪录！恭喜你创造了新的最高分！
+            <h3 class="text-lg font-medium text-red-900 mb-2">{{ $t('tools.snake.game_over') }}</h3>
+            <p class="text-red-600">{{ $t('tools.snake.final_score') }} {{ gameState.score }}</p>
+            <p v-if="gameState.score > gameState.highScore" class="text-yellow-600 font-medium mt-2">
+              {{ $t('tools.snake.new_record') }}
             </p>
           </div>
         </div>
@@ -816,26 +813,26 @@ const getCurrentColorScheme = () => {
         <div
           class="bg-gray-50 rounded-lg p-4 border-2 border-gray-200 shadow-sm"
         >
-          <h3 class="text-lg font-medium text-gray-900 mb-3">操作说明</h3>
+          <h3 class="text-lg font-medium text-gray-900 mb-3">{{ $t('tools.snake.operation_title') }}</h3>
           <div
             class="grid grid-cols-1 md:grid-cols-2 gap-4 text-sm text-gray-600"
           >
             <div class="bg-white p-3 rounded border border-gray-200">
               <p>
-                <strong class="text-blue-600">方向键/WASD：</strong
-                >控制蛇的移动方向
+                <strong class="text-blue-600">{{ $t('tools.snake.op_keys') }}</strong
+                >{{ $t('tools.snake.op_keys_desc') }}
               </p>
               <p>
-                <strong class="text-blue-600">空格键：</strong>暂停/继续游戏
+                <strong class="text-blue-600">{{ $t('tools.snake.op_space') }}</strong>{{ $t('tools.snake.op_space_desc') }}
               </p>
             </div>
             <div class="bg-white p-3 rounded border border-gray-200">
               <p>
-                <strong class="text-green-600">目标：</strong
-                >吃到红色食物，让蛇变长
+                <strong class="text-green-600">{{ $t('tools.snake.op_goal') }}</strong
+                >{{ $t('tools.snake.op_goal_desc') }}
               </p>
               <p>
-                <strong class="text-red-600">注意：</strong>不要撞墙或撞到自己
+                <strong class="text-red-600">{{ $t('tools.snake.op_note') }}</strong>{{ $t('tools.snake.op_note_desc') }}
               </p>
             </div>
           </div>
@@ -844,7 +841,7 @@ const getCurrentColorScheme = () => {
             class="lg:hidden mt-4 bg-blue-50 p-3 rounded border border-blue-200"
           >
             <p class="text-sm text-blue-700">
-              <strong>移动端：</strong>使用下方虚拟方向键控制蛇的移动
+              <strong>{{ $t('tools.snake.op_mobile') }}</strong>{{ $t('tools.snake.op_mobile_desc') }}
             </p>
           </div>
         </div>
@@ -852,16 +849,9 @@ const getCurrentColorScheme = () => {
     </div>
 
     <!-- 工具详情 -->
-    <ToolDetail title="描述">
+    <ToolDetail :title="$t('tools.snake.desc_title')">
       <el-text>
-        经典贪吃蛇游戏，支持键盘控制：<br /><br />
-
-        游戏特色：流畅的操作体验，实时得分显示，最高分记录<br />
-        操作方式：使用方向键或WASD控制蛇的移动，空格键暂停游戏<br />
-        游戏目标：控制蛇吃到食物，让蛇变得越来越长<br />
-        挑战模式：避免撞墙和撞到自己，挑战你的反应速度<br /><br />
-
-        适合休闲娱乐，锻炼反应能力和手眼协调。
+        {{ $t('tools.snake.desc_content') }}
       </el-text>
     </ToolDetail>
   </div>

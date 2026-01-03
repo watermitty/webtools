@@ -2,14 +2,14 @@ import { defineConfig, loadEnv } from 'vite'
 import vue from '@vitejs/plugin-vue'
 import { createSvgIconsPlugin } from 'vite-plugin-svg-icons'
 import path from 'path'
-import {seoperender} from "./ssr.config";
+import { seoperender } from "./ssr.config";
 
 // https://vitejs.dev/config/
-export default defineConfig(({command, mode}) => {
+export default defineConfig(({ command, mode }) => {
   let env = loadEnv(mode, process.cwd())
   return {
-    define: {  
-      'process.env.NODE_ENV': JSON.stringify('production')  
+    define: {
+      'process.env.NODE_ENV': JSON.stringify('production')
     },
     plugins: [
       vue(),
@@ -23,6 +23,7 @@ export default defineConfig(({command, mode}) => {
       alias: {
         "@": path.resolve("./src"),
         'v-code-diff': path.resolve(__dirname, 'node_modules/v-code-diff/src/CodeDiff.vue'),
+        'vue-demi': path.resolve(__dirname, 'node_modules/vue-demi/lib/index.mjs'),
       }
     },
     // 新增构建优化配置
@@ -59,8 +60,8 @@ export default defineConfig(({command, mode}) => {
           // 为 chunk 文件名添加 hash
           chunkFileNames: (chunkInfo) => {
             const facadeModuleId = chunkInfo.facadeModuleId
-            ? chunkInfo.facadeModuleId.split('/').pop().replace(/\.\w+$/, '')
-            : 'chunk'
+              ? chunkInfo.facadeModuleId.split('/').pop().replace(/\.\w+$/, '')
+              : 'chunk'
             return `js/${facadeModuleId}-[hash].js`
           }
         }
@@ -71,7 +72,7 @@ export default defineConfig(({command, mode}) => {
     server: {
       host: env.VITE_HOST,
       proxy: {
-        [env.VITE_APP_BASE_API] : {
+        [env.VITE_APP_BASE_API]: {
           target: env.VITE_SERVE,
           changeOrigin: true,
         },

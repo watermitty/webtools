@@ -1,5 +1,8 @@
 <script setup lang="ts">
 import { reactive } from 'vue'
+import { useI18n } from 'vue-i18n'
+
+const { t } = useI18n()
 
 const info: {
   [key: string]: string|number
@@ -72,30 +75,30 @@ const tran = (key: string) => {
 <template>
     <div>
       <div>
-        <el-divider content-position="left">国际时间单位</el-divider>
+        <el-divider content-position="left">{{ $t('tools.unit.time.title') }}</el-divider>
         <!-- group -->
         <div class="custom-box">
           <div class="custom-box-single">
-            <el-text class="custom-box-text">年(year)</el-text>
+            <el-text class="custom-box-text">{{ $t('tools.unit.time.year') }}</el-text>
             <el-input
               v-model="info.year"
               placeholder=""
               class="input-with-select"
             >
               <template #append>
-                <el-button @click="tran('year')">转换</el-button>
+                <el-button @click="tran('year')">{{ $t('tools.unit.common.convert') }}</el-button>
               </template>
             </el-input>
           </div>
           <div class="custom-box-single">
-            <el-text class="custom-box-text">月(month)</el-text>
+            <el-text class="custom-box-text">{{ $t('tools.unit.time.month') }}</el-text>
             <el-input
               v-model="info.month"
               placeholder=""
               class="input-with-select"
             >
               <template #append>
-                <el-button @click="tran('month')">转换</el-button>
+                <el-button @click="tran('month')">{{ $t('tools.unit.common.convert') }}</el-button>
               </template>
             </el-input>
           </div>
@@ -104,26 +107,26 @@ const tran = (key: string) => {
         <!-- group -->
         <div class="custom-box">
           <div class="custom-box-single">
-            <el-text class="custom-box-text">日(d)</el-text>
+            <el-text class="custom-box-text">{{ $t('tools.unit.time.day') }}</el-text>
             <el-input
               v-model="info.d"
               placeholder=""
               class="input-with-select"
             >
               <template #append>
-                <el-button @click="tran('d')">转换</el-button>
+                <el-button @click="tran('d')">{{ $t('tools.unit.common.convert') }}</el-button>
               </template>
             </el-input>
           </div>
           <div class="custom-box-single">
-            <el-text class="custom-box-text">时(h)</el-text>
+            <el-text class="custom-box-text">{{ $t('tools.unit.time.hour') }}</el-text>
             <el-input
               v-model="info.h"
               placeholder=""
               class="input-with-select"
             >
               <template #append>
-                <el-button @click="tran('h')">转换</el-button>
+                <el-button @click="tran('h')">{{ $t('tools.unit.common.convert') }}</el-button>
               </template>
             </el-input>
           </div>
@@ -132,26 +135,26 @@ const tran = (key: string) => {
         <!-- group -->
         <div class="custom-box">
           <div class="custom-box-single">
-            <el-text class="custom-box-text">分(min)</el-text>
+            <el-text class="custom-box-text">{{ $t('tools.unit.time.minute') }}</el-text>
             <el-input
               v-model="info.min"
               placeholder=""
               class="input-with-select"
             >
               <template #append>
-                <el-button @click="tran('min')">转换</el-button>
+                <el-button @click="tran('min')">{{ $t('tools.unit.common.convert') }}</el-button>
               </template>
             </el-input>
           </div>
           <div class="custom-box-single">
-            <el-text class="custom-box-text">秒(s)</el-text>
+            <el-text class="custom-box-text">{{ $t('tools.unit.time.second') }}</el-text>
             <el-input
               v-model="info.s"
               placeholder=""
               class="input-with-select"
             >
               <template #append>
-                <el-button @click="tran('s')">转换</el-button>
+                <el-button @click="tran('s')">{{ $t('tools.unit.common.convert') }}</el-button>
               </template>
             </el-input>
           </div>
@@ -160,26 +163,26 @@ const tran = (key: string) => {
         <!-- group -->
         <div class="custom-box">
           <div class="custom-box-single">
-            <el-text class="custom-box-text">毫秒(ms)</el-text>
+            <el-text class="custom-box-text">{{ $t('tools.unit.time.ms') }}</el-text>
             <el-input
               v-model="info.ms"
               placeholder=""
               class="input-with-select"
             >
               <template #append>
-                <el-button @click="tran('ms')">转换</el-button>
+                <el-button @click="tran('ms')">{{ $t('tools.unit.common.convert') }}</el-button>
               </template>
             </el-input>
           </div>
           <div class="custom-box-single">
-            <el-text class="custom-box-text">周(week)</el-text>
+            <el-text class="custom-box-text">{{ $t('tools.unit.time.week') }}</el-text>
             <el-input
               v-model="info.week"
               placeholder=""
               class="input-with-select"
             >
               <template #append>
-                <el-button @click="tran('week')">转换</el-button>
+                <el-button @click="tran('week')">{{ $t('tools.unit.common.convert') }}</el-button>
               </template>
             </el-input>
           </div>
@@ -188,7 +191,7 @@ const tran = (key: string) => {
       </div>
 
       <div class="w-full text-center">
-        <el-button type="primary" @click="clear">清除全部</el-button>
+        <el-button type="primary" @click="clear">{{ $t('tools.unit.common.clear') }}</el-button>
       </div>
     </div>
 </template>

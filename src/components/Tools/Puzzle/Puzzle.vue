@@ -1,11 +1,14 @@
 <script setup lang="ts">
 import { reactive, ref, onMounted, onUnmounted, computed } from 'vue'
+import { useI18n } from 'vue-i18n'
 import DetailHeader from '@/components/Layout/DetailHeader/DetailHeader.vue'
 import ToolDetail from '@/components/Layout/ToolDetail/ToolDetail.vue'
 import { Refresh } from '@element-plus/icons-vue'
 
+const { t } = useI18n()
+
 const info = reactive({
-  title: "数字华容道",
+  title: "tools.puzzle.title",
 })
 
 interface Tile {
@@ -274,13 +277,13 @@ onMounted(() => {
 
 <template>
   <div class="flex flex-col mt-3 flex-1">
-    <DetailHeader :title="info.title"></DetailHeader>
+    <DetailHeader :title="$t(info.title)"></DetailHeader>
 
     <div class="p-4 rounded-2xl bg-white">
       <!-- 游戏控制 -->
       <div class="flex flex-wrap gap-4 mb-6 items-center">
         <div class="flex items-center gap-2">
-          <span class="text-sm font-medium">难度：</span>
+          <span class="text-sm font-medium">{{ $t('tools.puzzle.difficulty') }}</span>
           <el-select v-model="difficulty" @change="restartGame" style="width: 100px">
             <el-option label="3x3" :value="3" />
             <el-option label="4x4" :value="4" />
@@ -289,16 +292,16 @@ onMounted(() => {
         </div>
         
         <el-button type="primary" @click="restartGame" :icon="Refresh">
-          重新开始
+          {{ $t('tools.puzzle.restart') }}
         </el-button>
         
         <div class="flex gap-4 text-sm">
           <div class="flex items-center gap-1">
-            <span class="text-gray-600">步数：</span>
+            <span class="text-gray-600">{{ $t('tools.puzzle.moves') }}</span>
             <span class="font-bold text-blue-600">{{ gameState.moves }}</span>
           </div>
           <div class="flex items-center gap-1">
-            <span class="text-gray-600">时间：</span>
+            <span class="text-gray-600">{{ $t('tools.puzzle.time') }}</span>
             <span class="font-bold text-green-600">{{ formatTime(gameState.time) }}</span>
           </div>
         </div>
@@ -332,44 +335,32 @@ onMounted(() => {
       <!-- 完成提示 -->
       <div v-if="gameState.isCompleted" 
            class="mt-6 p-4 bg-green-50 border border-green-200 rounded-lg text-center">
-        <div class="text-green-800 font-bold text-lg mb-2">🎉 恭喜完成！</div>
+        <div class="text-green-800 font-bold text-lg mb-2">{{ $t('tools.puzzle.congrats') }}</div>
         <div class="text-green-600">
-          用时：{{ formatTime(gameState.time) }} | 步数：{{ gameState.moves }}
+          {{ $t('tools.puzzle.time_used') }} {{ formatTime(gameState.time) }} | {{ $t('tools.puzzle.moves_used') }} {{ gameState.moves }}
         </div>
       </div>
     </div>
 
     <!-- 描述 -->
-    <ToolDetail title="游戏说明">
+    <ToolDetail :title="$t('tools.puzzle.desc_title')">
       <el-text>
-        数字华容道是一款经典的益智游戏，起源于19世纪的欧洲。游戏目标是通过移动数字方块，将数字按1、2、3...的顺序排列，空白方块位于右下角。
+        {{ $t('tools.puzzle.desc_content') }}
         <br><br>
-        <strong>游戏规则：</strong>
-        <br>• 点击与空白方块相邻的数字方块可以移动
-        <br>• 将所有数字按顺序排列即可获胜
-        <br>• 支持3x3、4x4、5x5三种难度
-        <br>• 游戏会自动记录移动步数和用时
+        <strong>{{ $t('tools.puzzle.rules_title') }}</strong>
+        <span v-html="$t('tools.puzzle.rules_content')"></span>
         <br><br>
-        <strong>操作方法：</strong>
-        <br>• 鼠标点击：点击与空白方块相邻的数字方块进行移动
-        <br>• 键盘控制：使用方向键移动空白方块周围的数字
-        <br>• 重新开始：点击"重新开始"按钮可以重置游戏
-        <br>• 难度切换：选择不同难度会重新开始游戏
+        <strong>{{ $t('tools.puzzle.controls_title') }}</strong>
+        <span v-html="$t('tools.puzzle.controls_content')"></span>
         <br><br>
-        <strong>技巧提示：</strong>
-        <br>• <strong>逐行完成法</strong>：先完成第一行，再逐行完成，这是最常用的解法
-        <br>• <strong>角落优先法</strong>：先固定角落的数字，再处理边缘数字
-        <br>• <strong>循环移动法</strong>：利用空白方块的移动来调整数字位置
-        <br>• <strong>逆向思维</strong>：从目标状态倒推，思考如何到达当前状态
-        <br>• <strong>避免死路</strong>：移动前多思考几步，避免将数字移动到无法调整的位置
+        <strong>{{ $t('tools.puzzle.tips_title') }}</strong>
+        <br>{{ $t('tools.puzzle.tips_content') }}
         <br><br>
-        <strong>难度说明：</strong>
-        <br>• <strong>3x3（简单）</strong>：适合初学者，通常10-50步内完成
-        <br>• <strong>4x4（中等）</strong>：有一定挑战性，通常50-200步内完成
-        <br>• <strong>5x5（困难）</strong>：高难度，通常需要200步以上，考验耐心和策略
+        <strong>{{ $t('tools.puzzle.difficulty_title') }}</strong>
+        <span v-html="$t('tools.puzzle.difficulty_content')"></span>
         <br><br>
-        <strong>历史背景：</strong>
-        <br>数字华容道最早出现在19世纪末的欧洲，最初是作为教育玩具使用。它不仅能锻炼逻辑思维，还能提高空间想象力和问题解决能力。现代版本通常使用数字1到8（3x3）或1到15（4x4），空白位置用于移动其他方块。
+        <strong>{{ $t('tools.puzzle.history_title') }}</strong>
+        <br>{{ $t('tools.puzzle.history_content') }}
       </el-text>
     </ToolDetail>
   </div>

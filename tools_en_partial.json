@@ -1,0 +1,350 @@
+{
+  "randompassword": {
+    "title": "Random Password",
+    "desc": "Generate secure random passwords and strings in batches."
+  },
+  "urlencode": {
+    "title": "URL Encode/Decode",
+    "desc": "Online tool for URL encoding and decoding."
+  },
+  "uuid": {
+    "title": "UUID Generator",
+    "desc": "Batch generate UUIDs online."
+  },
+  "timetran": {
+    "title": "Timestamp Converter",
+    "desc": "Convert between Unix timestamps and human-readable dates."
+  },
+  "md5": {
+    "title": "MD5 Encryption",
+    "desc": "Online MD5 hashing tool (32-bit & 16-bit)."
+  },
+  "jsontran": {
+    "title": "JSON Editor",
+    "desc": "Real-time JSON editing, formatting, validating, and minifying."
+  },
+  "csvjson": {
+    "title": "CSV/TSV to JSON",
+    "desc": "Convert between CSV/TSV and JSON formats."
+  },
+  "reg": {
+    "title": "Regex Tester",
+    "desc": "Online Regular Expression testing tool."
+  },
+  "unicode": {
+    "title": "Unicode to Chinese",
+    "desc": "Convert between Unicode and Chinese characters."
+  },
+  "httpstatus": {
+    "title": "HTTP Status Codes",
+    "desc": "List of HTTP status codes and their meanings."
+  },
+  "jwt": {
+    "title": "JWT Decoder",
+    "desc": "Decode and inspect JSON Web Tokens."
+  },
+  "filesize": {
+    "title": "File Size Converter",
+    "desc": "Convert between Bytes, KB, MB, GB, TB, etc."
+  },
+  "cron": {
+    "title": "Cron Generator",
+    "desc": "Generate and parse Cron expressions for scheduled tasks."
+  },
+  "htmlentity": {
+    "title": "HTML Entity Encode",
+    "desc": "Escape and unescape HTML entities."
+  },
+  "postman": {
+    "title": "HTTP Request Debugger",
+    "desc": "Send HTTP requests online (like Postman)."
+  },
+  "urlparams": {
+    "title": "URL Params Editor",
+    "desc": "Parse and build URL query strings."
+  },
+  "namingcase": {
+    "title": "Case Converter",
+    "desc": "Convert between Camel, Snake, Kebab, and Pascal case."
+  },
+  "hash": {
+    "title": "Hash & HMAC",
+    "desc": "Compute SHA-1, SHA-256, HMAC, and more."
+  },
+  "cookie": {
+    "title": "Cookie Editor",
+    "desc": "Parse and build Cookie strings with Domain/Path support."
+  },
+  "mysqltogo": {
+    "title": "MySQL to Go Struct",
+    "desc": "Convert MySQL DDL to Go struct definitions."
+  },
+  "diff": {
+    "title": "Text Diff",
+    "desc": "Compare text and code differences online."
+  },
+  "markdown": {
+    "title": "Markdown Editor",
+    "desc": "Online Markdown editor with real-time preview."
+  },
+  "wordcount": {
+    "title": "Word Count",
+    "desc": "Count characters, words, paragraphs, and punctuation."
+  },
+  "textunique": {
+    "title": "Remove Duplicate Lines",
+    "desc": "Remove duplicate lines from text."
+  },
+  "asciiword": {
+    "title": "ASCII Art Generator",
+    "desc": "Generate text-based ASCII art."
+  },
+  "richtext": {
+    "title": "Rich Text Editor",
+    "desc": "Online WYSIWYG editor with HTML output."
+  },
+  "unit": {
+    "title": "Unit Converter",
+    "desc": "Convert length, weight, area, time, temperature, and more."
+  },
+  "morse": {
+    "title": "Morse Code",
+    "desc": "Encode and decode Morse code (supports Chinese)."
+  },
+  "scaletran": {
+    "title": "Base Converter",
+    "desc": "Convert numbers between base 2 and base 64."
+  },
+  "ascii": {
+    "title": "ASCII Table",
+    "desc": "Reference table for ASCII control codes and characters."
+  },
+  "length": {
+    "title": "Length Converter",
+    "desc": "Convert between varying units of length."
+  },
+  "area": {
+    "title": "Area Converter",
+    "desc": "Convert between varying units of area."
+  },
+  "weight": {
+    "title": "Weight Converter",
+    "desc": "Convert between varying units of weight."
+  },
+  "timeunit": {
+    "title": "Time Converter",
+    "desc": "Convert between varying units of time."
+  },
+  "temperature": {
+    "title": "Temperature Converter",
+    "desc": "Convert between Celsius, Fahrenheit, and Kelvin."
+  },
+  "pressure": {
+    "title": "Pressure Converter",
+    "desc": "Convert between Pa, bar, psi, and other pressure units."
+  },
+  "heat": {
+    "title": "Energy Converter",
+    "desc": "Convert between Joules, kWh, Calories, etc."
+  },
+  "power": {
+    "title": "Power Converter",
+    "desc": "Convert between Watts, kW, HP, etc."
+  },
+  "radiation": {
+    "title": "Radiation Reference",
+    "desc": "Reference data for common radiation sources in daily life."
+  },
+  "math3d": {
+    "title": "3D Equation Plotter",
+    "desc": "Visualize 3D mathematical equations and functions."
+  },
+  "algo": {
+    "title": "Algorithm Visualization",
+    "desc": "Visualize sorting and searching algorithms step-by-step."
+  },
+  "pdftoimg": {
+    "title": "PDF to Image",
+    "desc": "Convert PDF files to high-quality images."
+  },
+  "qrcode": {
+    "title": "QR Code Generator",
+    "desc": "Generate custom QR codes with logo support."
+  },
+  "qrscan": {
+    "title": "QR Code Scanner",
+    "desc": "Scan QR codes from images or webcam."
+  },
+  "texttoimg": {
+    "title": "Text to Image",
+    "desc": "Convert text to image with custom typography."
+  },
+  "imgcut": {
+    "title": "Image Splitter",
+    "desc": "Split images into grids (4x4, 9x9, etc.)."
+  },
+  "imgbase64": {
+    "title": "Image to Base64",
+    "desc": "Convert image files to Base64 strings."
+  },
+  "imgcompress": {
+    "title": "Image Compressor",
+    "desc": "Compress images online to reduce file size."
+  },
+  "bar": {
+    "title": "Bar Chart",
+    "desc": "Create bar charts online easily."
+  },
+  "line": {
+    "title": "Line Chart",
+    "desc": "Create line charts online easily."
+  },
+  "pie": {
+    "title": "Pie Chart",
+    "desc": "Create pie charts online easily."
+  },
+  "scatter": {
+    "title": "Scatter Plot",
+    "desc": "Create scatter plots online easily."
+  },
+  "snake": {
+    "title": "Snake Game",
+    "desc": "Classic Snake game to challenge your reflexes."
+  },
+  "memory": {
+    "title": "Memory Card",
+    "desc": "Flip card memory game."
+  },
+  "tetris": {
+    "title": "Tetris",
+    "desc": "Classic Tetris game."
+  },
+  "whackamole": {
+    "title": "Whack-a-Mole",
+    "desc": "Classic Whack-a-Mole game."
+  },
+  "game2048": {
+    "title": "2048",
+    "desc": "Classic 2048 puzzle game."
+  },
+  "minesweeper": {
+    "title": "Minesweeper",
+    "desc": "Classic Minesweeper game."
+  },
+  "puzzle": {
+    "title": "Number Puzzle",
+    "desc": "Sliding number puzzle game."
+  },
+  "sudoku": {
+    "title": "Sudoku",
+    "desc": "Classic Sudoku puzzle."
+  },
+  "gomoku": {
+    "title": "AI Gomoku",
+    "desc": "Play Gomoku against AI."
+  },
+  "guessnum": {
+    "title": "Guess Number",
+    "desc": "Guess the random number between 1-100."
+  },
+  "nummemo": {
+    "title": "Number Memory",
+    "desc": "Test your immediate memory with numbers."
+  },
+  "billion": {
+    "title": "Spend 10 Billion",
+    "desc": "Simulation: How would you spend 10 billion?"
+  },
+  "randomnum": {
+    "title": "Random Number",
+    "desc": "Generate random numbers within a custom range."
+  },
+  "decision": {
+    "title": "Decision Maker",
+    "desc": "Help you decide what to eat or do."
+  },
+  "coin": {
+    "title": "Coin Flip",
+    "desc": "Flip a coin online."
+  },
+  "dice": {
+    "title": "Dice Roller",
+    "desc": "Roll custom dice online."
+  },
+  "numtochinese": {
+    "title": "Number to Chinese",
+    "desc": "Convert numbers to Chinese currency uppercase."
+  },
+  "barrage": {
+    "title": "Handheld Barrage",
+    "desc": "Scrolling LED text on your screen."
+  },
+  "palettes": {
+    "title": "Color Palettes",
+    "desc": "Collection of solid, gradient, and ladder colors."
+  },
+  "colorpicker": {
+    "title": "Color Picker",
+    "desc": "Convert colors between Hex, RGB, HSL, etc."
+  },
+  "resume": {
+    "title": "Resume Builder",
+    "desc": "Create and manage resumes online."
+  },
+  "companycompare": {
+    "title": "Company Compare",
+    "desc": "Compare company benefits and salaries."
+  },
+  "minwage": {
+    "title": "Minimum Wage",
+    "desc": "Check minimum wage standards in China."
+  },
+  "phonedir": {
+    "title": "Phone Directory",
+    "desc": "Common useful phone numbers lookup."
+  },
+  "aitexttoimage": {
+    "title": "AI Text to Image",
+    "desc": "Free unlimited AI text-to-image generation."
+  },
+  "aihub": {
+    "title": "AI Tools Hub",
+    "desc": "Curated list of AI tools."
+  },
+  "aivarname": {
+    "title": "AI Variable Namer",
+    "desc": "Generate variable names from descriptions."
+  },
+  "ainame": {
+    "title": "AI Baby Namer",
+    "desc": "Generate Chinese names for babies."
+  },
+  "aitranslate": {
+    "title": "AI Translator",
+    "desc": "Smart multi-language translation."
+  },
+  "aiessay": {
+    "title": "AI Essay Writer",
+    "desc": "Generate elementary school essays."
+  },
+  "aimotivation": {
+    "title": "AI Motivation",
+    "desc": "Daily AI-generated motivational quotes."
+  },
+  "aichat": {
+    "title": "AI Chat",
+    "desc": "Smart AI chat assistant."
+  },
+  "aiinterview": {
+    "title": "AI Interviewer",
+    "desc": "Mock interview practice with AI."
+  },
+  "aiprompt": {
+    "title": "AI Prompt Library",
+    "desc": "Curated collection of AI prompts."
+  },
+  "goodsites": {
+    "title": "Good Sites",
+    "desc": "Directory of useful websites."
+  }
+}

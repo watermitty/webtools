@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import { reactive } from 'vue'
+import { useI18n } from 'vue-i18n'
 import DetailHeader from '@/components/Layout/DetailHeader/DetailHeader.vue'
 import ToolDetail from '@/components/Layout/ToolDetail/ToolDetail.vue'
 import { ElMessage } from 'element-plus'
@@ -8,63 +9,40 @@ import { isBinary, isOctal, isDecimal, isHexadecimal } from '@/utils/verify'
 import { InfoFilled } from '@element-plus/icons-vue'
 import { scale58ToBase, scale62ToBase, scale64ToBase, baseToScale58, baseToScale62, baseToScale64 } from '@/utils/math'
 
+const { t } = useI18n()
+
 const info = reactive({
-  title: "常用进制转换",
   content: '',
   chooseTranOptions: '10',
   tranOptions: [
-    {
-      value: '2',
-      label: '2进制',
-      tranValue: '',
-      desc: '',
-    },
-    {
-      value: '8',
-      label: '8进制',
-      tranValue: '',
-      desc: '',
-    },
-    {
-      value: '10',
-      label: '10进制',
-      tranValue: '',
-      desc: '',
-    },
-    {
-      value: '16',
-      label: '16进制',
-      tranValue: '',
-      desc: '',
-    },
-    {
-      value: '32',
-      label: '32进制',
-      tranValue: '',
-      desc: '数字 + 大写字母，不包含 ILOU 字符',
-    },
-    {
-      value: '58',
-      label: '58进制',
-      tranValue: '',
-      desc: '数字 + 大小写字母，不包含 0OlI 字符',
-    },
-    {
-      value: '62',
-      label: '62进制',
-      tranValue: '',
-      desc: '数字 + 大小写字母',
-    },
-    {
-      value: '64',
-      label: '64进制',
-      tranValue: '',
-      desc: '数字 + 大小写字母以及两个特殊字符 +/',
-    },
+    { value: '2', label: '', tranValue: '', desc: '' },
+    { value: '8', label: '', tranValue: '', desc: '' },
+    { value: '10', label: '', tranValue: '', desc: '' },
+    { value: '16', label: '', tranValue: '', desc: '' },
+    { value: '32', label: '', tranValue: '', desc: '' },
+    { value: '58', label: '', tranValue: '', desc: '' },
+    { value: '62', label: '', tranValue: '', desc: '' },
+    { value: '64', label: '', tranValue: '', desc: '' },
   ]
 })
 
-//高进制转换10进制 - int
+// Initialize labels with i18n
+const initLabels = () => {
+  info.tranOptions[0].label = t('tools.scaletran.base2')
+  info.tranOptions[1].label = t('tools.scaletran.base8')
+  info.tranOptions[2].label = t('tools.scaletran.base10')
+  info.tranOptions[3].label = t('tools.scaletran.base16')
+  info.tranOptions[4].label = t('tools.scaletran.base32')
+  info.tranOptions[4].desc = t('tools.scaletran.base32_desc')
+  info.tranOptions[5].label = t('tools.scaletran.base58')
+  info.tranOptions[5].desc = t('tools.scaletran.base58_desc')
+  info.tranOptions[6].label = t('tools.scaletran.base62')
+  info.tranOptions[6].desc = t('tools.scaletran.base62_desc')
+  info.tranOptions[7].label = t('tools.scaletran.base64')
+  info.tranOptions[7].desc = t('tools.scaletran.base64_desc')
+}
+initLabels()
+
 const tailScaleToBase = (content: string, scale: number): number => {
   let res = 0
   switch(scale) {
@@ -78,16 +56,11 @@ const tailScaleToBase = (content: string, scale: number): number => {
       res = scale64ToBase(content)
       break;
     default:
-      ElMessage({
-        message: "参数错误",
-        type: "warning",
-        duration: 1500
-      })
+      ElMessage({ message: t('tools.scaletran.error_param'), type: "warning", duration: 1500 })
   }
   return res
 }
 
-//10进制转换高进制
 const baseToTailScale = (num: number, scale: number): string => {
   let res = ''
   switch(scale) {
@@ -101,73 +74,43 @@ const baseToTailScale = (num: number, scale: number): string => {
       res = baseToScale64(num)
       break;
     default:
-      ElMessage({
-        message: "参数错误",
-        type: "warning",
-        duration: 1500
-      })
+      ElMessage({ message: t('tools.scaletran.error_param'), type: "warning", duration: 1500 })
   }
   return res
 }
 
-//转换前 - check
 const tranCheck = () => {
   if (!info.content) {
-    ElMessage({
-      message: "请输入转换数值",
-      type: "warning",
-      duration: 1500
-    })
+    ElMessage({ message: t('tools.scaletran.error_empty'), type: "warning", duration: 1500 })
     return false
   }
 
   if (info.chooseTranOptions == '2' && isBinary(info.content) == false) {
-    ElMessage({
-      message: "不是二进制值",
-      type: "warning",
-      duration: 1500
-    })
+    ElMessage({ message: t('tools.scaletran.error_binary'), type: "warning", duration: 1500 })
     return false
   }
 
   if (info.chooseTranOptions == '8' && isOctal(info.content) == false) {
-    ElMessage({
-      message: "不是八进制值",
-      type: "warning",
-      duration: 1500
-    })
+    ElMessage({ message: t('tools.scaletran.error_octal'), type: "warning", duration: 1500 })
     return false
   }
 
   if (info.chooseTranOptions == '10' && isDecimal(info.content) == false) {
-    ElMessage({
-      message: "不是十进制值",
-      type: "warning",
-      duration: 1500
-    })
+    ElMessage({ message: t('tools.scaletran.error_decimal'), type: "warning", duration: 1500 })
     return false
   }
 
   if (info.chooseTranOptions == '16' && isHexadecimal(info.content) == false) {
-    ElMessage({
-      message: "不是十六进制值",
-      type: "warning",
-      duration: 1500
-    })
+    ElMessage({ message: t('tools.scaletran.error_hex'), type: "warning", duration: 1500 })
     return false
   }
 
   return true
 }
 
-//转换
 const tran = () => {
-  //转换前 - check
-  if (!tranCheck()) {
-    return
-  }
+  if (!tranCheck()) return
 
-  //当前输入的内容转换成10进制
   let tranContent
   let chooseTranInt = parseInt(info.chooseTranOptions, 10)
   if (chooseTranInt <= 36) {
@@ -176,7 +119,6 @@ const tran = () => {
     tranContent = tailScaleToBase(info.content, chooseTranInt)
   }
   
-  //用上面转换的10进制内容转换对应进制
   for (let index in info.tranOptions) {
     let valueInt = parseInt(info.tranOptions[index].value, 10)
     if (valueInt <= 36) {
@@ -187,7 +129,6 @@ const tran = () => {
   }
 }
 
-//copy
 const copyRes = async (index: any) => {
   copy(info.tranOptions[index].tranValue)
 }
@@ -195,13 +136,13 @@ const copyRes = async (index: any) => {
 
 <template>
   <div class="flex flex-col mt-3 flex-1 ">
-    <DetailHeader :title="info.title"></DetailHeader>
+    <DetailHeader :title="$t('tools.scaletran.title')"></DetailHeader>
     <div class="p-4 rounded-2xl bg-white">
       <div class="flex">
         <div class="mr-2 w-full">
-          <el-input v-model="info.content">
+          <el-input v-model="info.content" :placeholder="$t('tools.scaletran.placeholder')">
             <template #prepend>
-              <el-select v-model="info.chooseTranOptions" placeholder="Select"  class="choosetranoptions-select">
+              <el-select v-model="info.chooseTranOptions" :placeholder="$t('tools.scaletran.select')" class="choosetranoptions-select">
                 <el-option
                   v-for="item in info.tranOptions"
                   :key="item.value"
@@ -213,12 +154,12 @@ const copyRes = async (index: any) => {
           </el-input>
         </div>
         
-        <el-button type="primary" @click="tran()">转换</el-button>
+        <el-button type="primary" @click="tran()">{{ $t('tools.scaletran.convert') }}</el-button>
       </div>
 
       <div class="mt-3 min-h-md bg-gray-100 p-3 mb-3 flex flex-col">
         <el-table :data="info.tranOptions" border style="width: 100%">
-          <el-table-column prop="label" label="进制" width="120">
+          <el-table-column prop="label" :label="$t('tools.scaletran.base')" width="120">
             <template #default="scope">
               <div class="flex items-center">
                 <span class="mr-1">{{ scope.row.label }}</span>
@@ -232,8 +173,8 @@ const copyRes = async (index: any) => {
               </div>
             </template>
           </el-table-column>
-          <el-table-column prop="tranValue" label="结果"/>
-          <el-table-column prop="" label="操作" width="60">
+          <el-table-column prop="tranValue" :label="$t('tools.scaletran.result')"/>
+          <el-table-column prop="" :label="$t('tools.scaletran.action')" width="80">
             <template #default="scope">
               <el-button
                 link
@@ -241,7 +182,7 @@ const copyRes = async (index: any) => {
                 size="small"
                 @click.prevent="copyRes(scope.$index)"
               >
-                复制
+                {{ $t('tools.scaletran.copy') }}
               </el-button>
             </template>
           </el-table-column>
@@ -250,9 +191,9 @@ const copyRes = async (index: any) => {
     </div>
     
     <!-- desc -->
-    <ToolDetail title="描述">
+    <ToolDetail :title="$t('tools.scaletran.detail_title')">
       <el-text>
-        进位制其实是一种记数的方式，所以也称为进位记数法/位值计数法，可以用有限的数字符号代表所有的数值。 可使用数字符号的数目称为基数（英文：radix）或底数，基数为n，即可称n进位制，简称n进制。 例如平常生活中我们经常用到的十进制，就是使用10个阿拉伯数字0-9进行记数，所以它的基数就是10，称为十进制。
+        {{ $t('tools.scaletran.detail_content') }}
       </el-text> 
     </ToolDetail>
 

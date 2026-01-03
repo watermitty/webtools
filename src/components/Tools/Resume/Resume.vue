@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { reactive, ref, onMounted } from 'vue'
+import { reactive, ref, onMounted, computed } from 'vue'
 import functionsRequest from '@/utils/functionsRequest'
 import DetailHeader from '@/components/Layout/DetailHeader/DetailHeader.vue'
 import ToolDetail from '@/components/Layout/ToolDetail/ToolDetail.vue'
@@ -8,6 +8,9 @@ import { Refresh, Plus, Edit, Delete, View, Briefcase, Picture, Document } from 
 import html2canvas from 'html2canvas'
 import jsPDF from 'jspdf'
 import type { FormRules } from 'element-plus'
+import { useI18n } from 'vue-i18n'
+
+const { t, locale } = useI18n()
 
 interface Resume {
   id: string
@@ -33,7 +36,7 @@ interface Pagination {
 }
 
 const info = reactive({
-  title: "简历管理",
+  title: 'tools.resume.title',
 })
 
 const resumes = ref<Resume[]>([])
@@ -54,16 +57,16 @@ const pagination = ref<Pagination>({
 })
 
 // 学历选项
-const degreeOptions = [
-  { value: '博士', label: '博士研究生' },
-  { value: '硕士', label: '硕士研究生' },
-  { value: '本科', label: '本科/学士' },
-  { value: '专科', label: '专科/大专' },
-  { value: '高中', label: '高中' },
-  { value: '中专', label: '中专/中职' },
-  { value: '初中', label: '初中' },
-  { value: '其他', label: '其他' }
-]
+const degreeOptions = computed(() => [
+  { value: '博士', label: t('tools.resume.degree_options.phd') },
+  { value: '硕士', label: t('tools.resume.degree_options.master') },
+  { value: '本科', label: t('tools.resume.degree_options.bachelor') },
+  { value: '专科', label: t('tools.resume.degree_options.college') },
+  { value: '高中', label: t('tools.resume.degree_options.highschool') },
+  { value: '中专', label: t('tools.resume.degree_options.vocational') },
+  { value: '初中', label: t('tools.resume.degree_options.junior') },
+  { value: '其他', label: t('tools.resume.degree_options.other') }
+])
 
 // 1. 优化：抽取默认表单数据函数
 const getDefaultFormData = () => ({
@@ -124,21 +127,21 @@ const loading = ref(false)
 const operationLoadings = ref<Record<string, boolean>>({})
 
 // 3. 优化：表单校验规则 - 修复类型错误
-const formRules: FormRules = {
+const formRules = computed<FormRules>(() => ({
   name: [
-    { required: true, message: '请输入简历名称', trigger: 'blur' },
-    { min: 1, max: 100, message: '简历名称长度在 1 到 100 个字符', trigger: 'blur' }
+    { required: true, message: t('tools.resume.msg_name_required'), trigger: 'blur' },
+    { min: 1, max: 100, message: t('tools.resume.msg_name_length'), trigger: 'blur' }
   ],
   'personalInfo.name': [
-    { max: 50, message: '姓名长度不能超过 50 个字符', trigger: 'blur' }
+    { max: 50, message: t('tools.resume.msg_person_name_max'), trigger: 'blur' }
   ],
   'personalInfo.phone': [
-    { pattern: /^1[3-9]\d{9}$/, message: '请输入正确的手机号码', trigger: 'blur' }
+    { pattern: /^1[3-9]\d{9}$/, message: t('tools.resume.msg_phone_valid'), trigger: 'blur' }
   ],
   'personalInfo.email': [
-    { type: 'email' as const, message: '请输入正确的邮箱地址', trigger: 'blur' }
+    { type: 'email' as const, message: t('tools.resume.msg_email_valid'), trigger: 'blur' }
   ]
-}
+}))
 
 // 4. 优化：统一JSON字段解析函数
 const parseJsonField = (field: any, defaultValue: any) => {
@@ -194,7 +197,7 @@ const fetchResumes = async (page = 1, pageSize = 12) => {
     }
   } catch (error) {
     console.error('获取简历列表失败:', error)
-    ElMessage.error('获取简历列表失败')
+    ElMessage.error(t('tools.resume.msg_fetch_fail') || '获取简历列表失败')
   } finally {
     loading.value = false
   }
@@ -232,16 +235,16 @@ const createResume = async () => {
     const response = await functionsRequest.post('/api/resumes', formData)
 
     if (response.status === 201) {
-      ElMessage.success('创建成功')
+      ElMessage.success(t('tools.resume.msg_create_success'))
       showForm.value = false
       resetForm()
       await fetchResumes(pagination.value.page, pagination.value.pageSize)
     } else {
-      ElMessage.error('创建失败')
+      ElMessage.error(t('tools.resume.msg_create_fail'))
     }
   } catch (error) {
     console.error('创建简历失败:', error)
-    ElMessage.error('创建失败')
+    ElMessage.error(t('tools.resume.msg_create_fail'))
   } finally {
     operationLoadings.value['create'] = false
   }
@@ -256,18 +259,18 @@ const updateResume = async () => {
     const response = await functionsRequest.put(`/api/resumes/${editingResumeId.value}`, formData)
 
     if (response.status === 200) {
-      ElMessage.success('更新成功')
+      ElMessage.success(t('tools.resume.msg_update_success'))
       showForm.value = false
       isEditing.value = false
       editingResumeId.value = null
       resetForm()
       await fetchResumes(pagination.value.page, pagination.value.pageSize)
     } else {
-      ElMessage.error('更新失败')
+      ElMessage.error(t('tools.resume.msg_update_fail'))
     }
   } catch (error) {
     console.error('更新简历失败:', error)
-    ElMessage.error('更新失败')
+    ElMessage.error(t('tools.resume.msg_update_fail'))
   } finally {
     if (editingResumeId.value) {
       operationLoadings.value[editingResumeId.value] = false
@@ -279,11 +282,11 @@ const updateResume = async () => {
 const deleteResume = async (resume: Resume) => {
   try {
     await ElMessageBox.confirm(
-      `确定要删除简历"${resume.name}"吗？此操作不可恢复。`,
-      '删除确认',
+      t('tools.resume.confirm_delete', { name: resume.name }),
+      t('tools.resume.delete_confirm'),
       {
-        confirmButtonText: '删除',
-        cancelButtonText: '取消',
+        confirmButtonText: t('tools.resume.delete'),
+        cancelButtonText: t('tools.resume.cancel'),
         type: 'warning',
         confirmButtonClass: 'el-button--danger'
       }
@@ -293,15 +296,15 @@ const deleteResume = async (resume: Resume) => {
     const response = await functionsRequest.delete(`/api/resumes/${resume.id}`)
 
     if (response.status === 200) {
-      ElMessage.success('删除成功')
+      ElMessage.success(t('tools.resume.msg_delete_success'))
       await fetchResumes(pagination.value.page, pagination.value.pageSize)
     } else {
-      ElMessage.error('删除失败')
+      ElMessage.error(t('tools.resume.msg_delete_fail'))
     }
   } catch (error) {
     if (error !== 'cancel') {
       console.error('删除简历失败:', error)
-      ElMessage.error('删除失败')
+      ElMessage.error(t('tools.resume.msg_delete_fail'))
     }
   } finally {
     operationLoadings.value[resume.id] = false
@@ -426,7 +429,7 @@ const exportLoading = ref(false)
 // 导出为图片
 const exportAsImage = async () => {
   if (!currentResume.value) {
-    ElMessage.warning('没有可导出的简历内容')
+    ElMessage.warning(t('tools.resume.msg_no_content_export'))
     return
   }
 
@@ -434,7 +437,7 @@ const exportAsImage = async () => {
   try {
     const element = document.querySelector('.resume-preview') as HTMLElement
     if (!element) {
-      ElMessage.error('无法找到简历预览内容')
+      ElMessage.error(t('tools.resume.msg_preview_not_found'))
       return
     }
 
@@ -449,8 +452,8 @@ const exportAsImage = async () => {
     })
 
     // 生成文件名：简历名称_姓名
-    const resumeName = currentResume.value.name || '简历'
-    const personName = currentResume.value.personalInfo?.name || '未知姓名'
+    const resumeName = currentResume.value.name || t('tools.resume.my_resumes')
+    const personName = currentResume.value.personalInfo?.name || 'Unknown'
     const fileName = `${resumeName}_${personName}.png`
 
     // 创建下载链接
@@ -461,10 +464,10 @@ const exportAsImage = async () => {
     link.click()
     document.body.removeChild(link)
 
-    ElMessage.success('图片导出成功')
+    ElMessage.success(t('tools.resume.export_image_success'))
   } catch (error) {
     console.error('导出图片失败:', error)
-    ElMessage.error('导出图片失败，请重试')
+    ElMessage.error(t('tools.resume.export_image_fail'))
   } finally {
     exportLoading.value = false
   }
@@ -473,7 +476,7 @@ const exportAsImage = async () => {
 // 导出为PDF
 const exportAsPDF = async () => {
   if (!currentResume.value) {
-    ElMessage.warning('没有可导出的简历内容')
+    ElMessage.warning(t('tools.resume.msg_no_content_export'))
     return
   }
 
@@ -481,7 +484,7 @@ const exportAsPDF = async () => {
   try {
     const element = document.querySelector('.resume-preview') as HTMLElement
     if (!element) {
-      ElMessage.error('无法找到简历预览内容')
+      ElMessage.error(t('tools.resume.msg_preview_not_found'))
       return
     }
 
@@ -545,17 +548,17 @@ const exportAsPDF = async () => {
     }
     
     // 生成文件名：简历名称_姓名
-    const resumeName = currentResume.value.name || '简历'
-    const personName = currentResume.value.personalInfo?.name || '未知姓名'
+    const resumeName = currentResume.value.name || t('tools.resume.my_resumes')
+    const personName = currentResume.value.personalInfo?.name || 'Unknown'
     const fileName = `${resumeName}_${personName}.pdf`
     
     // 保存PDF
     pdf.save(fileName)
     
-    ElMessage.success('PDF导出成功')
+    ElMessage.success(t('tools.resume.export_pdf_success'))
   } catch (error) {
     console.error('导出PDF失败:', error)
-    ElMessage.error('导出PDF失败，请重试')
+    ElMessage.error(t('tools.resume.export_pdf_fail'))
   } finally {
     exportLoading.value = false
   }
@@ -568,7 +571,7 @@ onMounted(() => {
 
 <template>
   <div class="flex flex-col mt-3 flex-1">
-    <DetailHeader :title="info.title"></DetailHeader>
+    <DetailHeader :title="t(info.title)"></DetailHeader>
 
     <div class="resume-container">
       <!-- 操作栏 -->
@@ -578,8 +581,8 @@ onMounted(() => {
             <el-icon class="header-icon"><Briefcase /></el-icon>
           </div>
           <div>
-            <h3 class="header-title">我的简历</h3>
-            <p class="header-subtitle">共 {{ pagination.total }} 份简历</p>
+            <h3 class="header-title">{{ t('tools.resume.my_resumes') }}</h3>
+            <p class="header-subtitle">{{ t('tools.resume.total_resumes', { count: pagination.total }) }}</p>
           </div>
         </div>
         <div class="header-actions">
@@ -597,7 +600,7 @@ onMounted(() => {
             @click="newResume" 
             :icon="Plus"
           >
-            新建简历
+            {{ t('tools.resume.new_resume') }}
           </el-button>
         </div>
       </div>
@@ -606,9 +609,9 @@ onMounted(() => {
       <div v-loading="loading" class="resume-grid">
         <div v-if="resumes.length === 0 && !loading" class="empty-state">
           <el-icon class="empty-icon"><Briefcase /></el-icon>
-          <h3 class="empty-title">暂无简历</h3>
-          <p class="empty-desc">开始创建你的第一份简历吧</p>
-          <el-button type="primary" @click="newResume" :icon="Plus">创建简历</el-button>
+          <h3 class="empty-title">{{ t('tools.resume.no_resumes') }}</h3>
+          <p class="empty-desc">{{ t('tools.resume.start_creating') }}</p>
+          <el-button type="primary" @click="newResume" :icon="Plus">{{ t('tools.resume.create_resume') }}</el-button>
         </div>
         
         <div
@@ -657,12 +660,12 @@ onMounted(() => {
           <div class="resume-content">
             <div class="personal-info">
               <el-icon><Briefcase /></el-icon>
-              <span>{{ resume.personalInfo?.name || '未填写姓名' }}</span>
+              <span>{{ resume.personalInfo?.name || '-' }}</span>
             </div>
           </div>
           
           <div class="resume-footer">
-            <span class="time-text">更新于 {{ formatTime(resume.updateTime) }}</span>
+            <span class="time-text">{{ t('tools.resume.updated_at') }} {{ formatTime(resume.updateTime) }}</span>
           </div>
         </div>
       </div>
@@ -684,7 +687,7 @@ onMounted(() => {
       <!-- 简历表单 -->
       <el-dialog
         v-model="showForm"
-        :title="isEditing ? '编辑简历' : '新建简历'"
+        :title="isEditing ? t('tools.resume.edit_resume') : t('tools.resume.new_resume')"
         width="90%"
         max-width="900px"
         class="resume-dialog"
@@ -700,13 +703,13 @@ onMounted(() => {
           >
             <!-- 基本信息 -->
             <div class="form-section">
-              <h4 class="section-title">基本信息</h4>
+              <h4 class="section-title">{{ t('tools.resume.basic_info') }}</h4>
               <el-row :gutter="20">
                 <el-col :span="24">
-                  <el-form-item label="简历名称" prop="name">
+                  <el-form-item :label="t('tools.resume.resume_name')" prop="name">
                     <el-input 
                       v-model="formData.name" 
-                      placeholder="请输入简历名称" 
+                      :placeholder="t('tools.resume.enter_resume_name')" 
                       size="large"
                     />
                   </el-form-item>
@@ -716,35 +719,35 @@ onMounted(() => {
 
             <!-- 个人信息 -->
             <div class="form-section">
-              <h4 class="section-title">个人信息</h4>
+              <h4 class="section-title">{{ t('tools.resume.personal_info') }}</h4>
               <el-row :gutter="20">
                 <el-col :span="12">
-                  <el-form-item label="姓名" prop="personalInfo.name">
-                    <el-input v-model="formData.personalInfo.name" placeholder="请输入姓名" />
+                  <el-form-item :label="t('tools.resume.name')" prop="personalInfo.name">
+                    <el-input v-model="formData.personalInfo.name" :placeholder="t('tools.resume.enter_name')" />
                   </el-form-item>
                 </el-col>
                 <el-col :span="12">
-                  <el-form-item label="电话" prop="personalInfo.phone">
-                    <el-input v-model="formData.personalInfo.phone" placeholder="请输入手机号码" />
+                  <el-form-item :label="t('tools.resume.phone')" prop="personalInfo.phone">
+                    <el-input v-model="formData.personalInfo.phone" :placeholder="t('tools.resume.enter_phone')" />
                   </el-form-item>
                 </el-col>
                 <el-col :span="12">
-                  <el-form-item label="邮箱" prop="personalInfo.email">
-                    <el-input v-model="formData.personalInfo.email" placeholder="请输入邮箱地址" />
+                  <el-form-item :label="t('tools.resume.email')" prop="personalInfo.email">
+                    <el-input v-model="formData.personalInfo.email" :placeholder="t('tools.resume.enter_email')" />
                   </el-form-item>
                 </el-col>
                 <el-col :span="12">
-                  <el-form-item label="地址">
-                    <el-input v-model="formData.personalInfo.address" placeholder="请输入地址" />
+                  <el-form-item :label="t('tools.resume.address')">
+                    <el-input v-model="formData.personalInfo.address" :placeholder="t('tools.resume.enter_address')" />
                   </el-form-item>
                 </el-col>
                 <el-col :span="24">
-                  <el-form-item label="个人简介">
+                  <el-form-item :label="t('tools.resume.summary')">
                     <el-input
                       v-model="formData.personalInfo.summary"
                       type="textarea"
                       :rows="3"
-                      placeholder="请输入个人简介"
+                      :placeholder="t('tools.resume.enter_summary')"
                     />
                   </el-form-item>
                 </el-col>
@@ -754,8 +757,8 @@ onMounted(() => {
             <!-- 工作经历 -->
             <div class="form-section">
               <div class="section-header">
-                <h4 class="section-title">工作经历</h4>
-                <el-button type="primary" size="small" @click="addWorkExperience" :icon="Plus">添加</el-button>
+                <h4 class="section-title">{{ t('tools.resume.work_experience') }}</h4>
+                <el-button type="primary" size="small" @click="addWorkExperience" :icon="Plus">{{ t('tools.resume.add') }}</el-button>
               </div>
               <div v-for="(work, index) in formData.workExperience" :key="index" class="experience-item">
                 <div class="item-header">
@@ -772,42 +775,42 @@ onMounted(() => {
                 </div>
                 <el-row :gutter="20">
                   <el-col :span="12">
-                    <el-form-item label="公司名称">
-                      <el-input v-model="work.company" placeholder="请输入公司名称" />
+                    <el-form-item :label="t('tools.resume.company')">
+                      <el-input v-model="work.company" :placeholder="t('tools.resume.enter_company')" />
                     </el-form-item>
                   </el-col>
                   <el-col :span="12">
-                    <el-form-item label="职位">
-                      <el-input v-model="work.position" placeholder="请输入职位" />
+                    <el-form-item :label="t('tools.resume.position')">
+                      <el-input v-model="work.position" :placeholder="t('tools.resume.enter_position')" />
                     </el-form-item>
                   </el-col>
                   <el-col :span="12">
-                    <el-form-item label="开始时间">
+                    <el-form-item :label="t('tools.resume.start_date')">
                       <el-date-picker
                         v-model="work.startDate"
                         type="month"
-                        placeholder="选择开始时间"
+                        :placeholder="t('tools.resume.select_start_date')"
                         style="width: 100%"
                       />
                     </el-form-item>
                   </el-col>
                   <el-col :span="12">
-                    <el-form-item label="结束时间">
+                    <el-form-item :label="t('tools.resume.end_date')">
                       <el-date-picker
                         v-model="work.endDate"
                         type="month"
-                        placeholder="选择结束时间"
+                        :placeholder="t('tools.resume.select_end_date')"
                         style="width: 100%"
                       />
                     </el-form-item>
                   </el-col>
                   <el-col :span="24">
-                    <el-form-item label="工作描述">
+                    <el-form-item :label="t('tools.resume.description')">
                       <el-input
                         v-model="work.description"
                         type="textarea"
                         :rows="3"
-                        placeholder="请输入工作描述"
+                        :placeholder="t('tools.resume.enter_description')"
                       />
                     </el-form-item>
                   </el-col>
@@ -818,8 +821,8 @@ onMounted(() => {
             <!-- 教育经历 -->
             <div class="form-section">
               <div class="section-header">
-                <h4 class="section-title">教育经历</h4>
-                <el-button type="primary" size="small" @click="addEducation" :icon="Plus">添加</el-button>
+                <h4 class="section-title">{{ t('tools.resume.education') }}</h4>
+                <el-button type="primary" size="small" @click="addEducation" :icon="Plus">{{ t('tools.resume.add') }}</el-button>
               </div>
               <div v-for="(edu, index) in formData.education" :key="index" class="experience-item">
                 <div class="item-header">
@@ -836,20 +839,20 @@ onMounted(() => {
                 </div>
                 <el-row :gutter="20">
                   <el-col :span="12">
-                    <el-form-item label="学校名称">
-                      <el-input v-model="edu.school" placeholder="请输入学校名称" />
+                    <el-form-item :label="t('tools.resume.school')">
+                      <el-input v-model="edu.school" :placeholder="t('tools.resume.enter_school')" />
                     </el-form-item>
                   </el-col>
                   <el-col :span="12">
-                    <el-form-item label="专业">
-                      <el-input v-model="edu.major" placeholder="请输入专业" />
+                    <el-form-item :label="t('tools.resume.major')">
+                      <el-input v-model="edu.major" :placeholder="t('tools.resume.enter_major')" />
                     </el-form-item>
                   </el-col>
                   <el-col :span="12">
-                    <el-form-item label="学历">
+                    <el-form-item :label="t('tools.resume.degree')">
                       <el-select 
                         v-model="edu.degree" 
-                        placeholder="请选择学历" 
+                        :placeholder="t('tools.resume.select_degree')" 
                         style="width: 100%"
                         clearable
                       >
@@ -863,21 +866,21 @@ onMounted(() => {
                     </el-form-item>
                   </el-col>
                   <el-col :span="6">
-                    <el-form-item label="开始时间">
+                    <el-form-item :label="t('tools.resume.start_date')">
                       <el-date-picker
                         v-model="edu.startDate"
                         type="year"
-                        placeholder="选择年份"
+                        :placeholder="t('tools.resume.select_start_date')"
                         style="width: 100%"
                       />
                     </el-form-item>
                   </el-col>
                   <el-col :span="6">
-                    <el-form-item label="结束时间">
+                    <el-form-item :label="t('tools.resume.end_date')">
                       <el-date-picker
                         v-model="edu.endDate"
                         type="year"
-                        placeholder="选择年份"
+                        :placeholder="t('tools.resume.select_end_date')"
                         style="width: 100%"
                       />
                     </el-form-item>
@@ -889,13 +892,13 @@ onMounted(() => {
             <!-- 技能 -->
             <div class="form-section">
               <div class="section-header">
-                <h4 class="section-title">专业技能</h4>
-                <el-button type="primary" size="small" @click="addSkill" :icon="Plus">添加</el-button>
+                <h4 class="section-title">{{ t('tools.resume.skills') }}</h4>
+                <el-button type="primary" size="small" @click="addSkill" :icon="Plus">{{ t('tools.resume.add') }}</el-button>
               </div>
               <div v-for="(_, index) in formData.skills" :key="index" class="skill-item">
                 <el-input
                   v-model="formData.skills[index]"
-                  placeholder="请输入技能"
+                  :placeholder="t('tools.resume.enter_skill')"
                   style="margin-bottom: 10px;"
                 >
                   <template #append>
@@ -913,8 +916,8 @@ onMounted(() => {
             <!-- 项目经历 -->
             <div class="form-section">
               <div class="section-header">
-                <h4 class="section-title">项目经历</h4>
-                <el-button type="primary" size="small" @click="addProject" :icon="Plus">添加</el-button>
+                <h4 class="section-title">{{ t('tools.resume.projects') }}</h4>
+                <el-button type="primary" size="small" @click="addProject" :icon="Plus">{{ t('tools.resume.add') }}</el-button>
               </div>
               <div v-for="(project, index) in formData.projects" :key="index" class="experience-item">
                 <div class="item-header">
@@ -931,42 +934,42 @@ onMounted(() => {
                 </div>
                 <el-row :gutter="20">
                   <el-col :span="24">
-                    <el-form-item label="项目名称">
-                      <el-input v-model="project.name" placeholder="请输入项目名称" />
+                    <el-form-item :label="t('tools.resume.project_name')">
+                      <el-input v-model="project.name" :placeholder="t('tools.resume.enter_project_name')" />
                     </el-form-item>
                   </el-col>
                   <el-col :span="24">
-                    <el-form-item label="技术栈">
-                      <el-input v-model="project.technologies" placeholder="请输入技术栈，如：Vue3, TypeScript, Element Plus" />
+                    <el-form-item :label="t('tools.resume.technologies')">
+                      <el-input v-model="project.technologies" :placeholder="t('tools.resume.enter_technologies')" />
                     </el-form-item>
                   </el-col>
                   <el-col :span="12">
-                    <el-form-item label="开始时间">
+                    <el-form-item :label="t('tools.resume.start_date')">
                       <el-date-picker
                         v-model="project.startDate"
                         type="month"
-                        placeholder="选择开始时间"
+                        :placeholder="t('tools.resume.select_start_date')"
                         style="width: 100%"
                       />
                     </el-form-item>
                   </el-col>
                   <el-col :span="12">
-                    <el-form-item label="结束时间">
+                    <el-form-item :label="t('tools.resume.end_date')">
                       <el-date-picker
                         v-model="project.endDate"
                         type="month"
-                        placeholder="选择结束时间"
+                        :placeholder="t('tools.resume.select_end_date')"
                         style="width: 100%"
                       />
                     </el-form-item>
                   </el-col>
                   <el-col :span="24">
-                    <el-form-item label="项目描述">
+                    <el-form-item :label="t('tools.resume.description')">
                       <el-input
                         v-model="project.description"
                         type="textarea"
                         :rows="3"
-                        placeholder="请输入项目描述"
+                        :placeholder="t('tools.resume.enter_description')"
                       />
                     </el-form-item>
                   </el-col>
@@ -977,8 +980,8 @@ onMounted(() => {
             <!-- 证书 -->
             <div class="form-section">
               <div class="section-header">
-                <h4 class="section-title">证书</h4>
-                <el-button type="primary" size="small" @click="addCertificate" :icon="Plus">添加</el-button>
+                <h4 class="section-title">{{ t('tools.resume.certificates') }}</h4>
+                <el-button type="primary" size="small" @click="addCertificate" :icon="Plus">{{ t('tools.resume.add') }}</el-button>
               </div>
               <div v-for="(cert, index) in formData.certificates" :key="index" class="experience-item">
                 <div class="item-header">
@@ -995,21 +998,21 @@ onMounted(() => {
                 </div>
                 <el-row :gutter="20">
                   <el-col :span="12">
-                    <el-form-item label="证书名称">
-                      <el-input v-model="cert.name" placeholder="请输入证书名称" />
+                    <el-form-item :label="t('tools.resume.certificate_name')">
+                      <el-input v-model="cert.name" :placeholder="t('tools.resume.enter_certificate_name')" />
                     </el-form-item>
                   </el-col>
                   <el-col :span="12">
-                    <el-form-item label="颁发机构">
-                      <el-input v-model="cert.issuer" placeholder="请输入颁发机构" />
+                    <el-form-item :label="t('tools.resume.issuer')">
+                      <el-input v-model="cert.issuer" :placeholder="t('tools.resume.enter_issuer')" />
                     </el-form-item>
                   </el-col>
                   <el-col :span="12">
-                    <el-form-item label="获得时间">
+                    <el-form-item :label="t('tools.resume.date')">
                       <el-date-picker
                         v-model="cert.date"
                         type="month"
-                        placeholder="选择获得时间"
+                        :placeholder="t('tools.resume.select_date')"
                         style="width: 100%"
                       />
                     </el-form-item>
@@ -1020,25 +1023,25 @@ onMounted(() => {
 
             <!-- 其他信息 -->
             <div class="form-section">
-              <h4 class="section-title">其他信息</h4>
+              <h4 class="section-title">{{ t('tools.resume.others') }}</h4>
               <el-row :gutter="20">
                 <el-col :span="12">
-                  <el-form-item label="兴趣爱好">
+                  <el-form-item :label="t('tools.resume.hobbies')">
                     <el-input
                       v-model="formData.others.hobbies"
                       type="textarea"
                       :rows="3"
-                      placeholder="请输入兴趣爱好"
+                      :placeholder="t('tools.resume.enter_hobbies')"
                     />
                   </el-form-item>
                 </el-col>
                 <el-col :span="12">
-                  <el-form-item label="语言能力">
+                  <el-form-item :label="t('tools.resume.languages')">
                     <el-input
                       v-model="formData.others.languages"
                       type="textarea"
                       :rows="3"
-                      placeholder="请输入语言能力"
+                      :placeholder="t('tools.resume.enter_languages')"
                     />
                   </el-form-item>
                 </el-col>
@@ -1053,7 +1056,7 @@ onMounted(() => {
               :disabled="!!(isOperationLoading('create') || (editingResumeId && isOperationLoading(editingResumeId)))" 
               @click="showForm = false; isEditing = false"
             >
-              取消
+              {{ t('tools.resume.cancel') }}
             </el-button>
             <el-button 
               type="primary" 
@@ -1062,7 +1065,7 @@ onMounted(() => {
               :disabled="!!(isOperationLoading('create') || (editingResumeId && isOperationLoading(editingResumeId)))"
               @click="isEditing ? updateResume() : createResume()"
             >
-              {{ isEditing ? '保存修改' : '创建简历' }}
+              {{ isEditing ? t('tools.resume.save_changes') : t('tools.resume.create_resume') }}
             </el-button>
           </div>
         </template>
@@ -1071,7 +1074,7 @@ onMounted(() => {
       <!-- 简历预览 -->
       <el-dialog
         v-model="showPreview"
-        title="简历预览"
+        :title="t('tools.resume.preview_title')"
         width="850px"
         class="preview-dialog"
         :close-on-click-modal="false"
@@ -1080,8 +1083,8 @@ onMounted(() => {
         <template #header>
           <div class="preview-header-section">
             <div class="dialog-title-area">
-              <span class="dialog-title">简历预览</span>
-              <span class="a4-indicator">📄 A4纸张尺寸 (794×1123px)</span>
+              <span class="dialog-title">{{ t('tools.resume.preview_title') }}</span>
+              <span class="a4-indicator">📄 A4 (794×1123px)</span>
             </div>
             <div class="export-buttons">
               <el-button
@@ -1091,7 +1094,7 @@ onMounted(() => {
                 :loading="exportLoading"
                 @click="exportAsImage"
               >
-                导出图片
+                {{ t('tools.resume.export_image') }}
               </el-button>
               <el-button
                 type="success"
@@ -1100,7 +1103,7 @@ onMounted(() => {
                 :loading="exportLoading"
                 @click="exportAsPDF"
               >
-                导出PDF
+                {{ t('tools.resume.export_pdf') }}
               </el-button>
             </div>
           </div>
@@ -1109,7 +1112,7 @@ onMounted(() => {
         <div class="preview-container">
           <div v-if="currentResume" class="resume-preview" id="resume-preview">
             <div class="preview-header">
-              <h2>{{ currentResume.personalInfo?.name || '未填写姓名' }}</h2>
+              <h2>{{ currentResume.personalInfo?.name || t('tools.resume.name') }}</h2>
               <div class="contact-info">
                 <span v-if="currentResume.personalInfo?.phone">📞 {{ currentResume.personalInfo.phone }}</span>
                 <span v-if="currentResume.personalInfo?.email">📧 {{ currentResume.personalInfo.email }}</span>
@@ -1119,19 +1122,19 @@ onMounted(() => {
             
             <!-- 个人简介 -->
             <div v-if="currentResume.personalInfo?.summary" class="preview-section">
-              <h4>个人简介</h4>
+              <h4>{{ t('tools.resume.summary') }}</h4>
               <p>{{ currentResume.personalInfo.summary }}</p>
             </div>
 
             <!-- 工作经历 -->
             <div v-if="currentResume.workExperience && currentResume.workExperience.length > 0" class="preview-section">
-              <h4>工作经历</h4>
+              <h4>{{ t('tools.resume.work_experience') }}</h4>
               <div v-for="(work, index) in currentResume.workExperience" :key="index" class="experience-item">
                 <div v-if="work.company || work.position" class="work-item">
                   <div class="work-header">
-                    <h5>{{ work.position || '职位' }} - {{ work.company || '公司' }}</h5>
+                    <h5>{{ work.position || t('tools.resume.position') }} - {{ work.company || t('tools.resume.company') }}</h5>
                     <span class="work-period">
-                      {{ formatWorkDate(work.startDate) }} - {{ formatWorkDate(work.endDate) || '至今' }}
+                      {{ formatWorkDate(work.startDate) }} - {{ formatWorkDate(work.endDate) || 'Present' }}
                     </span>
                   </div>
                   <p v-if="work.description" class="work-description">{{ work.description }}</p>
@@ -1141,12 +1144,12 @@ onMounted(() => {
 
             <!-- 教育经历 -->
             <div v-if="currentResume.education && currentResume.education.length > 0" class="preview-section">
-              <h4>教育经历</h4>
+              <h4>{{ t('tools.resume.education') }}</h4>
               <div v-for="(edu, index) in currentResume.education" :key="index" class="experience-item">
                 <div v-if="edu.school || edu.major" class="edu-item">
                   <div class="edu-header">
-                    <h5>{{ edu.school || '学校' }} - {{ edu.major || '专业' }}</h5>
-                    <span class="edu-period">{{ formatWorkDate(edu.startDate) }} - {{ formatWorkDate(edu.endDate) || '至今' }}</span>
+                    <h5>{{ edu.school || t('tools.resume.school') }} - {{ edu.major || t('tools.resume.major') }}</h5>
+                    <span class="edu-period">{{ formatWorkDate(edu.startDate) }} - {{ formatWorkDate(edu.endDate) || 'Present' }}</span>
                   </div>
                   <p v-if="edu.degree" class="edu-degree">{{ edu.degree }}</p>
                 </div>
@@ -1155,7 +1158,7 @@ onMounted(() => {
 
             <!-- 专业技能 -->
             <div v-if="currentResume.skills && currentResume.skills.length > 0" class="preview-section">
-              <h4>专业技能</h4>
+              <h4>{{ t('tools.resume.skills') }}</h4>
               <div class="skills-text">
                 {{ currentResume.skills.filter(s => s && s.trim()).join('、') }}
               </div>
@@ -1163,16 +1166,16 @@ onMounted(() => {
 
             <!-- 项目经历 -->
             <div v-if="currentResume.projects && currentResume.projects.length > 0" class="preview-section">
-              <h4>项目经历</h4>
+              <h4>{{ t('tools.resume.projects') }}</h4>
               <div v-for="(project, index) in currentResume.projects" :key="index" class="experience-item">
                 <div v-if="project.name || project.description" class="project-item">
                   <div class="project-header">
-                    <h5>{{ project.name || '项目名称' }}</h5>
+                    <h5>{{ project.name || t('tools.resume.project_name') }}</h5>
                     <span class="project-period">
-                      {{ formatWorkDate(project.startDate) }} - {{ formatWorkDate(project.endDate) || '至今' }}
+                      {{ formatWorkDate(project.startDate) }} - {{ formatWorkDate(project.endDate) || 'Present' }}
                     </span>
                   </div>
-                  <p v-if="project.technologies" class="project-tech">技术栈：{{ project.technologies }}</p>
+                  <p v-if="project.technologies" class="project-tech">{{ t('tools.resume.technologies') }}：{{ project.technologies }}</p>
                   <p v-if="project.description" class="project-description">{{ project.description }}</p>
                 </div>
               </div>
@@ -1180,11 +1183,11 @@ onMounted(() => {
 
             <!-- 证书 -->
             <div v-if="currentResume.certificates && currentResume.certificates.length > 0" class="preview-section">
-              <h4>证书</h4>
+              <h4>{{ t('tools.resume.certificates') }}</h4>
               <div class="certificates-list">
                 <div v-for="(cert, index) in currentResume.certificates" :key="index" class="cert-item">
                   <div v-if="cert.name || cert.issuer">
-                    <strong>{{ cert.name || '证书名称' }}</strong>
+                    <strong>{{ cert.name || t('tools.resume.certificate_name') }}</strong>
                     <span v-if="cert.issuer"> - {{ cert.issuer }}</span>
                     <span v-if="cert.date" class="cert-date">（{{ formatWorkDate(cert.date) }}）</span>
                   </div>
@@ -1194,12 +1197,12 @@ onMounted(() => {
 
             <!-- 其他信息 -->
             <div v-if="currentResume.others && (currentResume.others.hobbies || currentResume.others.languages)" class="preview-section">
-              <h4>其他信息</h4>
+              <h4>{{ t('tools.resume.others') }}</h4>
               <div v-if="currentResume.others.hobbies" class="other-item">
-                <strong>兴趣爱好：</strong>{{ currentResume.others.hobbies }}
+                <strong>{{ t('tools.resume.hobbies') }}：</strong>{{ currentResume.others.hobbies }}
               </div>
               <div v-if="currentResume.others.languages" class="other-item">
-                <strong>语言能力：</strong>{{ currentResume.others.languages }}
+                <strong>{{ t('tools.resume.languages') }}：</strong>{{ currentResume.others.languages }}
               </div>
             </div>
           </div>
@@ -1208,27 +1211,27 @@ onMounted(() => {
     </div>
 
     <!-- 描述 -->
-    <ToolDetail title="功能说明">
+    <ToolDetail :title="t('tools.resume.detail_title')">
       <div class="feature-list">
         <div class="feature-item">
-          <h5>📝 完整信息录入</h5>
-          <p>支持个人信息、工作经历、教育背景、专业技能、项目经历、证书等全方位信息管理</p>
+          <h5>📝 {{ t('tools.resume.features.input_title') }}</h5>
+          <p>{{ t('tools.resume.features.input_desc') }}</p>
         </div>
         <div class="feature-item">
-          <h5>📄 多格式导出</h5>
-          <p>支持将简历导出为高清图片(PNG)或PDF文件，便于打印和分享，支持自动分页</p>
+          <h5>📄 {{ t('tools.resume.features.export_title') }}</h5>
+          <p>{{ t('tools.resume.features.export_desc') }}</p>
         </div>
         <div class="feature-item">
-          <h5>🔒 数据安全</h5>
-          <p>所有简历数据安全存储在云端，支持多设备同步访问</p>
+          <h5>🔒 {{ t('tools.resume.features.security_title') }}</h5>
+          <p>{{ t('tools.resume.features.security_desc') }}</p>
         </div>
         <div class="feature-item">
-          <h5>👀 实时预览</h5>
-          <p>支持简历内容实时预览，所见即所得的编辑体验</p>
+          <h5>👀 {{ t('tools.resume.features.preview_title') }}</h5>
+          <p>{{ t('tools.resume.features.preview_desc') }}</p>
         </div>
         <div class="feature-item">
-          <h5>📱 响应式设计</h5>
-          <p>完美适配PC和移动端，随时随地管理您的简历</p>
+          <h5>📱 {{ t('tools.resume.features.responsive_title') }}</h5>
+          <p>{{ t('tools.resume.features.responsive_desc') }}</p>
         </div>
       </div>
     </ToolDetail>

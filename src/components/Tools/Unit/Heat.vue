@@ -1,5 +1,8 @@
 <script setup lang="ts">
 import { reactive } from 'vue'
+import { useI18n } from 'vue-i18n'
+
+const { t } = useI18n()
 
 const info: {
   [key: string]: string|number
@@ -62,58 +65,30 @@ const tran = (key: string) => {
 <template>
     <div>
       <div>
-        <el-divider content-position="left">热量单位</el-divider>
+        <el-divider content-position="left">{{ $t('tools.unit.heat.title') }}</el-divider>
         <!-- group -->
         <div class="custom-box">
           <div class="custom-box-single">
-            <el-text class="custom-box-text">瓦(Wh)</el-text>
+            <el-text class="custom-box-text">{{ $t('tools.unit.heat.wh') }}</el-text>
             <el-input
               v-model="info.wh"
               placeholder=""
               class="input-with-select"
             >
               <template #append>
-                <el-button @click="tran('wh')">转换</el-button>
+                <el-button @click="tran('wh')">{{ $t('tools.unit.common.convert') }}</el-button>
               </template>
             </el-input>
           </div>
           <div class="custom-box-single">
-            <el-text class="custom-box-text">毫瓦时(mWh)</el-text>
-            <el-input
-              v-model="info.mmwh"
-              placeholder=""
-              class="input-with-select"
-            >
-              <template #append>
-                <el-button @click="tran('mmwh')">转换</el-button>
-              </template>
-            </el-input>
-          </div>
-        </div>
-
-        <!-- group -->
-        <div class="custom-box">
-          <div class="custom-box-single">
-            <el-text class="custom-box-text">千瓦时(kWh)</el-text>
-            <el-input
-              v-model="info.kwh"
-              placeholder=""
-              class="input-with-select"
-            >
-              <template #append>
-                <el-button @click="tran('kwh')">转换</el-button>
-              </template>
-            </el-input>
-          </div>
-          <div class="custom-box-single">
-            <el-text class="custom-box-text">兆瓦时(MWh)</el-text>
+            <el-text class="custom-box-text">{{ $t('tools.unit.heat.mwh') }}</el-text>
             <el-input
               v-model="info.mwh"
               placeholder=""
               class="input-with-select"
             >
               <template #append>
-                <el-button @click="tran('mwh')">转换</el-button>
+                <el-button @click="tran('mwh')">{{ $t('tools.unit.common.convert') }}</el-button>
               </template>
             </el-input>
           </div>
@@ -122,26 +97,54 @@ const tran = (key: string) => {
         <!-- group -->
         <div class="custom-box">
           <div class="custom-box-single">
-            <el-text class="custom-box-text">焦(J)</el-text>
+            <el-text class="custom-box-text">{{ $t('tools.unit.heat.kwh') }}</el-text>
+            <el-input
+              v-model="info.kwh"
+              placeholder=""
+              class="input-with-select"
+            >
+              <template #append>
+                <el-button @click="tran('kwh')">{{ $t('tools.unit.common.convert') }}</el-button>
+              </template>
+            </el-input>
+          </div>
+          <div class="custom-box-single">
+            <el-text class="custom-box-text">{{ $t('tools.unit.heat.megawh') }}</el-text>
+            <el-input
+              v-model="info.megawh"
+              placeholder=""
+              class="input-with-select"
+            >
+              <template #append>
+                <el-button @click="tran('megawh')">{{ $t('tools.unit.common.convert') }}</el-button>
+              </template>
+            </el-input>
+          </div>
+        </div>
+
+        <!-- group -->
+        <div class="custom-box">
+          <div class="custom-box-single">
+            <el-text class="custom-box-text">{{ $t('tools.unit.heat.j') }}</el-text>
             <el-input
               v-model="info.j"
               placeholder=""
               class="input-with-select"
             >
               <template #append>
-                <el-button @click="tran('j')">转换</el-button>
+                <el-button @click="tran('j')">{{ $t('tools.unit.common.convert') }}</el-button>
               </template>
             </el-input>
           </div>
           <div class="custom-box-single">
-            <el-text class="custom-box-text">千焦(kJ)</el-text>
+            <el-text class="custom-box-text">{{ $t('tools.unit.heat.kj') }}</el-text>
             <el-input
               v-model="info.kj"
               placeholder=""
               class="input-with-select"
             >
               <template #append>
-                <el-button @click="tran('kj')">转换</el-button>
+                <el-button @click="tran('kj')">{{ $t('tools.unit.common.convert') }}</el-button>
               </template>
             </el-input>
           </div>
@@ -150,7 +153,7 @@ const tran = (key: string) => {
       </div>
 
       <div class="w-full text-center">
-        <el-button type="primary" @click="clear">清除全部</el-button>
+        <el-button type="primary" @click="clear">{{ $t('tools.unit.common.clear') }}</el-button>
       </div>
     </div>
 </template>

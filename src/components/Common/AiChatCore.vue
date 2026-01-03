@@ -1,9 +1,13 @@
+```vue
 <script setup lang="ts">
 import { ref, nextTick, computed } from "vue";
+import { useI18n } from "vue-i18n";
 import ChatMessage from "./ChatMessage.vue";
 import ChatInput from "./ChatInput.vue";
 import AiProviderSelector from "./AiProviderSelector.vue";
 import { aiManager } from "@/spi";
+
+const { t } = useI18n();
 
 interface Message {
   id: string;
@@ -126,7 +130,7 @@ const abortStreaming = () => {
       messages.value[messageIndex] = {
         ...messages.value[messageIndex],
         streaming: false,
-        content: currentContent + '\n\n[已终止生成]',
+        content: currentContent + `\n\n${t('tools.aichat.core.terminated')}`,
         reasoning: currentReasoning
       };
     }
@@ -234,7 +238,7 @@ const callAIAPI = async () => {
     const currentMessage = messages.value.find(msg => msg.id === assistantMessageId);
     if (currentMessage && !currentMessage.content.trim()) {
       console.log('7. 使用备用响应内容');
-      const content = typeof response === 'string' ? response : (response?.content || '抱歉，没有收到有效回复');
+      const content = typeof response === 'string' ? response : (response?.content || t('tools.aichat.core.error_no_response'));
       updateMessage(assistantMessageId, content);
     }
     
@@ -257,7 +261,7 @@ const callAIAPI = async () => {
           ...messages.value[messageIndex],
           failed: true,
           streaming: false,
-          content: "抱歉，我遇到了一些问题，请点击重试按钮重新获取回答。"
+          content: t('tools.aichat.core.error_generic')
         };
       }
       finishStreaming(currentStreamingMessageId.value);
@@ -265,7 +269,7 @@ const callAIAPI = async () => {
       const failedMessage: Message = {
         id: generateMessageId(),
         type: 'assistant',
-        content: "抱歉，我遇到了一些问题，请点击重试按钮重新获取回答。",
+        content: t('tools.aichat.core.error_generic'),
         timestamp: Date.now(),
         failed: true
       };
@@ -296,7 +300,7 @@ const handleUserInput = async (content: string) => {
   } catch (error) {
     console.error("AI接口调用失败:", error);
     if (typeof error === 'object' && error !== null && 'name' in error && !(error as any).name || (error as any).name !== 'AbortError') {
-      addMessage("assistant", "抱歉，我遇到了一些问题，请稍后再试。");
+      addMessage("assistant", t('tools.aichat.core.error_generic'));
     }
   } finally {
     isSubmitting.value = false;
@@ -352,7 +356,7 @@ const handleRetry = (messageId: string) => {
     callAIAPI()
   } catch (error) {
     console.error("重试失败:", error)
-    addMessage("assistant", "抱歉，重试失败，请稍后再试。")
+    addMessage("assistant", t('tools.aichat.core.error_generic'))
   }
 }
 
@@ -404,7 +408,7 @@ const startAIConversation = async () => {
     console.log('✅ callAIAPI 调用完成');
   } catch (error) {
     console.error("❌ AI主动对话失败:", error);
-    addMessage("assistant", "抱歉，我遇到了一些问题，请稍后再试。");
+    addMessage("assistant", t('tools.aichat.core.error_generic'));
   } finally {
     console.log('3. 重置提交状态');
     isSubmitting.value = false;
@@ -459,7 +463,7 @@ defineExpose({
           >
             <div class="text-2xl mb-2">🤖</div>
             <div class="text-lg font-medium mb-2">{{ title }}</div>
-            <div class="text-sm">我可以帮助您解决各种问题，请开始对话吧！</div>
+            <div class="text-sm">{{ t('tools.aichat.core.welcome_msg') }}</div>
           </div>
 
           <!-- 消息列表 -->
@@ -487,7 +491,7 @@ defineExpose({
             @click="clearChat"
             class="px-3 py-1 text-sm text-gray-500 hover:text-gray-700 hover:bg-gray-100 rounded"
           >
-            清空对话
+            {{ t('tools.aichat.core.clear_chat') }}
           </button>
         </div>
       </div>
@@ -497,8 +501,8 @@ defineExpose({
     <div v-else class="mt-4 p-6 text-center bg-gray-50 rounded-lg">
       <div class="text-gray-500">
         <div class="text-lg mb-2">🤖</div>
-        <div class="text-base font-medium mb-2">正在初始化AI供应商选择...</div>
-        <div class="text-sm">请稍候，系统会自动选择默认配置</div>
+        <div class="text-base font-medium mb-2">{{ t('tools.aichat.core.init_provider') }}</div>
+        <div class="text-sm">{{ t('tools.aichat.core.auto_select') }}</div>
       </div>
     </div>
   </div>

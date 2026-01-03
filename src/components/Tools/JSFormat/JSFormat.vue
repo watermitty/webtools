@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import { reactive } from 'vue'
+import { useI18n } from 'vue-i18n'
 import DetailHeader from '@/components/Layout/DetailHeader/DetailHeader.vue'
 import ToolDetail from '@/components/Layout/ToolDetail/ToolDetail.vue'
 import { copy } from '@/utils/string';
@@ -10,8 +11,10 @@ import * as parserBabel from 'prettier/parser-babel';
 import { ElMessage } from 'element-plus'
 import { minify } from "terser"
 
+const { t } = useI18n()
+
 const info = reactive({
-  title: "JS代码格式化/压缩",
+  title: "tools.jsformat.title",
   code: '',
   isParseErr: false,
   parseErr: '',
@@ -58,10 +61,10 @@ const formatCode = async () => {
     // 检查代码是否为空
     if (!info.code.trim()) {
       info.isParseErr = true;
-      info.parseErr = '请输入JS代码';
+      info.parseErr = t('tools.jsformat.msg_empty');
       ElMessage({
         showClose: true,
-        message: '请输入JS代码',
+        message: t('tools.jsformat.msg_empty'),
         type: 'warning',
       })
       return;
@@ -70,10 +73,10 @@ const formatCode = async () => {
   } catch (error) {
     console.log('格式化错误:', error);
     info.isParseErr = true;
-    info.parseErr = '请填入正确的JS代码';
+    info.parseErr = t('tools.jsformat.msg_error');
     ElMessage({
       showClose: true,
-      message: '请填入正确的JS代码',
+      message: t('tools.jsformat.msg_error'),
       type: 'error',
     })
   }
@@ -87,10 +90,10 @@ const confuseCompress = async () => {
     // 检查代码是否为空
     if (!info.code.trim()) {
       info.isParseErr = true;
-      info.parseErr = '请输入JS代码';
+      info.parseErr = t('tools.jsformat.msg_empty');
       ElMessage({
         showClose: true,
-        message: '请输入JS代码',
+        message: t('tools.jsformat.msg_empty'),
         type: 'warning',
       })
       return;
@@ -104,10 +107,10 @@ const confuseCompress = async () => {
   } catch(error) {
     console.log('压缩错误:', error);
     info.isParseErr = true;
-    info.parseErr = '请填入正确的JS代码: ' + (error as Error).message;
+    info.parseErr = t('tools.jsformat.msg_error') + ': ' + (error as Error).message;
     ElMessage({
       showClose: true,
-      message: '请填入正确的JS代码: ' + (error as Error).message,
+      message: t('tools.jsformat.msg_error') + ': ' + (error as Error).message,
       type: 'error',
     })
   }
@@ -122,12 +125,13 @@ const clear = () => {
 
 const copyRes = async () => {
   copy(info.code)
+  ElMessage.success(t('tools.jsformat.msg_copy_success'))
 }
 </script>
 
 <template>
   <div class="flex flex-col mt-3 flex-1">
-    <DetailHeader :title="info.title"></DetailHeader>
+    <DetailHeader :title="$t(info.title)"></DetailHeader>
 
     <div class="p-4 rounded-2xl bg-white">
       
@@ -138,15 +142,15 @@ const copyRes = async () => {
           border
           height="400"
           width="100%"
-          placeholder="请输入JS代码..."
+          :placeholder="$t('tools.jsformat.input_placeholder')"
         />
       </div>
       
       <div class="mt-4 flex flex-wrap gap-2">
-        <el-button type="primary" @click="formatCode">格式化</el-button>
-        <el-button type="primary" @click="confuseCompress">混淆压缩</el-button>
-        <el-button type="primary" @click="copyRes">复制</el-button>
-        <el-button type="primary" @click="clear">清空</el-button>
+        <el-button type="primary" @click="formatCode">{{ $t('tools.jsformat.btn_format') }}</el-button>
+        <el-button type="primary" @click="confuseCompress">{{ $t('tools.jsformat.btn_compress') }}</el-button>
+        <el-button type="primary" @click="copyRes">{{ $t('tools.jsformat.btn_copy') }}</el-button>
+        <el-button type="primary" @click="clear">{{ $t('tools.jsformat.btn_clear') }}</el-button>
       </div>
 
       <div class="mt-3 min-h-md bg-red-100 p-3 mb-3" v-show="info.isParseErr">
@@ -155,9 +159,9 @@ const copyRes = async () => {
     </div>
 
     <!-- desc -->
-    <ToolDetail title="描述">
+    <ToolDetail :title="$t('tools.desc.title')"> <!-- Assuming tools.desc.title exists, if not use fallback or tools.common.desc -->
       <el-text>
-        JS代码格式化/压缩工具，提供在线JS代码格式化、JS代码压缩、JS代码混淆功能。支持ES6+语法，可以帮助开发者快速格式化代码，提高代码可读性，同时提供代码压缩功能来减小文件体积。
+        {{ $t('tools.jsformat.desc') }}
       </el-text> 
     </ToolDetail>
   </div>

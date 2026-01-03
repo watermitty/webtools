@@ -1,11 +1,14 @@
 <script setup lang="ts">
-import { onMounted, reactive, ref,computed, watch } from 'vue'
-import { UploadProps,UploadRawFile,genFileId } from 'element-plus'
+import { onMounted, reactive, ref, computed, watch } from 'vue'
+import { useI18n } from 'vue-i18n'
+import { UploadProps, UploadRawFile, genFileId } from 'element-plus'
 import DetailHeader from '@/components/Layout/DetailHeader/DetailHeader.vue'
 import ToolDetail from '@/components/Layout/ToolDetail/ToolDetail.vue'
 
+const { t } = useI18n()
+
 const info = reactive({
-  title: "图片切割",
+  title: "tools.imgcut.title",
 })
 
 const fileList = ref()
@@ -90,7 +93,7 @@ onMounted(() => {
 
 <template>
   <div class="flex flex-col mt-3 flex-1">
-    <DetailHeader :title="info.title"></DetailHeader>
+    <DetailHeader :title="$t('tools.imgcut.title')"></DetailHeader>
 
     <div class="p-4 rounded-2xl bg-white">
       <el-upload
@@ -102,11 +105,11 @@ onMounted(() => {
         :on-exceed="handleExceed"
         :limit="1"
       >
-        <el-button type="primary">请上传需要切割的图片</el-button>
+        <el-button type="primary">{{ $t('tools.imgcut.btn_upload') }}</el-button>
       </el-upload>
       <div class="flex mt-3">
         <div class="flex">
-          <el-text>行数和列数</el-text>
+          <el-text>{{ $t('tools.imgcut.label_grid') }}</el-text>
           <el-input-number v-model="lineNum" :min="1" :max="10" class="ml-3"/>
         </div>
       </div>
@@ -115,7 +118,7 @@ onMounted(() => {
       <div class="mt-3 min-h-md bg-gray-100 p-3 mb-3 flex flex-col md:flex-row gap-4 items-start" v-if="image.src">
         <!-- 预览 -->
         <div class="w-full md:w-1/2">
-          <el-text>预览: </el-text>
+          <el-text>{{ $t('tools.imgcut.preview') }}</el-text>
           <div :style="cutImgStyle" class="grid gap-2 w-full">
             <img v-for="(src,index) in cutImg" :key="index" :src="src" alt="结果" class="w-full h-auto block"/>
           </div>
@@ -123,22 +126,21 @@ onMounted(() => {
 
         <!-- 原图 -->
         <div class="w-full md:w-1/2">
-          <el-text>原图: </el-text>
+          <el-text>{{ $t('tools.imgcut.original') }}</el-text>
           <div class="w-full">
             <img :src="image.src" alt="原图" v-if="image.src" class="max-w-full h-auto block"/>
           </div>
         </div>
       </div>
       <div v-else>
-        <el-empty :image-size="200" description="无预览"/>
+        <el-empty :image-size="200" :description="$t('tools.imgcut.no_preview')"/>
       </div>
     </div>
 
     <!-- desc -->
-    <ToolDetail title="描述">
+    <ToolDetail :title="$t('tools.imgcut.detail_title')">
       <el-text>
-        将图片分割成四宫格、九宫格、十六宫格，支持自定义行与列；<br>
-        比如：九宫格切图广泛应用于微信朋友圈，微博等社交媒体。
+        {{ $t('tools.imgcut.detail_content') }}
       </el-text> 
     </ToolDetail>
   </div>

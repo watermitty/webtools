@@ -1,7 +1,10 @@
 <script setup lang="ts">
 import { computed } from 'vue'
+import { useI18n } from 'vue-i18n'
 import MarkdownIt from 'markdown-it'
 import { copy } from '@/utils/string'
+
+const { t, locale } = useI18n()
 
 interface Message {
   id: string
@@ -22,7 +25,7 @@ const emit = defineEmits<{
 }>()
 
 const formatTime = (timestamp: number) => {
-  return new Date(timestamp).toLocaleTimeString('zh-CN', {
+  return new Date(timestamp).toLocaleTimeString(locale.value === 'en' ? 'en-US' : 'zh-CN', {
     hour: '2-digit',
     minute: '2-digit'
   })
@@ -36,7 +39,7 @@ const handleRetry = () => {
 const handleCopy = () => {
   let copyText = props.message.content;
   if (props.message.reasoning) {
-    copyText = `思考过程：\n${props.message.reasoning}\n\n回答：\n${props.message.content}`;
+    copyText = `${t('tools.aichat.message.reasoning_label')}：\n${props.message.reasoning}\n\n${t('tools.aichat.message.answer_label')}：\n${props.message.content}`;
   }
   copy(copyText);
 }
@@ -94,7 +97,7 @@ const renderedReasoning = computed(() => {
             <svg class="w-3 h-3 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9.663 17h4.673M12 3v1m6.364 1.636l-.707.707M21 12h-1M4 12H3m3.343-5.657l-.707-.707m2.828 9.9a5 5 0 117.072 0l-.548.547A3.374 3.374 0 0014 18.469V19a2 2 0 11-4 0v-.531c0-.895-.356-1.754-.988-2.386l-.548-.547z"></path>
             </svg>
-            思考过程
+            {{ t('tools.aichat.message.reasoning') }}
           </div>
           <div 
             class="text-xs text-gray-700 markdown-content reasoning-content"
@@ -122,7 +125,7 @@ const renderedReasoning = computed(() => {
           <!-- 流式输出状态指示 -->
           <span v-if="message.streaming" class="ml-2 text-blue-500">
             <span class="inline-block w-2 h-2 bg-blue-500 rounded-full animate-pulse"></span>
-            正在输出...
+            {{ t('tools.aichat.message.streaming') }}
           </span>
         </div>
         
@@ -133,7 +136,7 @@ const renderedReasoning = computed(() => {
             @click="handleCopy"
             class="p-1 rounded hover:bg-gray-100 transition-colors"
             :class="message.type === 'user' ? 'hover:bg-blue-400' : ''"
-            title="复制消息"
+            :title="t('tools.aichat.message.copy')"
           >
             <svg class="w-4 h-4" :class="message.type === 'user' ? 'text-blue-100' : 'text-gray-500'" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 002-2v-8a2 2 0 00-2-2h-8a2 2 0 00-2 2v8a2 2 0 002 2z"></path>
@@ -145,7 +148,7 @@ const renderedReasoning = computed(() => {
             v-if="message.type === 'assistant' && !message.streaming"
             @click="handleRetry"
             class="p-1 rounded hover:bg-gray-100 transition-colors"
-            title="重新生成"
+            :title="t('tools.aichat.message.regenerate')"
           >
             <svg class="w-4 h-4 text-gray-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"></path>
@@ -160,7 +163,7 @@ const renderedReasoning = computed(() => {
           @click="handleRetry"
           class="px-3 py-1 text-xs bg-red-100 text-red-600 hover:bg-red-200 rounded border border-red-200 transition-colors"
         >
-          🔄 重试
+          🔄 {{ t('tools.aichat.message.retry') }}
         </button>
       </div>
     </div>

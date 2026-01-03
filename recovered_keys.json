@@ -1,0 +1,1090 @@
+{
+  "Media": {
+    "io": ""
+  },
+  "Trae": {
+    "cn": ""
+  },
+  "tools": {
+    "ascii": {
+      "group_control": "",
+      "col_dec": "",
+      "col_oct": "",
+      "col_hex": "",
+      "col_sym": "",
+      "col_desc": "",
+      "group_standard": "",
+      "group_extended": "",
+      "detail_content": "",
+      "codes": {
+        "0": "",
+        "1": "",
+        "2": "",
+        "3": "",
+        "4": "",
+        "5": "",
+        "6": "",
+        "7": "",
+        "8": "",
+        "9": "",
+        "10": "",
+        "11": "",
+        "12": "",
+        "13": "",
+        "14": "",
+        "15": "",
+        "16": "",
+        "17": "",
+        "18": "",
+        "19": "",
+        "20": "",
+        "21": "",
+        "22": "",
+        "23": "",
+        "24": "",
+        "25": "",
+        "26": "",
+        "27": "",
+        "28": "",
+        "29": "",
+        "30": "",
+        "31": "",
+        "32": "",
+        "127": "",
+        "160": ""
+      },
+      "title": ""
+    },
+    "barrage": {
+      "title": "",
+      "content": "",
+      "speed": "",
+      "text_size": "",
+      "text_color": "",
+      "bg_color": "",
+      "play": "",
+      "pause": "",
+      "exit_hint": "",
+      "detail_title": "",
+      "detail_content": ""
+    },
+    "coin": {
+      "title": "",
+      "flip": "",
+      "flipping": "",
+      "detail_title": "",
+      "detail_content": ""
+    },
+    "cookie": {
+      "intro": "",
+      "link_example": "",
+      "placeholder_simple": "",
+      "placeholder_detailed": "",
+      "mode_detailed": "",
+      "mode_simple": "",
+      "btn_export": "",
+      "suffix_no_data": "",
+      "btn_import": "",
+      "btn_clear": "",
+      "placeholder_search": "",
+      "btn_add": "",
+      "msg_clear_search": "",
+      "msg_empty": "",
+      "col_name": "",
+      "col_value": "",
+      "btn_copy": "",
+      "btn_delete": "",
+      "format_req": "",
+      "format_res": "",
+      "btn_copy_result": "",
+      "suffix_no_result": "",
+      "detail_title": "",
+      "detail_content": "",
+      "msg_import_err_format": "",
+      "msg_import_no_valid": "",
+      "msg_parse_err": "",
+      "err_name_empty": "",
+      "err_name_invalid": "",
+      "err_value_invalid": "",
+      "err_domain": "",
+      "err_path": "",
+      "err_max_age": "",
+      "title": ""
+    },
+    "crongen": {
+      "config_title": "",
+      "unit": {
+        "second": "",
+        "minute": "",
+        "hour": "",
+        "day": "",
+        "month": "",
+        "week": ""
+      },
+      "type": {
+        "range": "",
+        "none": ""
+      },
+      "step_label_prefix": "",
+      "range_from": "",
+      "range_to": "",
+      "week_days_short": "",
+      "prev_tab": "",
+      "next_tab": "",
+      "result_title": "",
+      "placeholder": "",
+      "btn_copy": "",
+      "exec_count_label": "",
+      "exec_count_suffix": "",
+      "examples_title": "",
+      "usage_title": "",
+      "usage": {
+        "format_title": "",
+        "format_desc": "",
+        "format_example": "",
+        "char_title": "",
+        "chars": "",
+        "caution_title": "",
+        "cautions": ""
+      },
+      "detail_title": "",
+      "detail_content": "",
+      "meaning_prefix": "",
+      "every": "",
+      "at": "",
+      "week_days_full": "",
+      "execute": "",
+      "week_days_short_list": "",
+      "title": ""
+    },
+    "cssformat": {
+      "title": "",
+      "placeholder": "",
+      "format": "",
+      "compress": "",
+      "copy": "",
+      "clear": "",
+      "detail_title": "",
+      "detail_content": "",
+      "error_format": ""
+    },
+    "csvjson": {
+      "title": "",
+      "mode_csv2json": "",
+      "mode_json2csv": "",
+      "label_delimiter": "",
+      "delim_comma": "",
+      "delim_tab": "",
+      "delim_semicolon": "",
+      "delim_pipe": "",
+      "delim_custom": "",
+      "placeholder_custom": "",
+      "switch_header_active": "",
+      "switch_header_inactive": "",
+      "switch_output_header_active": "",
+      "switch_output_header_inactive": "",
+      "btn_convert": "",
+      "btn_copy": "",
+      "btn_clear": "",
+      "label_example": "",
+      "label_input_csv": "",
+      "placeholder_input_csv": "",
+      "label_input_json": "",
+      "placeholder_input_json": "",
+      "label_result": "",
+      "placeholder_result": "",
+      "detail_title": "",
+      "detail_content": "",
+      "msg_success": "",
+      "msg_fail": "",
+      "msg_fail_json": ""
+    },
+    "decision": {
+      "title": "",
+      "what_to_eat": "",
+      "what_to_do": "",
+      "placeholder": "",
+      "decide": "",
+      "deciding": "",
+      "clear": "",
+      "detail_title": "",
+      "detail_content": ""
+    },
+    "dice": {
+      "title": "",
+      "dice_count": "",
+      "roll": "",
+      "rolling": "",
+      "reset": "",
+      "detail_title": "",
+      "detail_content": ""
+    },
+    "diff": {
+      "title": "",
+      "old_text": "",
+      "new_text": "",
+      "detail_title": "",
+      "detail_content": ""
+    },
+    "filesize": {
+      "btn_clear": "",
+      "examples_title": "",
+      "desc": "",
+      "title": ""
+    },
+    "hash": {
+      "title": "",
+      "select_algo": "",
+      "hmac_key": "",
+      "text_hash": "",
+      "fill_example": "",
+      "placeholder": "",
+      "copy_result": "",
+      "clear": "",
+      "result": "",
+      "file_hash": "",
+      "file": "",
+      "bytes": "",
+      "computing": "",
+      "detail_title": "",
+      "detail_content": "",
+      "error_crypto": ""
+    },
+    "htmlentity": {
+      "title": "",
+      "input_hint": "",
+      "copy_input": "",
+      "example": "",
+      "fill_html": "",
+      "entity_example": "",
+      "fill_entity": "",
+      "placeholder": "",
+      "btn_to_entity": "",
+      "btn_to_html": "",
+      "btn_copy": "",
+      "btn_clear": "",
+      "result_title": "",
+      "copy_result": "",
+      "usage": "",
+      "usage_1": "",
+      "usage_2": "",
+      "common_mapping": ""
+    },
+    "htmlformat": {
+      "title": "",
+      "placeholder": "",
+      "format": "",
+      "copy": "",
+      "clear": "",
+      "detail_title": "",
+      "detail_content": "",
+      "error_format": ""
+    },
+    "httpcode": {
+      "group_1xx": "",
+      "col_code": "",
+      "col_desc": "",
+      "group_2xx": "",
+      "group_3xx": "",
+      "group_4xx": "",
+      "group_5xx": "",
+      "detail_title": "",
+      "detail_content": "",
+      "codes": {
+        "100": {
+          "desc": ""
+        },
+        "101": {
+          "desc": ""
+        },
+        "102": {
+          "desc": ""
+        },
+        "200": {
+          "desc": ""
+        },
+        "201": {
+          "desc": ""
+        },
+        "202": {
+          "desc": ""
+        },
+        "203": {
+          "desc": ""
+        },
+        "204": {
+          "desc": ""
+        },
+        "205": {
+          "desc": ""
+        },
+        "206": {
+          "desc": ""
+        },
+        "207": {
+          "desc": ""
+        },
+        "208": {
+          "desc": ""
+        },
+        "226": {
+          "desc": ""
+        },
+        "300": {
+          "desc": ""
+        },
+        "301": {
+          "desc": ""
+        },
+        "302": {
+          "desc": ""
+        },
+        "303": {
+          "desc": ""
+        },
+        "304": {
+          "desc": ""
+        },
+        "305": {
+          "desc": ""
+        },
+        "306": {
+          "desc": ""
+        },
+        "307": {
+          "desc": ""
+        },
+        "308": {
+          "desc": ""
+        },
+        "400": {
+          "desc": ""
+        },
+        "401": {
+          "desc": ""
+        },
+        "402": {
+          "desc": ""
+        },
+        "403": {
+          "desc": ""
+        },
+        "404": {
+          "desc": ""
+        },
+        "405": {
+          "desc": ""
+        },
+        "406": {
+          "desc": ""
+        },
+        "407": {
+          "desc": ""
+        },
+        "408": {
+          "desc": ""
+        },
+        "409": {
+          "desc": ""
+        },
+        "410": {
+          "desc": ""
+        },
+        "411": {
+          "desc": ""
+        },
+        "412": {
+          "desc": ""
+        },
+        "413": {
+          "desc": ""
+        },
+        "414": {
+          "desc": ""
+        },
+        "415": {
+          "desc": ""
+        },
+        "416": {
+          "desc": ""
+        },
+        "417": {
+          "desc": ""
+        },
+        "418": {
+          "desc": ""
+        },
+        "421": {
+          "desc": ""
+        },
+        "422": {
+          "desc": ""
+        },
+        "423": {
+          "desc": ""
+        },
+        "424": {
+          "desc": ""
+        },
+        "425": {
+          "desc": ""
+        },
+        "426": {
+          "desc": ""
+        },
+        "429": {
+          "desc": ""
+        },
+        "431": {
+          "desc": ""
+        },
+        "449": {
+          "desc": ""
+        },
+        "451": {
+          "desc": ""
+        },
+        "500": {
+          "desc": ""
+        },
+        "501": {
+          "desc": ""
+        },
+        "502": {
+          "desc": ""
+        },
+        "503": {
+          "desc": ""
+        },
+        "504": {
+          "desc": ""
+        },
+        "505": {
+          "desc": ""
+        },
+        "506": {
+          "desc": ""
+        },
+        "507": {
+          "desc": ""
+        },
+        "509": {
+          "desc": ""
+        },
+        "510": {
+          "desc": ""
+        },
+        "511": {
+          "desc": ""
+        }
+      },
+      "title": ""
+    },
+    "imgcompress": {
+      "title": "",
+      "settings_title": "",
+      "label_smart": "",
+      "label_quality": "",
+      "hint_quality": "",
+      "label_threshold": "",
+      "hint_threshold_small": "",
+      "hint_threshold_desc": "",
+      "label_webp": "",
+      "label_exif": "",
+      "debug_title": "",
+      "drag_hint": "",
+      "format_hint": "",
+      "btn_select": "",
+      "btn_start": "",
+      "btn_compressing": "",
+      "btn_download_all": "",
+      "label_original_size": "",
+      "label_compressed_size": "",
+      "label_ratio": "",
+      "label_actual_quality": "",
+      "label_actual_size": "",
+      "btn_download": "",
+      "btn_clear_all": "",
+      "detail_title": "",
+      "detail_content": "",
+      "features_title": "",
+      "features_list": "",
+      "usage_title": "",
+      "usage_list": "",
+      "faq_title": "",
+      "faq_content": "",
+      "msg_lib_fail": "",
+      "msg_select_img": "",
+      "debug_start": "",
+      "debug_fail": "",
+      "msg_error": "",
+      "debug_complete": "",
+      "debug_compressing": "",
+      "suggestion_large": "",
+      "suggestion_medium": "",
+      "suggestion_small": "",
+      "suggestion_tiny": ""
+    },
+    "imgbase64": {
+      "title": "",
+      "loading": "",
+      "drag_hint": "",
+      "format_hint": "",
+      "btn_select": "",
+      "label_size": "",
+      "btn_clear": "",
+      "label_result": "",
+      "btn_copy": "",
+      "placeholder": "",
+      "preview": "",
+      "detail_title": "",
+      "detail_content": "",
+      "msg_select_img": "",
+      "msg_success": "",
+      "msg_fail": "",
+      "msg_copy_success": ""
+    },
+    "imgcut": {
+      "title": "",
+      "btn_upload": "",
+      "label_grid": "",
+      "preview": "",
+      "original": "",
+      "no_preview": "",
+      "detail_title": "",
+      "detail_content": ""
+    },
+    "ip": {
+      "placeholder": "",
+      "btn_search": "",
+      "label_result": "",
+      "label_isp": "",
+      "label_ip": "",
+      "label_pos": "",
+      "msg_invalid_ip": "",
+      "title": ""
+    },
+    "jsontran": {
+      "title": "",
+      "placeholder": "",
+      "btn_format": "",
+      "btn_compress": "",
+      "btn_escape": "",
+      "btn_unescape": "",
+      "btn_copy": "",
+      "btn_clear": "",
+      "detail_title": "",
+      "what_is": "",
+      "what_is_content": "",
+      "syntax": "",
+      "syntax_obj": "",
+      "syntax_arr": "",
+      "syntax_key": "",
+      "syntax_value": "",
+      "syntax_str": "",
+      "syntax_comma": "",
+      "features": "",
+      "feature_format": "",
+      "feature_compress": "",
+      "feature_escape": "",
+      "error_check": "",
+      "error_squote": "",
+      "error_noquote": "",
+      "error_comma": "",
+      "invalid_json": ""
+    },
+    "jwt": {
+      "tab_parse": "",
+      "placeholder_token": "",
+      "msg_invalid_token": "",
+      "btn_parse": "",
+      "btn_clear": "",
+      "label_secret_verify": "",
+      "placeholder_secret": "",
+      "btn_verify": "",
+      "msg_verify_success": "",
+      "msg_verify_fail": "",
+      "label_header": "",
+      "label_payload": "",
+      "tab_generate": "",
+      "placeholder_header": "",
+      "placeholder_payload": "",
+      "label_exp": "",
+      "btn_update_time": "",
+      "label_secret": "",
+      "btn_random": "",
+      "btn_copy_secret": "",
+      "placeholder_input_secret": "",
+      "btn_generate": "",
+      "btn_reset": "",
+      "label_result_token": "",
+      "btn_copy_token": "",
+      "desc": "",
+      "msg_verify_error": "",
+      "exp_options": {
+        "1h": "",
+        "5h": "",
+        "1d": "",
+        "3d": "",
+        "7d": "",
+        "15d": "",
+        "1m": ""
+      },
+      "msg_copy_success": "",
+      "msg_copy_fail": "",
+      "msg_copy_secret_success": "",
+      "title": ""
+    },
+    "md5": {
+      "title": "",
+      "placeholder": "",
+      "btn_encrypt": "",
+      "btn_clear": "",
+      "label_32_upper": "",
+      "btn_copy": "",
+      "label_32_lower": "",
+      "label_16_upper": "",
+      "label_16_lower": "",
+      "detail_title": "",
+      "what_is": "",
+      "what_is_content": "",
+      "uses": "",
+      "use_check": "",
+      "use_sign": "",
+      "use_store": "",
+      "warning": "",
+      "warning_content": "",
+      "faq": "",
+      "q1": "",
+      "a1": "",
+      "q2": "",
+      "a2": ""
+    },
+    "morse": {
+      "title": "",
+      "placeholder": "",
+      "encode": "",
+      "decode": "",
+      "copy_result": "",
+      "clear": "",
+      "result_placeholder": "",
+      "detail_title": "",
+      "detail_content": ""
+    },
+    "mysqlto": {
+      "label_ddl": "",
+      "placeholder_ddl": "",
+      "label_error": "",
+      "label_warning": "",
+      "label_json_tag": "",
+      "label_gorm_tag": "",
+      "label_xorm_tag": "",
+      "label_gin_tag": "",
+      "label_pointer": "",
+      "label_time_pkg": "",
+      "label_null": "",
+      "btn_example": "",
+      "btn_clear": "",
+      "label_result": "",
+      "btn_copy": "",
+      "detail_title": "",
+      "desc": "",
+      "features": "",
+      "usage_title": "",
+      "usage": "",
+      "tip": "",
+      "validator": {
+        "no_keyword": "",
+        "no_table": "",
+        "no_fields": "",
+        "paren_mismatch": "",
+        "squote_mismatch": "",
+        "dquote_mismatch": "",
+        "syntax_error": "",
+        "on_update_error": ""
+      },
+      "msg": {
+        "parse_fail": "",
+        "table_fail": ""
+      },
+      "title": ""
+    },
+    "namingcase": {
+      "title": "",
+      "hint": "",
+      "fill_example": "",
+      "by_line": "",
+      "whole": "",
+      "clear": "",
+      "placeholder": "",
+      "copy": "",
+      "detail_title": "",
+      "detail_content": ""
+    },
+    "numtochinese": {
+      "title": "",
+      "placeholder": "",
+      "convert": "",
+      "copy_result": "",
+      "clear": "",
+      "result_placeholder": "",
+      "detail_title": "",
+      "detail_content": ""
+    },
+    "palettes": {
+      "title": "",
+      "detail_title": "",
+      "detail_content": ""
+    },
+    "postman": {
+      "btn_send": "",
+      "btn_import_curl": "",
+      "btn_copy_curl": "",
+      "label_final_url": "",
+      "tab_params": "",
+      "placeholder_key": "",
+      "placeholder_value": "",
+      "btn_delete": "",
+      "btn_add_param": "",
+      "tab_headers": "",
+      "btn_add_header": "",
+      "tab_body": "",
+      "label_body_json_placeholder": "",
+      "btn_add_field": "",
+      "opt_text": "",
+      "opt_file": "",
+      "label_selected_files": "",
+      "label_resp": "",
+      "label_status": "",
+      "label_time": "",
+      "label_size": "",
+      "tab_resp_body": "",
+      "label_resp_img": "",
+      "btn_format_json": "",
+      "btn_copy_resp": "",
+      "tab_resp_headers": "",
+      "label_desc": "",
+      "msg_cors_warn": "",
+      "dialog_import_title": "",
+      "placeholder_curl": "",
+      "btn_cancel": "",
+      "btn_confirm": "",
+      "msg": {
+        "binary_content": "",
+        "req_fail": "",
+        "file_placeholder": ""
+      },
+      "title": ""
+    },
+    "qrcode": {
+      "title": "",
+      "label_content": "",
+      "placeholder": "",
+      "btn_clear": "",
+      "label_size": "",
+      "size_small": "",
+      "size_normal": "",
+      "size_medium": "",
+      "size_large": "",
+      "size_xlarge": "",
+      "label_error_level": "",
+      "error_l": "",
+      "error_m": "",
+      "error_q": "",
+      "error_h": "",
+      "label_logo": "",
+      "label_style_config": "",
+      "tab_preset": "",
+      "tab_custom": "",
+      "label_dot_style": "",
+      "label_color_settings": "",
+      "tab_single": "",
+      "label_fg": "",
+      "label_bg": "",
+      "tab_gradient": "",
+      "label_gradient_type": "",
+      "label_start_color": "",
+      "label_end_color": "",
+      "label_corner_square": "",
+      "label_style": "",
+      "dot_styles": {
+        "square": "",
+        "dot": "",
+        "extra_rounded": "",
+        "rounded": "",
+        "dots": "",
+        "classy": "",
+        "classy_rounded": ""
+      },
+      "label_color": "",
+      "label_corner_dot": "",
+      "preview_title": "",
+      "preview_desc": "",
+      "btn_download": "",
+      "gradient_linear": "",
+      "gradient_radial": "",
+      "label_gradient_angle": "",
+      "detail": {
+        "title": "",
+        "intro_title": "",
+        "intro_content": "",
+        "level_title": "",
+        "level_intro": "",
+        "level_l": "",
+        "level_m": "",
+        "level_q": "",
+        "level_h": "",
+        "best_title": "",
+        "best_contrast": "",
+        "best_quiet": "",
+        "best_size": "",
+        "faq": "",
+        "q1": "",
+        "a1": "",
+        "q2": "",
+        "a2": ""
+      },
+      "msg_upload_limit": "",
+      "msg_generate_first": "",
+      "msg_element_not_found": "",
+      "msg_download_success": "",
+      "msg_image_generate_fail": "",
+      "msg_download_fail": ""
+    },
+    "qrscan": {
+      "title": "",
+      "tab_image": "",
+      "heading_image": "",
+      "drag_hint": "",
+      "format_hint": "",
+      "drag_hint_2": "",
+      "tab_camera": "",
+      "heading_camera": "",
+      "scan_hint": "",
+      "btn_start": "",
+      "btn_stop": "",
+      "result_title": "",
+      "btn_clear": "",
+      "btn_copy": "",
+      "btn_open": "",
+      "detail_title": "",
+      "detail_content": "",
+      "msg_success": "",
+      "msg_fail": "",
+      "msg_no_content": "",
+      "msg_copy_success": "",
+      "msg_copy_fail": "",
+      "msg_clear": ""
+    },
+    "randomnum": {
+      "title": "",
+      "generate": "",
+      "generating": "",
+      "detail_title": "",
+      "detail_content": ""
+    },
+    "randompassword": {
+      "password_combination": "",
+      "number": "",
+      "lower": "",
+      "upper": "",
+      "symbol": "",
+      "include_chars": "",
+      "length": "",
+      "quantity": "",
+      "strength": "",
+      "generate": "",
+      "copy_all": "",
+      "desc": "",
+      "strength_text": "",
+      "error_char_empty": "",
+      "error_len_range": "",
+      "error_num_range": "",
+      "strength_none": "",
+      "strength_weak": "",
+      "strength_very_strong": "",
+      "strength_strong": "",
+      "strength_medium": "",
+      "title": ""
+    },
+    "regtest": {
+      "placeholder_text": "",
+      "label_common_reg": "",
+      "placeholder_reg": "",
+      "label_global": "",
+      "label_case_insensitive": "",
+      "btn_test": "",
+      "detail_title": "",
+      "detail_content": "",
+      "title": ""
+    },
+    "scaletran": {
+      "title": "",
+      "placeholder": "",
+      "select": "",
+      "convert": "",
+      "base": "",
+      "result": "",
+      "action": "",
+      "copy": "",
+      "detail_title": "",
+      "detail_content": "",
+      "base2": "",
+      "base8": "",
+      "base10": "",
+      "base16": "",
+      "base32": "",
+      "base32_desc": "",
+      "base58": "",
+      "base58_desc": "",
+      "base62": "",
+      "base62_desc": "",
+      "base64": "",
+      "base64_desc": "",
+      "error_param": "",
+      "error_empty": "",
+      "error_binary": "",
+      "error_octal": "",
+      "error_decimal": "",
+      "error_hex": ""
+    },
+    "textunique": {
+      "title": "",
+      "placeholder": "",
+      "copy_result": "",
+      "clear": "",
+      "result_placeholder": "",
+      "detail_title": "",
+      "detail_content": ""
+    },
+    "texttoimg": {
+      "title": "",
+      "label_width": "",
+      "label_bgcolor": "",
+      "btn_download": "",
+      "detail_title": "",
+      "detail_content": "",
+      "initial_content": "",
+      "placeholder": ""
+    },
+    "timetran": {
+      "title": "",
+      "ui": {
+        "now": "",
+        "stop": "",
+        "start": "",
+        "utc": "",
+        "iso": "",
+        "timestamp": "",
+        "placeholder_ts": "",
+        "convert": "",
+        "placeholder_date": "",
+        "date": "",
+        "select": ""
+      },
+      "detail_title": "",
+      "what_is": "",
+      "what_is_content": "",
+      "why_need": "",
+      "why_need_content": "",
+      "methods": "",
+      "table": {
+        "lang": "",
+        "second": "",
+        "millisecond": ""
+      },
+      "faq": "",
+      "q1": "",
+      "a1": "",
+      "q2": "",
+      "a2": "",
+      "q3": "",
+      "a3": ""
+    },
+    "unicode": {
+      "placeholder": "",
+      "btn_to_chinese": "",
+      "btn_to_unicode": "",
+      "btn_copy": "",
+      "btn_clear": "",
+      "result_placeholder": "",
+      "desc": "",
+      "title": ""
+    },
+    "urlencode": {
+      "raw_text": "",
+      "copy_raw": "",
+      "example": "",
+      "fill": "",
+      "placeholder_raw": "",
+      "fill_example": "",
+      "btn_encode": "",
+      "btn_decode": "",
+      "btn_copy": "",
+      "btn_clear": "",
+      "encoded_text": "",
+      "copy_encoded": "",
+      "placeholder_encoded": "",
+      "desc": "",
+      "title": ""
+    },
+    "urlparams": {
+      "intro": "",
+      "link_example": "",
+      "placeholder_input": "",
+      "btn_parse": "",
+      "btn_build": "",
+      "label_auto_encode": "",
+      "label_raw": "",
+      "btn_clear": "",
+      "label_base_url": "",
+      "placeholder_base": "",
+      "label_params": "",
+      "btn_add": "",
+      "placeholder_key": "",
+      "placeholder_value": "",
+      "btn_delete": "",
+      "label_result_query": "",
+      "btn_copy_query": "",
+      "label_result_full": "",
+      "btn_copy_full": "",
+      "detail_title": "",
+      "detail_content": "",
+      "title": ""
+    },
+    "uuid": {
+      "quantity": "",
+      "format": "",
+      "lower": "",
+      "upper": "",
+      "lower_no_hyphen": "",
+      "upper_no_hyphen": "",
+      "generate": "",
+      "copy_all": "",
+      "desc": "",
+      "title": ""
+    },
+    "wordcount": {
+      "title": "",
+      "placeholder": "",
+      "total": "",
+      "chinese": "",
+      "letters": "",
+      "numbers": "",
+      "punct_half": "",
+      "punct_full": "",
+      "whitespace": "",
+      "detail_title": "",
+      "detail_content": "",
+      "punct_note": "",
+      "punct_half_desc": "",
+      "punct_full_desc": ""
+    }
+  },
+  "Upload": {
+    "app": ""
+  },
+  "Linux": {
+    "do": ""
+  }
+}

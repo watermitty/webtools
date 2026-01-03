@@ -1,33 +1,36 @@
 <script setup lang="ts">
 import { ref, reactive, onMounted, computed } from "vue";
 import axios from "axios";
+import { useI18n } from 'vue-i18n';
 
 import DetailHeader from "@/components/Layout/DetailHeader/DetailHeader.vue";
 import ToolDetail from "@/components/Layout/ToolDetail/ToolDetail.vue";
+
+const { t } = useI18n();
 
 const pollinationsApiKey = ref(import.meta.env.VITE_POLLINATIONS_API_KEY || "");
 const pollinationsProxyUrl = ref(import.meta.env.VITE_POLLINATIONS_PROXY_URL);
 const pollinationsUrl = ref(import.meta.env.VITE_POLLINATIONS_TEXT_URL);
 
 const info = reactive({
-  title: "在线文本转语音",
-  desc: "免费无限次数文本转语音，无需登录注册、直接使用，支持多种语音和语言，如果生成出错请重试，或者重新进一下页面",
+  title: "tools.aitexttospeech.title",
+  desc: "tools.aitexttospeech.desc",
   // 预设文本列表
   presetTexts: [
-    "欢迎使用文本转语音工具，这是一个强大的AI语音合成服务。",
-    "人工智能正在改变我们的生活方式，让科技更加人性化。",
-    "今天天气真不错，阳光明媚，适合出去走走。",
-    "感谢您使用我们的服务，希望这个工具能够帮助到您。",
-    "这是一个示例文本，用于演示文本转语音功能的效果。",
-    "语音合成技术让计算机能够像人类一样说话。",
-    "科技的发展让我们的生活变得更加便利和高效。",
-    "自然语言处理是人工智能的重要分支之一。",
-    "机器学习算法能够从数据中学习并做出预测。",
-    "深度学习在图像识别和语音识别方面取得了巨大进展。",
+    "tools.aitexttospeech.preset_texts.0",
+    "tools.aitexttospeech.preset_texts.1",
+    "tools.aitexttospeech.preset_texts.2",
+    "tools.aitexttospeech.preset_texts.3",
+    "tools.aitexttospeech.preset_texts.4",
+    "tools.aitexttospeech.preset_texts.5",
+    "tools.aitexttospeech.preset_texts.6",
+    "tools.aitexttospeech.preset_texts.7",
+    "tools.aitexttospeech.preset_texts.8",
+    "tools.aitexttospeech.preset_texts.9",
   ],
 });
 
-const text = ref(info.presetTexts[0]); // 使用第一个预设文本作为默认值
+const text = ref(t(info.presetTexts[0])); // 使用第一个预设文本作为默认值
 const audioUrl = ref("");
 const isLoading = ref(false);
 
@@ -95,7 +98,7 @@ onMounted(() => {
 // 随机选择预设文本
 const randomPresetText = () => {
   const randomIndex = Math.floor(Math.random() * info.presetTexts.length);
-  text.value = info.presetTexts[randomIndex];
+  text.value = t(info.presetTexts[randomIndex]);
 };
 
 const generateSpeech = async () => {
@@ -134,7 +137,7 @@ const generateSpeech = async () => {
     saveToHistory(text.value, audioUrl.value);
   } catch (error) {
     console.error("语音生成失败:", error);
-    alert("语音生成失败，请稍后重试");
+    alert(t('tools.aitexttospeech.generate_error'));
   } finally {
     isLoading.value = false;
   }
@@ -172,11 +175,11 @@ const viewAudio = (audio: string) => {
   if (audioWindow) {
     audioWindow.document.write(`
       <html>
-        <head><title>音频播放</title></head>
+        <head><title>${t('tools.aitexttospeech.audio_play_title')}</title></head>
         <body style="margin:0;padding:20px;background:#f5f5f5;display:flex;justify-content:center;align-items:center;min-height:100vh;">
           <audio controls autoplay style="max-width:100%;">
             <source src="${audio}" type="audio/mpeg">
-            您的浏览器不支持音频播放。
+            ${t('tools.aitexttospeech.audio_not_support')}
           </audio>
         </body>
       </html>
@@ -186,7 +189,7 @@ const viewAudio = (audio: string) => {
 
 // 查看文本功能
 const viewText = (text: string) => {
-  alert("文本内容：\n\n" + text);
+  alert(t('tools.aitexttospeech.text_content') + text);
 };
 
 // 删除历史记录
@@ -212,7 +215,7 @@ const canGenerateSpeech = computed(() => {
 const copyText = async (text: string) => {
   try {
     await navigator.clipboard.writeText(text);
-    alert("文本已复制到剪贴板");
+    alert(t('tools.aitexttospeech.copy_success'));
   } catch (err) {
     console.error('复制失败:', err);
     // 降级方案：使用传统的复制方法
@@ -222,14 +225,14 @@ const copyText = async (text: string) => {
     textArea.select();
     document.execCommand('copy');
     document.body.removeChild(textArea);
-    alert("文本已复制到剪贴板");
+    alert(t('tools.aitexttospeech.copy_success'));
   }
 };
 </script>
 
 <template>
   <div class="flex flex-col mt-3 flex-1">
-    <DetailHeader :title="info.title"></DetailHeader>
+    <DetailHeader :title="$t(info.title)"></DetailHeader>
 
     <div class="p-4 rounded-2xl bg-white">
       <div class="ai-text-to-speech">
@@ -239,11 +242,11 @@ const copyText = async (text: string) => {
           <div class="space-y-6">
             <div class="input-section">
               <label class="block text-sm font-medium text-gray-700 mb-2"
-                >文本内容</label
+                >{{ $t('tools.aitexttospeech.input_label') }}</label
               >
               <textarea
                 v-model="text"
-                placeholder="输入要转换的文本..."
+                :placeholder="$t('tools.aitexttospeech.input_placeholder')"
                 class="w-full p-4 border rounded-lg shadow-sm focus:ring-2 focus:ring-blue-500 min-h-[150px]"
               ></textarea>
 
@@ -265,7 +268,7 @@ const copyText = async (text: string) => {
                       clip-rule="evenodd"
                     />
                   </svg>
-                  换一个示例文本
+                  {{ $t('tools.aitexttospeech.change_example') }}
                 </button>
               </div>
             </div>
@@ -273,7 +276,7 @@ const copyText = async (text: string) => {
             <!-- 语音选择器 -->
             <div class="voice-selector">
               <label class="block text-sm font-medium text-gray-700 mb-2"
-                >选择语音</label
+                >{{ $t('tools.aitexttospeech.voice_label') }}</label
               >
               
               <!-- 语音加载中状态 -->
@@ -283,7 +286,7 @@ const copyText = async (text: string) => {
                     <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
                     <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
                   </svg>
-                  <span class="text-sm text-gray-600">正在加载语音列表...</span>
+                  <span class="text-sm text-gray-600">{{ $t('tools.aitexttospeech.voice_loading') }}</span>
                 </div>
               </div>
 
@@ -294,9 +297,9 @@ const copyText = async (text: string) => {
                     <svg class="h-5 w-5 text-red-600 mr-2" fill="currentColor" viewBox="0 0 20 20">
                       <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zM8.707 7.293a1 1 0 00-1.414 1.414L8.586 10l-1.293 1.293a1 1 0 101.414 1.414L10 11.414l1.293 1.293a1 1 0 001.414-1.414L11.414 10l1.293-1.293a1 1 0 00-1.414-1.414L10 8.586 8.707 7.293z" clip-rule="evenodd" />
                     </svg>
-                    <span class="text-sm font-medium text-red-800">语音列表加载失败</span>
+                    <span class="text-sm font-medium text-red-800">{{ $t('tools.aitexttospeech.voice_error') }}</span>
                   </div>
-                  <p class="text-sm text-red-700 mb-3">无法获取可用的语音列表，请检查网络连接后重试。</p>
+                  <p class="text-sm text-red-700 mb-3">{{ $t('tools.aitexttospeech.voice_error_desc') }}</p>
                   <button 
                     @click="fetchVoices"
                     class="flex items-center px-3 py-2 bg-red-600 text-white text-sm rounded-md hover:bg-red-700 transition-colors"
@@ -304,7 +307,7 @@ const copyText = async (text: string) => {
                     <svg class="h-4 w-4 mr-1" fill="currentColor" viewBox="0 0 20 20">
                       <path fill-rule="evenodd" d="M4 2a1 1 0 011 1v2.101a7.002 7.002 0 0111.601 2.566 1 1 0 11-1.885.666A5.002 5.002 0 005.999 7H9a1 1 0 010 2H4a1 1 0 01-1-1V3a1 1 0 011-1zm.008 9.057a1 1 0 011.276.61A5.002 5.002 0 0014.001 13H11a1 1 0 110-2h5a1 1 0 011 1v5a1 1 0 11-2 0v-2.101a7.002 7.002 0 01-11.601-2.566 1 1 0 01.61-1.276z" clip-rule="evenodd" />
                     </svg>
-                    重新加载语音列表
+                    {{ $t('tools.aitexttospeech.reload_voice') }}
                   </button>
                 </div>
               </div>
@@ -315,7 +318,7 @@ const copyText = async (text: string) => {
                 v-model="selectedVoice"
                 class="w-full p-3 border rounded-lg shadow-sm focus:ring-2 focus:ring-blue-500"
               >
-                <option value="" disabled>请选择语音</option>
+                <option value="" disabled>{{ $t('tools.aitexttospeech.select_voice_placeholder') }}</option>
                 <option
                   v-for="voice in voices"
                   :key="voice.value"
@@ -330,7 +333,7 @@ const copyText = async (text: string) => {
             <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
               <div>
                 <label class="block text-sm font-medium text-gray-700 mb-2"
-                  >语速</label
+                  >{{ $t('tools.aitexttospeech.speed') }}</label
                 >
                 <input
                   v-model.number="speed"
@@ -344,7 +347,7 @@ const copyText = async (text: string) => {
 
               <div>
                 <label class="block text-sm font-medium text-gray-700 mb-2"
-                  >音调</label
+                  >{{ $t('tools.aitexttospeech.pitch') }}</label
                 >
                 <input
                   v-model.number="pitch"
@@ -358,7 +361,7 @@ const copyText = async (text: string) => {
 
               <div>
                 <label class="block text-sm font-medium text-gray-700 mb-2"
-                  >音量</label
+                  >{{ $t('tools.aitexttospeech.volume') }}</label
                 >
                 <input
                   v-model.number="volume"
@@ -402,7 +405,7 @@ const copyText = async (text: string) => {
                   d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"
                 ></path>
               </svg>
-              {{ isLoading ? "生成中..." : "生成语音" }}
+              {{ isLoading ? $t('tools.aitexttospeech.generating') : $t('tools.aitexttospeech.generate_btn') }}
             </button>
           </div>
 
@@ -413,13 +416,13 @@ const copyText = async (text: string) => {
               class="loading flex flex-col items-center justify-center h-full"
             >
               <div class="spinner"></div>
-              <p class="mt-4 text-lg">生成中...</p>
+              <p class="mt-4 text-lg">{{ $t('tools.aitexttospeech.generating') }}</p>
             </div>
 
             <div v-else-if="audioUrl" class="result h-full flex flex-col">
               <div class="mb-4">
-                <h3 class="text-lg font-medium text-gray-700">生成结果</h3>
-                <p class="text-sm text-gray-500">点击播放按钮试听音频</p>
+                <h3 class="text-lg font-medium text-gray-700">{{ $t('tools.aitexttospeech.result_title') }}</h3>
+                <p class="text-sm text-gray-500">{{ $t('tools.aitexttospeech.result_desc') }}</p>
               </div>
               <div class="flex-1 flex items-center justify-center">
                 <div class="audio-player">
@@ -433,7 +436,7 @@ const copyText = async (text: string) => {
                     @click="openAudioInNewTab"
                     class="mt-4 px-6 py-2 bg-green-600 text-white rounded-lg hover:bg-green-700 transition-colors"
                   >
-                    在新窗口播放
+                    {{ $t('tools.aitexttospeech.play_new_window') }}
                   </button>
                 </div>
               </div>
@@ -451,9 +454,9 @@ const copyText = async (text: string) => {
                 </svg>
               </div>
               <h3 class="text-lg font-medium text-gray-700 mb-2">
-                等待生成语音
+                {{ $t('tools.aitexttospeech.waiting_title') }}
               </h3>
-              <p class="text-gray-500">输入文本并点击"生成语音"按钮</p>
+              <p class="text-gray-500">{{ $t('tools.aitexttospeech.waiting_desc') }}</p>
             </div>
           </div>
         </div>
@@ -465,8 +468,8 @@ const copyText = async (text: string) => {
    <!-- 新增：历史记录区域 -->
     <div class="history-section" v-if="historyList.length">
       <div class="history-header">
-        <h3>历史记录</h3>
-        <button @click="clearAllHistory" class="clear-btn">清空全部</button>
+        <h3>{{ $t('tools.aitexttospeech.history_title') }}</h3>
+        <button @click="clearAllHistory" class="clear-btn">{{ $t('tools.aitexttospeech.clear_history') }}</button>
       </div>
       <div class="history-list">
         <div
@@ -480,11 +483,11 @@ const copyText = async (text: string) => {
             class="w-full"
           ></audio>
           <div class="history-actions">
-            <button @click="viewAudio(item.audio)">新窗口播放</button>
-            <button @click="viewText(item.text)">查看文本</button>
-            <button @click="copyText(item.text)">复制文本</button>
+            <button @click="viewAudio(item.audio)">{{ $t('tools.aitexttospeech.play_new_window') }}</button>
+            <button @click="viewText(item.text)">{{ $t('tools.aitexttospeech.view_text') }}</button>
+            <button @click="copyText(item.text)">{{ $t('tools.aitexttospeech.copy_text') }}</button>
             <button @click="removeHistory(index)" class="delete-btn">
-              删除
+              {{ $t('tools.aitexttospeech.delete') }}
             </button>
           </div>
         </div>
@@ -492,9 +495,9 @@ const copyText = async (text: string) => {
     </div>
 
     <!-- desc -->
-    <ToolDetail title="描述">
+    <ToolDetail :title="$t('tools.aitexttospeech.desc_title', 'Description')">
       <el-text>
-        {{ info.desc }}
+        {{ $t(info.desc) }}
       </el-text>
     </ToolDetail>
 
@@ -506,7 +509,7 @@ const copyText = async (text: string) => {
     >
       <div class="modal-content">
         <div class="modal-header">
-          <h3 class="text-lg font-semibold text-gray-800">生成结果</h3>
+          <h3 class="text-lg font-semibold text-gray-800">{{ $t('tools.aitexttospeech.result_title') }}</h3>
           <button
             @click="closeGeneratedAudioModal"
             class="close-btn"
@@ -540,7 +543,7 @@ const copyText = async (text: string) => {
             @click="closeGeneratedAudioModal"
             class="btn-secondary"
           >
-            关闭
+            {{ $t('tools.aitexttospeech.close') }}
           </button>
         </div>
       </div>

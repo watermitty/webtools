@@ -1,14 +1,17 @@
 <script setup lang="ts">
 import { reactive, ref, computed } from 'vue'
+import { useI18n } from 'vue-i18n'
 import DetailHeader from '@/components/Layout/DetailHeader/DetailHeader.vue'
 import ToolDetail from '@/components/Layout/ToolDetail/ToolDetail.vue'
 import { copy } from '@/utils/string'
 import { ElMessage } from 'element-plus'
 
+const { t } = useI18n()
+
 type Mode = 'csv2json' | 'json2csv'
 type DelimKey = 'comma' | 'tab' | 'semicolon' | 'pipe' | 'custom'
 
-const info = reactive({ title: 'CSV/TSV ↔ JSON 互转' })
+const info = reactive({ title: 'tools.csvjson.title' })
 
 const mode = ref<Mode>('csv2json')
 const csvInput = ref('')
@@ -84,9 +87,9 @@ function toJSON() {
       return o
     })
     result.value = JSON.stringify(out, null, 2)
-    ElMessage.success('转换成功')
+    ElMessage.success(t('tools.csvjson.msg_success'))
   } catch (e: any) {
-    ElMessage.error(e?.message || '转换失败')
+    ElMessage.error(e?.message || t('tools.csvjson.msg_fail'))
   }
 }
 
@@ -139,9 +142,9 @@ function toCSV() {
     }
 
     result.value = lines.join('\r\n')
-    ElMessage.success('转换成功')
+    ElMessage.success(t('tools.csvjson.msg_success'))
   } catch (e: any) {
-    ElMessage.error(e?.message || '转换失败，请检查 JSON 是否有效')
+    ElMessage.error(e?.message || t('tools.csvjson.msg_fail_json'))
   }
 }
 
@@ -177,28 +180,28 @@ function fillJsonExample() {
 
 <template>
   <div class="flex flex-col mt-3 flex-1">
-    <DetailHeader :title="info.title" />
+    <DetailHeader :title="$t('tools.csvjson.title')" />
 
     <div class="p-4 rounded-2xl bg-white">
       <div class="flex flex-wrap items-center gap-3">
         <el-radio-group v-model="mode">
-          <el-radio-button label="csv2json">CSV/TSV → JSON</el-radio-button>
-          <el-radio-button label="json2csv">JSON → CSV/TSV</el-radio-button>
+          <el-radio-button label="csv2json">{{ $t('tools.csvjson.mode_csv2json') }}</el-radio-button>
+          <el-radio-button label="json2csv">{{ $t('tools.csvjson.mode_json2csv') }}</el-radio-button>
         </el-radio-group>
 
         <div class="flex items-center gap-2">
-          <span class="text-sm text-gray-600">分隔符：</span>
+          <span class="text-sm text-gray-600">{{ $t('tools.csvjson.label_delimiter') }}</span>
           <el-select v-model="opts.delimKey" style="width: 160px">
-            <el-option label="逗号 (,)" value="comma" />
-            <el-option label="制表符 (Tab)" value="tab" />
-            <el-option label="分号 (;)" value="semicolon" />
-            <el-option label="竖线 (|)" value="pipe" />
-            <el-option label="自定义" value="custom" />
+            <el-option :label="$t('tools.csvjson.delim_comma')" value="comma" />
+            <el-option :label="$t('tools.csvjson.delim_tab')" value="tab" />
+            <el-option :label="$t('tools.csvjson.delim_semicolon')" value="semicolon" />
+            <el-option :label="$t('tools.csvjson.delim_pipe')" value="pipe" />
+            <el-option :label="$t('tools.csvjson.delim_custom')" value="custom" />
           </el-select>
           <el-input
             v-if="opts.delimKey==='custom'"
             v-model="opts.customDelim"
-            placeholder="自定义分隔符"
+            :placeholder="$t('tools.csvjson.placeholder_custom')"
             style="width: 140px"
             maxlength="3"
           />
@@ -207,23 +210,23 @@ function fillJsonExample() {
         <el-switch
           v-if="mode==='csv2json'"
           v-model="opts.hasHeader"
-          active-text="首行是列头"
-          inactive-text="自动生成列头"
+          :active-text="$t('tools.csvjson.switch_header_active')"
+          :inactive-text="$t('tools.csvjson.switch_header_inactive')"
         />
         <el-switch
           v-else
           v-model="opts.includeHeader"
-          active-text="输出包含列头"
-          inactive-text="不包含列头"
+          :active-text="$t('tools.csvjson.switch_output_header_active')"
+          :inactive-text="$t('tools.csvjson.switch_output_header_inactive')"
         />
 
-        <el-button type="primary" @click="convert">转换</el-button>
-        <el-button @click="copyResult">复制结果</el-button>
-        <el-button type="danger" @click="clearAll">清空</el-button>
+        <el-button type="primary" @click="convert">{{ $t('tools.csvjson.btn_convert') }}</el-button>
+        <el-button @click="copyResult">{{ $t('tools.csvjson.btn_copy') }}</el-button>
+        <el-button type="danger" @click="clearAll">{{ $t('tools.csvjson.btn_clear') }}</el-button>
       </div>
 
       <div class="mt-3 text-sm text-gray-500">
-        示例：
+        {{ $t('tools.csvjson.label_example') }}
         <el-link type="primary" @click="fillCsvExample">CSV</el-link>
         <span class="mx-1">/</span>
         <el-link type="primary" @click="fillTsvExample">TSV</el-link>
@@ -233,27 +236,24 @@ function fillJsonExample() {
 
       <div class="mt-4 grid grid-cols-1 lg:grid-cols-3 gap-4">
         <div v-if="mode==='csv2json'" class="lg:col-span-1">
-          <div class="mb-2 text-sm text-gray-600">CSV/TSV 输入</div>
-          <el-input type="textarea" :rows="16" v-model="csvInput" placeholder="粘贴 CSV/TSV 内容" />
+          <div class="mb-2 text-sm text-gray-600">{{ $t('tools.csvjson.label_input_csv') }}</div>
+          <el-input type="textarea" :rows="16" v-model="csvInput" :placeholder="$t('tools.csvjson.placeholder_input_csv')" />
         </div>
         <div v-if="mode==='json2csv'" class="lg:col-span-1">
-          <div class="mb-2 text-sm text-gray-600">JSON 输入（数组）</div>
-          <el-input type="textarea" :rows="16" v-model="jsonInput" placeholder='如：[{"a":1},{"a":2}]' />
+          <div class="mb-2 text-sm text-gray-600">{{ $t('tools.csvjson.label_input_json') }}</div>
+          <el-input type="textarea" :rows="16" v-model="jsonInput" :placeholder="$t('tools.csvjson.placeholder_input_json')" />
         </div>
 
         <div :class="mode==='csv2json' ? 'lg:col-span-2' : 'lg:col-span-2'">
-          <div class="mb-2 text-sm text-gray-600">结果</div>
-          <el-input type="textarea" :rows="16" v-model="result" placeholder="转换结果" />
+          <div class="mb-2 text-sm text-gray-600">{{ $t('tools.csvjson.label_result') }}</div>
+          <el-input type="textarea" :rows="16" v-model="result" :placeholder="$t('tools.csvjson.placeholder_result')" />
         </div>
       </div>
     </div>
 
-    <ToolDetail title="描述">
+    <ToolDetail :title="$t('tools.csvjson.detail_title')">
       <el-text>
-        - 支持分隔符选择（逗号/制表符/分号/竖线/自定义）与列头推断。<br />
-        - CSV→JSON：可指定首行是否列头；若否，将自动生成 col_1...。<br />
-        - JSON→CSV：自动合并对象键为列头；支持选择是否输出列头。<br />
-        - 支持复制、清空与示例填充。
+        <div v-html="$t('tools.csvjson.detail_content')"></div>
       </el-text>
     </ToolDetail>
   </div>

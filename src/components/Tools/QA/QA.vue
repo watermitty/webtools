@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import { reactive, ref, onMounted, computed } from 'vue'
+import { useI18n } from 'vue-i18n'
 import functionsRequest from '@/utils/functionsRequest'
 import DetailHeader from '@/components/Layout/DetailHeader/DetailHeader.vue'
 import ToolDetail from '@/components/Layout/ToolDetail/ToolDetail.vue'
@@ -7,6 +8,8 @@ import { ElMessage, ElMessageBox } from 'element-plus'
 import { Refresh, Plus, Edit, Delete, View, QuestionFilled, ChatDotRound, CopyDocument, Minus } from '@element-plus/icons-vue'
 import { useUserStore } from '@/store/modules/user'
 import { useRouter } from 'vue-router'
+
+const { t } = useI18n()
 
 interface QAItem {
   id: string
@@ -34,7 +37,7 @@ interface Pagination {
 }
 
 const info = reactive({
-  title: "QA问答页面制作",
+  title: "tools.qa.title",
 })
 
 const userStore = useUserStore()
@@ -74,7 +77,7 @@ const operationLoading = ref(false)
 // 检查登录状态
 onMounted(() => {
   if (!userStore.getLoginStatus) {
-    ElMessage.warning('请先登录')
+    ElMessage.warning(t('tools.qa.msg_login_required'))
     router.push('/login')
     return
   }
@@ -97,7 +100,7 @@ const fetchQAList = async (page = 1, pageSize = 12) => {
     }
   } catch (error) {
     console.error('获取QA列表失败:', error)
-    ElMessage.error('获取QA列表失败')
+    ElMessage.error(t('tools.qa.msg_fetch_fail'))
   } finally {
     loading.value = false
   }
@@ -124,14 +127,14 @@ const removeQAItem = (index: number) => {
   if (formData.qaItems.length > 1) {
     formData.qaItems.splice(index, 1)
   } else {
-    ElMessage.warning('至少需要保留一个问答对')
+    ElMessage.warning(t('tools.qa.msg_at_least_one'))
   }
 }
 
 // 创建QA
 const createQA = async () => {
   if (!formData.title.trim() || formData.qaItems.length === 0) {
-    ElMessage.warning('标题和问答对不能为空')
+    ElMessage.warning(t('tools.qa.msg_title_qa_empty'))
     return
   }
 
@@ -139,7 +142,7 @@ const createQA = async () => {
   for (let i = 0; i < formData.qaItems.length; i++) {
     const item = formData.qaItems[i]
     if (!item.question.trim() || !item.answer.trim()) {
-      ElMessage.warning(`第${i + 1}个问答对的问题和答案不能为空`)
+      ElMessage.warning(t('tools.qa.msg_item_empty', { index: i + 1 }))
       return
     }
   }
@@ -158,16 +161,16 @@ const createQA = async () => {
     })
 
     if (response.status === 201) {
-      ElMessage.success('创建成功')
+      ElMessage.success(t('tools.qa.msg_create_success'))
       showForm.value = false
       resetForm()
       await fetchQAList(pagination.value.page, pagination.value.pageSize)
     } else {
-      ElMessage.error('创建失败')
+      ElMessage.error(t('tools.qa.msg_create_fail'))
     }
   } catch (error) {
     console.error('创建QA失败:', error)
-    ElMessage.error('创建失败')
+    ElMessage.error(t('tools.qa.msg_create_fail'))
   } finally {
     operationLoading.value = false
   }
@@ -176,7 +179,7 @@ const createQA = async () => {
 // 更新QA
 const updateQA = async () => {
   if (!editingQAId.value || !formData.title.trim() || formData.qaItems.length === 0) {
-    ElMessage.warning('标题和问答对不能为空')
+    ElMessage.warning(t('tools.qa.msg_title_qa_empty'))
     return
   }
 
@@ -184,7 +187,7 @@ const updateQA = async () => {
   for (let i = 0; i < formData.qaItems.length; i++) {
     const item = formData.qaItems[i]
     if (!item.question.trim() || !item.answer.trim()) {
-      ElMessage.warning(`第${i + 1}个问答对的问题和答案不能为空`)
+      ElMessage.warning(t('tools.qa.msg_item_empty', { index: i + 1 }))
       return
     }
   }
@@ -203,18 +206,18 @@ const updateQA = async () => {
     })
 
     if (response.status === 200) {
-      ElMessage.success('更新成功')
+      ElMessage.success(t('tools.qa.msg_update_success'))
       showForm.value = false
       isEditing.value = false
       editingQAId.value = null
       resetForm()
       await fetchQAList(pagination.value.page, pagination.value.pageSize)
     } else {
-      ElMessage.error('更新失败')
+      ElMessage.error(t('tools.qa.msg_update_fail'))
     }
   } catch (error) {
     console.error('更新QA失败:', error)
-    ElMessage.error('更新失败')
+    ElMessage.error(t('tools.qa.msg_update_fail'))
   } finally {
     operationLoading.value = false
   }
@@ -222,9 +225,9 @@ const updateQA = async () => {
 
 // 删除QA
 const deleteQA = async (qa: QAItem) => {
-  await ElMessageBox.confirm('确定要删除这个QA吗？', '提示', {
-    confirmButtonText: '确定',
-    cancelButtonText: '取消',
+  await ElMessageBox.confirm(t('tools.qa.delete_confirm'), t('tools.qa.tips'), {
+    confirmButtonText: t('tools.qa.confirm'),
+    cancelButtonText: t('tools.qa.cancel'),
     type: 'warning',
   })
 
@@ -233,7 +236,7 @@ const deleteQA = async (qa: QAItem) => {
     const response = await functionsRequest.delete(`/api/qa/${qa.id}`)
 
     if (response.status === 200) {
-      ElMessage.success('删除成功')
+      ElMessage.success(t('tools.qa.msg_delete_success'))
       if (currentQA.value?.id === qa.id) {
         currentQA.value = null
       }
@@ -243,11 +246,11 @@ const deleteQA = async (qa: QAItem) => {
         await fetchQAList(pagination.value.page, pagination.value.pageSize)
       }
     } else {
-      ElMessage.error('删除失败')
+      ElMessage.error(t('tools.qa.msg_delete_fail'))
     }
   } catch (error) {
     console.error('删除QA失败:', error)
-    ElMessage.error('删除失败')
+    ElMessage.error(t('tools.qa.msg_delete_fail'))
   } finally {
     operationLoading.value = false
   }
@@ -305,9 +308,9 @@ const copyQALink = async (qa: QAItem) => {
   try {
     const link = `${window.location.origin}/qa-view/${qa.id}`
     await navigator.clipboard.writeText(link)
-    ElMessage.success('链接已复制到剪贴板')
+    ElMessage.success(t('tools.qa.msg_link_copied'))
   } catch (err) {
-    ElMessage.error('复制失败')
+    ElMessage.error(t('tools.qa.msg_copy_fail'))
   }
 }
 
@@ -322,7 +325,7 @@ const showQADetail = computed(() =>
 
 <template>
   <div class="flex flex-col mt-3 flex-1">
-    <DetailHeader :title="info.title"></DetailHeader>
+    <DetailHeader :title="$t(info.title)"></DetailHeader>
 
     <div class="qa-container">
       <!-- 操作栏 -->
@@ -332,8 +335,8 @@ const showQADetail = computed(() =>
             <el-icon class="header-icon"><QuestionFilled /></el-icon>
           </div>
           <div>
-            <h3 class="header-title">我的QA页面</h3>
-            <p class="header-subtitle">共 {{ pagination.total }} 个QA页面</p>
+            <h3 class="header-title">{{ $t('tools.qa.my_qa_pages') }}</h3>
+            <p class="header-subtitle">{{ $t('tools.qa.total_pages', { count: pagination.total }) }}</p>
           </div>
         </div>
         <div class="header-actions">
@@ -351,7 +354,7 @@ const showQADetail = computed(() =>
             @click="newQA" 
             :icon="Plus"
           >
-            新建QA页面
+            {{ $t('tools.qa.new_qa_page') }}
           </el-button>
         </div>
       </div>
@@ -360,9 +363,9 @@ const showQADetail = computed(() =>
       <div v-loading="loading" class="qa-grid">
         <div v-if="qaList.length === 0 && !loading" class="empty-state">
           <el-icon class="empty-icon"><QuestionFilled /></el-icon>
-          <h3 class="empty-title">暂无QA页面</h3>
-          <p class="empty-desc">开始创建你的第一个QA页面吧</p>
-          <el-button type="primary" @click="newQA" :icon="Plus">创建QA页面</el-button>
+          <h3 class="empty-title">{{ $t('tools.qa.no_qa_pages') }}</h3>
+          <p class="empty-desc">{{ $t('tools.qa.start_creating') }}</p>
+          <el-button type="primary" @click="newQA" :icon="Plus">{{ $t('tools.qa.create_qa_page') }}</el-button>
         </div>
         
         <div
@@ -434,26 +437,26 @@ const showQADetail = computed(() =>
                 class="qa-item-preview"
               >
                 <div class="qa-question">
-                  <h5 class="question-label">问题{{ index + 1 }}：</h5>
+                  <h5 class="question-label">{{ $t('tools.qa.question_index', { index: index + 1 }) }}：</h5>
                   <p class="question-text">{{ item.question }}</p>
                 </div>
                 <div class="qa-answer">
-                  <h5 class="answer-label">答案{{ index + 1 }}：</h5>
+                  <h5 class="answer-label">{{ $t('tools.qa.answer_index', { index: index + 1 }) }}：</h5>
                   <p class="answer-text">{{ item.answer }}</p>
                 </div>
               </div>
               <div v-if="qa.qaItems.length > 2" class="more-items">
-                <span class="more-text">还有 {{ qa.qaItems.length - 2 }} 个问答对...</span>
+                <span class="more-text">{{ $t('tools.qa.more_items', { count: qa.qaItems.length - 2 }) }}</span>
               </div>
             </div>
             <div v-else class="qa-fallback">
               <div class="qa-question">
-                <h5 class="question-label">问题：</h5>
-                <p class="question-text">{{ qa.question || '暂无问题' }}</p>
+                <h5 class="question-label">{{ $t('tools.qa.question_label') }}：</h5>
+                <p class="question-text">{{ qa.question || $t('tools.qa.no_question') }}</p>
               </div>
               <div class="qa-answer">
-                <h5 class="answer-label">答案：</h5>
-                <p class="answer-text">{{ qa.answer || '暂无答案' }}</p>
+                <h5 class="answer-label">{{ $t('tools.qa.answer_label') }}：</h5>
+                <p class="answer-text">{{ qa.answer || $t('tools.qa.no_answer') }}</p>
               </div>
             </div>
           </div>
@@ -461,12 +464,12 @@ const showQADetail = computed(() =>
           <div class="qa-footer">
             <div class="qa-meta">
               <div class="qa-time">
-                <span class="time-label">更新于</span>
+                <span class="time-label">{{ $t('tools.qa.updated_at') }}</span>
                 <span class="time-value">{{ formatTime(qa.updateTime) }}</span>
               </div>
               <div class="qa-status">
                 <el-tag :type="qa.isPublic ? 'success' : 'warning'" size="small">
-                  {{ qa.isPublic ? '公开' : '私有' }}
+                  {{ qa.isPublic ? $t('tools.qa.public') : $t('tools.qa.private') }}
                 </el-tag>
               </div>
             </div>
@@ -492,7 +495,7 @@ const showQADetail = computed(() =>
       <!-- QA表单 -->
       <el-dialog
         v-model="showForm"
-        :title="isEditing ? '编辑QA页面' : '新建QA页面'"
+        :title="isEditing ? $t('tools.qa.edit_qa_page') : $t('tools.qa.new_qa_page')"
         width="90%"
         max-width="900px"
         class="qa-dialog"
@@ -501,17 +504,17 @@ const showQADetail = computed(() =>
       >
         <div class="form-container">
           <el-form :model="formData" label-position="top">
-            <el-form-item label="页面标题" required class="form-item">
+            <el-form-item :label="$t('tools.qa.page_title')" required class="form-item">
               <el-input 
                 v-model="formData.title" 
-                placeholder="请输入QA页面标题" 
+                :placeholder="$t('tools.qa.enter_page_title')" 
                 size="large"
                 class="title-input"
               />
             </el-form-item>
             
             <!-- 问答对列表 -->
-            <el-form-item label="问答对" required class="form-item">
+            <el-form-item :label="$t('tools.qa.qa_pairs')" required class="form-item">
               <div class="qa-items-container">
                 <div 
                   v-for="(item, index) in formData.qaItems" 
@@ -519,7 +522,7 @@ const showQADetail = computed(() =>
                   class="qa-item-form"
                 >
                   <div class="qa-item-header">
-                    <h4 class="qa-item-title">问答对 {{ index + 1 }}</h4>
+                    <h4 class="qa-item-title">{{ $t('tools.qa.qa_pair_index', { index: index + 1 }) }}</h4>
                     <el-button 
                       v-if="formData.qaItems.length > 1"
                       type="danger" 
@@ -531,23 +534,23 @@ const showQADetail = computed(() =>
                   </div>
                   
                   <div class="qa-item-content">
-                    <el-form-item :label="`问题 ${index + 1}`" class="qa-form-item">
+                    <el-form-item :label="$t('tools.qa.question_index', { index: index + 1 })" class="qa-form-item">
                       <el-input
                         v-model="item.question"
                         type="textarea"
                         :rows="3"
-                        placeholder="请输入问题内容..."
+                        :placeholder="$t('tools.qa.enter_question')"
                         class="question-textarea"
                         resize="vertical"
                       />
                     </el-form-item>
                     
-                    <el-form-item :label="`答案 ${index + 1}`" class="qa-form-item">
+                    <el-form-item :label="$t('tools.qa.answer_index', { index: index + 1 })" class="qa-form-item">
                       <el-input
                         v-model="item.answer"
                         type="textarea"
                         :rows="4"
-                        placeholder="请输入答案内容..."
+                        :placeholder="$t('tools.qa.enter_answer')"
                         class="answer-textarea"
                         resize="vertical"
                       />
@@ -561,36 +564,36 @@ const showQADetail = computed(() =>
                   @click="addQAItem"
                   class="add-qa-btn"
                 >
-                  添加问答对
+                  {{ $t('tools.qa.add_qa_pair') }}
                 </el-button>
               </div>
             </el-form-item>
             
-            <el-form-item label="页面头部内容（可选）" class="form-item">
+            <el-form-item :label="$t('tools.qa.header_content_label')" class="form-item">
               <el-input
                 v-model="formData.headerContent"
                 type="textarea"
                 :rows="3"
-                placeholder="在QA问题上方显示的自定义内容..."
+                :placeholder="$t('tools.qa.header_content_placeholder')"
                 class="header-textarea"
                 resize="vertical"
               />
             </el-form-item>
             
-            <el-form-item label="页面尾部内容（可选）" class="form-item">
+            <el-form-item :label="$t('tools.qa.footer_content_label')" class="form-item">
               <el-input
                 v-model="formData.footerContent"
                 type="textarea"
                 :rows="3"
-                placeholder="在QA答案下方显示的自定义内容..."
+                :placeholder="$t('tools.qa.footer_content_placeholder')"
                 class="footer-textarea"
                 resize="vertical"
               />
             </el-form-item>
             
-            <el-form-item label="页面设置" class="form-item">
+            <el-form-item :label="$t('tools.qa.page_settings')" class="form-item">
               <el-checkbox v-model="formData.isPublic">
-                设为公开页面（其他人可以访问）
+                {{ $t('tools.qa.make_public') }}
               </el-checkbox>
             </el-form-item>
           </el-form>
@@ -602,7 +605,7 @@ const showQADetail = computed(() =>
               :disabled="operationLoading" 
               @click="showForm = false; isEditing = false"
             >
-              取消
+              {{ $t('tools.qa.cancel') }}
             </el-button>
             <el-button 
               type="primary" 
@@ -611,7 +614,7 @@ const showQADetail = computed(() =>
               :disabled="operationLoading"
               @click="isEditing ? updateQA() : createQA()"
             >
-              {{ isEditing ? '保存修改' : '创建QA页面' }}
+              {{ isEditing ? $t('tools.qa.save_changes') : $t('tools.qa.create_qa_page') }}
             </el-button>
           </div>
         </template>

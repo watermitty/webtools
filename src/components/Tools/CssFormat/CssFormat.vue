@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import { reactive } from 'vue'
+import { useI18n } from 'vue-i18n'
 import DetailHeader from '@/components/Layout/DetailHeader/DetailHeader.vue'
 import ToolDetail from '@/components/Layout/ToolDetail/ToolDetail.vue'
 import { copy } from '@/utils/string';
@@ -12,14 +13,14 @@ import * as parserCss from 'prettier/parser-postcss';
 import { ElMessage } from 'element-plus'
 import { minify } from "csso"
 
+const { t } = useI18n()
+
 const info = reactive({
-  title: "css代码格式化/压缩",
   code: '',
   isParseErr: false,
   parseErr: '',
 })
 
-//格式化
 const formatCode = async () => {
   try {
     info.code = await prettier.format(info.code, { parser: "css", plugins: [parserCss]})
@@ -27,13 +28,12 @@ const formatCode = async () => {
     console.log(error)
     ElMessage({
       showClose: true,
-      message: '请填入正确代码格式',
+      message: t('tools.cssformat.error_format'),
       type: 'error',
     })
   }
 }
 
-//压缩
 const compress = async () => {
   try {
     info.code = minify(info.code, {
@@ -44,7 +44,6 @@ const compress = async () => {
   }
 }
 
-//清空输入框
 const clear = () => {
   info.code = ''
 }
@@ -56,14 +55,14 @@ const copyRes = async () => {
 
 <template>
   <div class="flex flex-col mt-3 flex-1">
-    <DetailHeader :title="info.title"></DetailHeader>
+    <DetailHeader :title="$t('tools.cssformat.title')"></DetailHeader>
 
     <div class="p-4 rounded-2xl bg-white ">
       
       <div>
         <codemirror
           v-model="info.code"
-          placeholder="这里是代码..."
+          :placeholder="$t('tools.cssformat.placeholder')"
           :style="{ height: '400px' }"
           :autofocus="true"
           :indent-with-tab="true" 
@@ -72,10 +71,10 @@ const copyRes = async () => {
       </div>
       
       <div class="mt-4">
-        <el-button type="primary" @click="formatCode">格式化</el-button>
-        <el-button type="primary" @click="compress">压缩</el-button>
-        <el-button type="primary" @click="copyRes">复制</el-button>
-        <el-button type="primary" @click="clear">清空</el-button>
+        <el-button type="primary" @click="formatCode">{{ $t('tools.cssformat.format') }}</el-button>
+        <el-button type="primary" @click="compress">{{ $t('tools.cssformat.compress') }}</el-button>
+        <el-button type="primary" @click="copyRes">{{ $t('tools.cssformat.copy') }}</el-button>
+        <el-button type="primary" @click="clear">{{ $t('tools.cssformat.clear') }}</el-button>
       </div>
 
       <div class="mt-3 min-h-md bg-red-100 p-3 mb-3" v-show="info.isParseErr">
@@ -84,9 +83,9 @@ const copyRes = async () => {
     </div>
 
     <!-- desc -->
-    <ToolDetail title="描述">
+    <ToolDetail :title="$t('tools.cssformat.detail_title')">
       <el-text>
-        在线css格式化，在线压缩css代码
+        {{ $t('tools.cssformat.detail_content') }}
       </el-text> 
     </ToolDetail>
 

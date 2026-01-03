@@ -1,5 +1,8 @@
 <script setup lang="ts">
 import { reactive } from 'vue'
+import { useI18n } from 'vue-i18n'
+
+const { t } = useI18n()
 
 const lengthInfo: {
   [key: string]: string|number
@@ -140,23 +143,23 @@ const tran = (key: string) => {
 <template>
     <div>
       <div>
-        <el-divider content-position="left">国际面积单位(公制)</el-divider>
+        <el-divider content-position="left">{{ $t('tools.unit.area.title_metric') }}</el-divider>
         <!-- group -->
         <div class="custom-box">
           <div class="custom-box-single">
-            <el-text class="custom-box-text">平方千米(km<sup>2</sup>)</el-text>
+            <el-text class="custom-box-text">{{ $t('tools.unit.area.km') }}</el-text>
             <el-input
               v-model="lengthInfo.km"
               placeholder=""
               class="input-with-select"
             >
               <template #append>
-                <el-button @click="tran('km')">转换</el-button>
+                <el-button @click="tran('km')">{{ $t('tools.unit.common.convert') }}</el-button>
               </template>
             </el-input>
           </div>
           <div class="custom-box-single">
-            <el-text class="custom-box-text">平方米(m<sup>2</sup>)</el-text>
+            <el-text class="custom-box-text">{{ $t('tools.unit.area.m') }}</el-text>
             <el-input
               v-model="lengthInfo.m"
               placeholder=""
@@ -164,7 +167,7 @@ const tran = (key: string) => {
               type="number"
             >
               <template #append>
-                <el-button @click="tran('m')">转换</el-button>
+                <el-button @click="tran('m')">{{ $t('tools.unit.common.convert') }}</el-button>
               </template>
             </el-input>
           </div>
@@ -172,7 +175,7 @@ const tran = (key: string) => {
         <!-- group -->
         <div class="custom-box">
           <div class="custom-box-single">
-            <el-text class="custom-box-text">平方分米(dm<sup>2</sup>)</el-text>
+            <el-text class="custom-box-text">{{ $t('tools.unit.area.dm') }}</el-text>
             <el-input
               v-model="lengthInfo.dm"
               placeholder=""
@@ -180,12 +183,12 @@ const tran = (key: string) => {
               type="number"
             >
               <template #append>
-                <el-button @click="tran('dm')">转换</el-button>
+                <el-button @click="tran('dm')">{{ $t('tools.unit.common.convert') }}</el-button>
               </template>
             </el-input>
           </div>
           <div class="custom-box-single">
-            <el-text class="custom-box-text">平方厘米(cm<sup>2</sup>)</el-text>
+            <el-text class="custom-box-text">{{ $t('tools.unit.area.cm') }}</el-text>
             <el-input
               v-model="lengthInfo.cm"
               placeholder=""
@@ -193,7 +196,7 @@ const tran = (key: string) => {
               type="number"
             >
               <template #append>
-                <el-button @click="tran('cm')">转换</el-button>
+                <el-button @click="tran('cm')">{{ $t('tools.unit.common.convert') }}</el-button>
               </template>
             </el-input>
           </div>
@@ -201,7 +204,7 @@ const tran = (key: string) => {
         <!-- group -->
         <div class="custom-box">
           <div class="custom-box-single">
-            <el-text class="custom-box-text">平方毫米(mm<sup>2</sup>)</el-text>
+            <el-text class="custom-box-text">{{ $t('tools.unit.area.mm') }}</el-text>
             <el-input
               v-model="lengthInfo.mm"
               placeholder=""
@@ -209,12 +212,12 @@ const tran = (key: string) => {
               type="number"
             >
               <template #append>
-                <el-button @click="tran('mm')">转换</el-button>
+                <el-button @click="tran('mm')">{{ $t('tools.unit.common.convert') }}</el-button>
               </template>
             </el-input>
           </div>
           <div class="custom-box-single">
-            <el-text class="custom-box-text">公顷(ha)</el-text>
+            <el-text class="custom-box-text">{{ $t('tools.unit.area.ha') }}</el-text>
             <el-input
               v-model="lengthInfo.ha"
               placeholder=""
@@ -222,16 +225,16 @@ const tran = (key: string) => {
               type="number"
             >
               <template #append>
-                <el-button @click="tran('ha')">转换</el-button>
+                <el-button @click="tran('ha')">{{ $t('tools.unit.common.convert') }}</el-button>
               </template>
             </el-input>
           </div>
         </div>
-        <el-divider content-position="left">中国传统面积单位(市制)</el-divider>
+        <el-divider content-position="left">{{ $t('tools.unit.area.title_chinese') }}</el-divider>
         <!-- group -->
         <div class="custom-box">
           <div class="custom-box-single">
-            <el-text class="custom-box-text">亩</el-text>
+            <el-text class="custom-box-text">{{ $t('tools.unit.area.mu') }}</el-text>
             <el-input
               v-model="lengthInfo.tradition_mu"
               placeholder=""
@@ -239,12 +242,12 @@ const tran = (key: string) => {
               type="number"
             >
               <template #append>
-                <el-button @click="tran('tradition_mu')">转换</el-button>
+                <el-button @click="tran('tradition_mu')">{{ $t('tools.unit.common.convert') }}</el-button>
               </template>
             </el-input>
           </div>
           <div class="custom-box-single">
-            <el-text class="custom-box-text">分</el-text>
+            <el-text class="custom-box-text">{{ $t('tools.unit.area.fen') }}</el-text>
             <el-input
               v-model="lengthInfo.tradition_fen"
               placeholder=""
@@ -252,7 +255,7 @@ const tran = (key: string) => {
               type="number"
             >
               <template #append>
-                <el-button @click="tran('tradition_fen')">转换</el-button>
+                <el-button @click="tran('tradition_fen')">{{ $t('tools.unit.common.convert') }}</el-button>
               </template>
             </el-input>
           </div>
@@ -260,7 +263,7 @@ const tran = (key: string) => {
         <!-- group -->
         <div class="custom-box">
           <div class="custom-box-single">
-            <el-text class="custom-box-text">厘</el-text>
+            <el-text class="custom-box-text">{{ $t('tools.unit.area.mill') }}</el-text>
             <el-input
               v-model="lengthInfo.tradition_mill"
               placeholder=""
@@ -268,12 +271,12 @@ const tran = (key: string) => {
               type="number"
             >
               <template #append>
-                <el-button @click="tran('tradition_mill')">转换</el-button>
+                <el-button @click="tran('tradition_mill')">{{ $t('tools.unit.common.convert') }}</el-button>
               </template>
             </el-input>
           </div>
           <div class="custom-box-single">
-            <el-text class="custom-box-text">毫</el-text>
+            <el-text class="custom-box-text">{{ $t('tools.unit.area.hao') }}</el-text>
             <el-input
               v-model="lengthInfo.tradition_hao"
               placeholder=""
@@ -281,16 +284,16 @@ const tran = (key: string) => {
               type="number"
             >
               <template #append>
-                <el-button @click="tran('tradition_hao')">转换</el-button>
+                <el-button @click="tran('tradition_hao')">{{ $t('tools.unit.common.convert') }}</el-button>
               </template>
             </el-input>
           </div>
         </div>
-        <el-divider content-position="left">英制面积单位</el-divider>
+        <el-divider content-position="left">{{ $t('tools.unit.area.title_imperial') }}</el-divider>
         <!-- group -->
         <div class="custom-box">
           <div class="custom-box-single">
-            <el-text class="custom-box-text">平方海里(nmi<sup>2</sup>)</el-text>
+            <el-text class="custom-box-text">{{ $t('tools.unit.area.nmi') }}</el-text>
             <el-input
               v-model="lengthInfo.eng_nmi"
               placeholder=""
@@ -298,12 +301,12 @@ const tran = (key: string) => {
               type="number"
             >
               <template #append>
-                <el-button @click="tran('eng_nmi')">转换</el-button>
+                <el-button @click="tran('eng_nmi')">{{ $t('tools.unit.common.convert') }}</el-button>
               </template>
             </el-input>
           </div>
           <div class="custom-box-single">
-            <el-text class="custom-box-text">平方英里(mi<sup>2</sup>)</el-text>
+            <el-text class="custom-box-text">{{ $t('tools.unit.area.mi') }}</el-text>
             <el-input
               v-model="lengthInfo.eng_mi"
               placeholder=""
@@ -311,7 +314,7 @@ const tran = (key: string) => {
               type="number"
             >
               <template #append>
-                <el-button @click="tran('eng_mi')">转换</el-button>
+                <el-button @click="tran('eng_mi')">{{ $t('tools.unit.common.convert') }}</el-button>
               </template>
             </el-input>
           </div>
@@ -319,7 +322,7 @@ const tran = (key: string) => {
         <!-- group -->
         <div class="custom-box">
           <div class="custom-box-single">
-            <el-text class="custom-box-text">英亩(acre)</el-text>
+            <el-text class="custom-box-text">{{ $t('tools.unit.area.acre') }}</el-text>
             <el-input
               v-model="lengthInfo.eng_acre"
               placeholder=""
@@ -327,12 +330,12 @@ const tran = (key: string) => {
               type="number"
             >
               <template #append>
-                <el-button @click="tran('eng_acre')">转换</el-button>
+                <el-button @click="tran('eng_acre')">{{ $t('tools.unit.common.convert') }}</el-button>
               </template>
             </el-input>
           </div>
           <div class="custom-box-single">
-            <el-text class="custom-box-text">平方竿(rd<sup>2</sup>)</el-text>
+            <el-text class="custom-box-text">{{ $t('tools.unit.area.rd') }}</el-text>
             <el-input
               v-model="lengthInfo.eng_rd"
               placeholder=""
@@ -340,7 +343,7 @@ const tran = (key: string) => {
               type="number"
             >
               <template #append>
-                <el-button @click="tran('eng_rd')">转换</el-button>
+                <el-button @click="tran('eng_rd')">{{ $t('tools.unit.common.convert') }}</el-button>
               </template>
             </el-input>
           </div>
@@ -348,7 +351,7 @@ const tran = (key: string) => {
         <!-- group -->
         <div class="custom-box">
           <div class="custom-box-single">
-            <el-text class="custom-box-text">平方码(yd<sup>2</sup>)</el-text>
+            <el-text class="custom-box-text">{{ $t('tools.unit.area.yd') }}</el-text>
             <el-input
               v-model="lengthInfo.eng_yd"
               placeholder=""
@@ -356,12 +359,12 @@ const tran = (key: string) => {
               type="number"
             >
               <template #append>
-                <el-button @click="tran('eng_yd')">转换</el-button>
+                <el-button @click="tran('eng_yd')">{{ $t('tools.unit.common.convert') }}</el-button>
               </template>
             </el-input>
           </div>
           <div class="custom-box-single">
-            <el-text class="custom-box-text">平方英尺(ft<sup>2</sup>)</el-text>
+            <el-text class="custom-box-text">{{ $t('tools.unit.area.ft') }}</el-text>
             <el-input
               v-model="lengthInfo.eng_ft"
               placeholder=""
@@ -369,7 +372,7 @@ const tran = (key: string) => {
               type="number"
             >
               <template #append>
-                <el-button @click="tran('eng_ft')">转换</el-button>
+                <el-button @click="tran('eng_ft')">{{ $t('tools.unit.common.convert') }}</el-button>
               </template>
             </el-input>
           </div>
@@ -377,7 +380,7 @@ const tran = (key: string) => {
         <!-- group -->
         <div class="custom-box">
           <div class="custom-box-single">
-            <el-text class="custom-box-text">平方英寸(in<sup>2</sup>)</el-text>
+            <el-text class="custom-box-text">{{ $t('tools.unit.area.in') }}</el-text>
             <el-input
               v-model="lengthInfo.eng_in"
               placeholder=""
@@ -385,7 +388,7 @@ const tran = (key: string) => {
               type="number"
             >
               <template #append>
-                <el-button @click="tran('eng_in')">转换</el-button>
+                <el-button @click="tran('eng_in')">{{ $t('tools.unit.common.convert') }}</el-button>
               </template>
             </el-input>
           </div>
@@ -393,7 +396,7 @@ const tran = (key: string) => {
       </div>
 
       <div class="w-full text-center">
-        <el-button type="primary" @click="clear">清除全部</el-button>
+        <el-button type="primary" @click="clear">{{ $t('tools.unit.common.clear') }}</el-button>
       </div>
     </div>
 </template>

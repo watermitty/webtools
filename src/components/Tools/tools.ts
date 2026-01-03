@@ -16,6 +16,9 @@ export function getToolsCate() {
           url: '/randompassword/',
           cateId: 2,
           cate: '开发运维',
+          name: 'randompassword',
+          title_en: 'Random Password',
+          desc_en: 'Generate secure random passwords and strings in batches.'
         },
         {
           id: 1,
@@ -25,6 +28,9 @@ export function getToolsCate() {
           url: '/urlencode/',
           cateId: 2,
           cate: '开发运维',
+          name: 'urlencode',
+          title_en: 'URL Encode/Decode',
+          desc_en: 'Online tool for URL encoding and decoding.'
         },
         {
           id: 1,
@@ -34,6 +40,9 @@ export function getToolsCate() {
           url: '/uuid/',
           cateId: 2,
           cate: '开发运维',
+          name: 'uuid',
+          title_en: 'UUID Generator',
+          desc_en: 'Batch generate UUIDs online.'
         },
         {
           id: 1,
@@ -43,6 +52,9 @@ export function getToolsCate() {
           url: '/timetran/',
           cateId: 2,
           cate: '开发运维',
+          name: 'timetran',
+          title_en: 'Timestamp Converter',
+          desc_en: 'Convert between Unix timestamps and human-readable dates.'
         },
         {
           id: 1,
@@ -52,6 +64,9 @@ export function getToolsCate() {
           url: '/md5/',
           cateId: 2,
           cate: '开发运维',
+          name: 'md5',
+          title_en: 'MD5 Encryption',
+          desc_en: 'Online MD5 hashing tool (32-bit & 16-bit).'
         },
         {
           id: 1,
@@ -61,6 +76,9 @@ export function getToolsCate() {
           url: '/json/',
           cateId: 2,
           cate: '开发运维',
+          name: 'jsontran',
+          title_en: 'JSON Editor',
+          desc_en: 'Real-time JSON editing, formatting, validating, and minifying.'
         },
         {
           id: 1,
@@ -70,6 +88,9 @@ export function getToolsCate() {
           url: '/csv-json/',
           cateId: 2,
           cate: '开发运维',
+          name: 'csvjson',
+          title_en: 'CSV/TSV to JSON',
+          desc_en: 'Convert between CSV/TSV and JSON formats.'
         },
         {
           id: 1,
@@ -79,6 +100,9 @@ export function getToolsCate() {
           url: '/reg/',
           cateId: 2,
           cate: '开发运维',
+          name: 'reg',
+          title_en: 'Regex Tester',
+          desc_en: 'Online Regular Expression testing tool.'
         },
         {
           id: 1,
@@ -88,6 +112,9 @@ export function getToolsCate() {
           url: '/unicode/',
           cateId: 2,
           cate: '开发运维',
+          name: 'unicode',
+          title_en: 'Unicode to Chinese',
+          desc_en: 'Convert between Unicode and Chinese characters.'
         },
         {
           id: 1,
@@ -97,6 +124,9 @@ export function getToolsCate() {
           url: '/httpstatuscode/',
           cateId: 2,
           cate: '开发运维',
+          name: 'httpstatus',
+          title_en: 'HTTP Status Codes',
+          desc_en: 'List of HTTP status codes and their meanings.'
         },
         {
           id: 1,
@@ -106,6 +136,9 @@ export function getToolsCate() {
           url: '/jwt/',
           cateId: 2,
           cate: '开发运维',
+          name: 'jwt',
+          title_en: 'JWT Decoder',
+          desc_en: 'Decode and inspect JSON Web Tokens.'
         },
         {
           id: 1,
@@ -115,6 +148,9 @@ export function getToolsCate() {
           url: '/filesize/',
           cateId: 2,
           cate: '开发运维',
+          name: 'filesize',
+          title_en: 'File Size Converter',
+          desc_en: 'Convert between Bytes, KB, MB, GB, TB, etc.'
         },
         {
           id: 1,
@@ -124,6 +160,9 @@ export function getToolsCate() {
           url: '/cron/',
           cateId: 2,
           cate: '开发运维',
+          name: 'cron',
+          title_en: 'Cron Generator',
+          desc_en: 'Generate and parse Cron expressions for scheduled tasks.'
         },
         {
           id: 1,
@@ -133,6 +172,9 @@ export function getToolsCate() {
           url: '/htmlentity/',
           cateId: 2,
           cate: '开发运维',
+          name: 'htmlentity',
+          title_en: 'HTML Entity Encode',
+          desc_en: 'Escape and unescape HTML entities.'
         },
         {
           id: 1,
@@ -142,34 +184,10 @@ export function getToolsCate() {
           url: '/postman/',
           cateId: 2,
           cate: '开发运维',
+          name: 'postman',
+          title_en: 'HTTP Request Debugger',
+          desc_en: 'Send HTTP requests online (like Postman).'
         },
-        // {
-        //   id: 1,
-        //   title: 'js代码格式化/压缩',
-        //   logo: '/images/logo/JSForamt.png',
-        //   desc: 'JS格式化/压缩工具,提供在线JS格式化、JS压缩、JS混淆、JS解密',
-        //   url: '/jsforamt/',
-        //   cateId: 2,
-        //   cate: '开发运维',
-        // },
-        // {
-        //   id: 1,
-        //   title: 'Html代码格式化',
-        //   logo: '/images/logo/HtmlFormat.png',
-        //   desc: '提供在线html、xml格式化',
-        //   url: '/htmlformat/',
-        //   cateId: 2,
-        //   cate: '开发运维',
-        // },
-        // {
-        //   id: 1,
-        //   title: 'Css代码格式化/压缩',
-        //   logo: '/images/logo/CssFormat.png',
-        //   desc: 'css格式化/压缩工具,提供在线css格式化、css压缩',
-        //   url: '/cssformat/',
-        //   cateId: 2,
-        //   cate: '开发运维',
-        // }
         {
           id: 1,
           title: 'URL 参数解析/构造',
@@ -178,6 +196,9 @@ export function getToolsCate() {
           url: '/urlparams/',
           cateId: 2,
           cate: '开发运维',
+          name: 'urlparams',
+          title_en: 'URL Params Editor',
+          desc_en: 'Parse and build URL query strings.'
         },
         {
           id: 1,
@@ -187,6 +208,9 @@ export function getToolsCate() {
           url: '/naming-case/',
           cateId: 2,
           cate: '开发运维',
+          name: 'namingcase',
+          title_en: 'Case Converter',
+          desc_en: 'Convert between Camel, Snake, Kebab, and Pascal case.'
         },
         {
           id: 1,
@@ -196,6 +220,9 @@ export function getToolsCate() {
           url: '/hash/',
           cateId: 2,
           cate: '开发运维',
+          name: 'hash',
+          title_en: 'Hash & HMAC',
+          desc_en: 'Compute SHA-1, SHA-256, HMAC, and more.'
         },
         {
           id: 1,
@@ -205,6 +232,9 @@ export function getToolsCate() {
           url: '/cookie/',
           cateId: 2,
           cate: '开发运维',
+          name: 'cookie',
+          title_en: 'Cookie Editor',
+          desc_en: 'Parse and build Cookie strings with Domain/Path support.'
         },
         {
           id: 1,
@@ -214,6 +244,9 @@ export function getToolsCate() {
           url: '/mysql-to-go/',
           cateId: 2,
           cate: '开发运维',
+          name: 'mysqltogo',
+          title_en: 'MySQL to Go Struct',
+          desc_en: 'Convert MySQL DDL to Go struct definitions.'
         },
       ]
     },
@@ -227,9 +260,12 @@ export function getToolsCate() {
           title: '文本对比',
           logo: '/images/logo/diff.png',
           desc: '文本差异比对支持中文、英文、代码比对',
-          url: '/diff/',
+          url: '/diff',
           cateId: 3,
-          cate: '文本处理'
+          cate: '文本处理',
+          name: 'diff',
+          title_en: 'Text Diff',
+          desc_en: 'Compare text and code differences online.'
         },
         {
           id: 1,
@@ -238,7 +274,10 @@ export function getToolsCate() {
           desc: '在线创建或编辑markdown, 实时预览，导出markdown',
           url: '/markdown/',
           cateId: 3,
-          cate: '文本处理'
+          cate: '文本处理',
+          name: 'markdown',
+          title_en: 'Markdown Editor',
+          desc_en: 'Online Markdown editor with real-time preview.'
         },
         {
           id: 1,
@@ -248,6 +287,9 @@ export function getToolsCate() {
           url: '/wordcount/',
           cateId: 3,
           cate: '文本处理',
+          name: 'wordcount',
+          title_en: 'Word Count',
+          desc_en: 'Count characters, words, paragraphs, and punctuation.'
         },
         {
           id: 1,
@@ -257,6 +299,9 @@ export function getToolsCate() {
           url: '/textremoveduplicate/',
           cateId: 3,
           cate: '文本处理',
+          name: 'textunique',
+          title_en: 'Remove Duplicate Lines',
+          desc_en: 'Remove duplicate lines from text.'
         },
         {
           id: 1,
@@ -266,6 +311,9 @@ export function getToolsCate() {
           url: '/asciiwordpic/',
           cateId: 3,
           cate: '文本处理',
+          name: 'asciiword',
+          title_en: 'ASCII Art Generator',
+          desc_en: 'Generate text-based ASCII art.'
         },
         {
           id: 1,
@@ -274,7 +322,10 @@ export function getToolsCate() {
           desc: '在线富文本编辑, html实时预览，在线编辑文本，文本编辑获取html',
           url: '/textedit/',
           cateId: 3,
-          cate: '文本处理'
+          cate: '文本处理',
+          name: 'richtext',
+          title_en: 'Rich Text Editor',
+          desc_en: 'Online WYSIWYG editor with HTML output.'
         },
       ]
     },
@@ -290,7 +341,10 @@ export function getToolsCate() {
           desc: '在线重量、长度、面积、时间、角度、速度、温度、压力、热量、功率等换算',
           url: '/unit/',
           cateId: 4,
-          cate: '教育学术'
+          cate: '教育学术',
+          name: 'unit',
+          title_en: 'Unit Converter',
+          desc_en: 'Convert length, weight, area, time, temperature, and more.'
         },
         {
           id: 1,
@@ -299,7 +353,10 @@ export function getToolsCate() {
           desc: '支持中文的摩斯电码编码解码',
           url: '/morse/',
           cateId: 4,
-          cate: '教育学术'
+          cate: '教育学术',
+          name: 'morse',
+          title_en: 'Morse Code',
+          desc_en: 'Encode and decode Morse code (supports Chinese).'
         },
         {
           id: 1,
@@ -309,6 +366,9 @@ export function getToolsCate() {
           url: '/scaletran/',
           cateId: 4,
           cate: '教育学术',
+          name: 'scaletran',
+          title_en: 'Base Converter',
+          desc_en: 'Convert numbers between base 2 and base 64.'
         },
         {
           id: 1,
@@ -317,7 +377,10 @@ export function getToolsCate() {
           desc: 'ASCII码表,控制代码、标准ASCII字符和非标准ASCII字符对照表',
           url: '/ascii/',
           cateId: 4,
-          cate: '教育学术'
+          cate: '教育学术',
+          name: 'ascii',
+          title_en: 'ASCII Table',
+          desc_en: 'Reference table for ASCII control codes and characters.'
         },
         {
           id: 1,
@@ -326,7 +389,10 @@ export function getToolsCate() {
           desc: '长度转换工具-支持国际长度单位，中国传统长度单位，英制长度单位',
           url: '/unit/?active=length',
           cateId: 4,
-          cate: '教育学术'
+          cate: '教育学术',
+          name: 'length',
+          title_en: 'Length Converter',
+          desc_en: 'Convert between varying units of length.'
         },
         {
           id: 1,
@@ -335,7 +401,10 @@ export function getToolsCate() {
           desc: '面积转换工具-支持国际面积单位，中国传统面积单位，英制面积单位',
           url: '/unit/?active=area',
           cateId: 4,
-          cate: '教育学术'
+          cate: '教育学术',
+          name: 'area',
+          title_en: 'Area Converter',
+          desc_en: 'Convert between varying units of area.'
         },
         {
           id: 1,
@@ -344,7 +413,10 @@ export function getToolsCate() {
           desc: '重量转换工具-支持国际重量单位，中国传统重量单位，英制重量单位(常衡制和金衡制)',
           url: '/unit/?active=weight',
           cateId: 4,
-          cate: '教育学术'
+          cate: '教育学术',
+          name: 'weight',
+          title_en: 'Weight Converter',
+          desc_en: 'Convert between varying units of weight.'
         },
         {
           id: 1,
@@ -353,7 +425,10 @@ export function getToolsCate() {
           desc: '时间单位转换工具-支持国际时间单位',
           url: '/unit/?active=time',
           cateId: 4,
-          cate: '教育学术'
+          cate: '教育学术',
+          name: 'timeunit',
+          title_en: 'Time Converter',
+          desc_en: 'Convert between varying units of time.'
         },
         {
           id: 1,
@@ -362,7 +437,10 @@ export function getToolsCate() {
           desc: '温度单位转换工具-支持国际温度单位',
           url: '/unit/?active=temperature',
           cateId: 4,
-          cate: '教育学术'
+          cate: '教育学术',
+          name: 'temperature',
+          title_en: 'Temperature Converter',
+          desc_en: 'Convert between Celsius, Fahrenheit, and Kelvin.'
         },
         {
           id: 1,
@@ -371,7 +449,10 @@ export function getToolsCate() {
           desc: '压力单位转换工具-Pa/kPa/hPa/MPa/bar/torr/psi等',
           url: '/unit/?active=pressure',
           cateId: 4,
-          cate: '教育学术'
+          cate: '教育学术',
+          name: 'pressure',
+          title_en: 'Pressure Converter',
+          desc_en: 'Convert between Pa, bar, psi, and other pressure units.'
         },
         {
           id: 1,
@@ -380,7 +461,10 @@ export function getToolsCate() {
           desc: '热量单位转换工具-Wh/mWh/kWh/MWh/J/kJ等',
           url: '/unit/?active=heat',
           cateId: 4,
-          cate: '教育学术'
+          cate: '教育学术',
+          name: 'heat',
+          title_en: 'Energy Converter',
+          desc_en: 'Convert between Joules, kWh, Calories, etc.'
         },
         {
           id: 1,
@@ -389,7 +473,10 @@ export function getToolsCate() {
           desc: '功率单位转换工具-W/mW/kW/MW/GW等',
           url: '/unit/?active=power',
           cateId: 4,
-          cate: '教育学术'
+          cate: '教育学术',
+          name: 'power',
+          title_en: 'Power Converter',
+          desc_en: 'Convert between Watts, kW, HP, etc.'
         },
         {
           id: 1,
@@ -398,7 +485,10 @@ export function getToolsCate() {
           desc: '展示常见物品的辐射量参考数据，帮助了解日常生活中的辐射水平',
           url: '/radiation-sample/',
           cateId: 4,
-          cate: '教育学术'
+          cate: '教育学术',
+          name: 'radiation',
+          title_en: 'Radiation Reference',
+          desc_en: 'Reference data for common radiation sources in daily life.'
         },
         {
           id: 1,
@@ -407,7 +497,10 @@ export function getToolsCate() {
           desc: '3D数学方程式可视化工具，支持参数方程、隐式方程、函数图像的三维展示',
           url: '/math-equation-3d/',
           cateId: 4,
-          cate: '教育学术'
+          cate: '教育学术',
+          name: 'math3d',
+          title_en: '3D Equation Plotter',
+          desc_en: 'Visualize 3D mathematical equations and functions.'
         },
         {
           id: 1,
@@ -416,7 +509,10 @@ export function getToolsCate() {
           desc: '排序算法、搜索算法等算法处理过程的可视化展示，帮助理解算法原理',
           url: '/algorithm-visualization/',
           cateId: 4,
-          cate: '教育学术'
+          cate: '教育学术',
+          name: 'algo',
+          title_en: 'Algorithm Visualization',
+          desc_en: 'Visualize sorting and searching algorithms step-by-step.'
         }
       ]
     },
@@ -432,7 +528,10 @@ export function getToolsCate() {
           desc: '在线将PDF文件转换为高清图片，支持多页转换，保持原始清晰度',
           url: '/pdf-to-image/',
           cateId: 5,
-          cate: '图片处理'
+          cate: '图片处理',
+          name: 'pdftoimg',
+          title_en: 'PDF to Image',
+          desc_en: 'Convert PDF files to high-quality images.'
         },
         {
           id: 1,
@@ -441,7 +540,10 @@ export function getToolsCate() {
           desc: '在线生成二维码，支持带logo、透明、艺术的二维码生成',
           url: '/qrcode/',
           cateId: 5,
-          cate: '图片处理'
+          cate: '图片处理',
+          name: 'qrcode',
+          title_en: 'QR Code Generator',
+          desc_en: 'Generate custom QR codes with logo support.'
         },
         {
           id: 1,
@@ -451,6 +553,9 @@ export function getToolsCate() {
           url: '/qrcode-scan/',
           cateId: 5,
           cate: '图片处理',
+          name: 'qrscan',
+          title_en: 'QR Code Scanner',
+          desc_en: 'Scan QR codes from images or webcam.'
         },
         {
           id: 1,
@@ -459,7 +564,10 @@ export function getToolsCate() {
           desc: '把文本转换成图片，生成长图，具有超多个性文字排版',
           url: '/texttoimg/',
           cateId: 5,
-          cate: '图片处理'
+          cate: '图片处理',
+          name: 'texttoimg',
+          title_en: 'Text to Image',
+          desc_en: 'Convert text to image with custom typography.'
         },
         {
           id: 1,
@@ -469,6 +577,9 @@ export function getToolsCate() {
           url: '/imgcut/',
           cateId: 5,
           cate: '图片处理',
+          name: 'imgcut',
+          title_en: 'Image Splitter',
+          desc_en: 'Split images into grids (4x4, 9x9, etc.).'
         },
         {
           id: 1,
@@ -478,6 +589,9 @@ export function getToolsCate() {
           url: '/imagetobase64/',
           cateId: 5,
           cate: '图片处理',
+          name: 'imgbase64',
+          title_en: 'Image to Base64',
+          desc_en: 'Convert image files to Base64 strings.'
         },
         {
           id: 1,
@@ -486,7 +600,10 @@ export function getToolsCate() {
           desc: '在线图片压缩工具，支持多种格式，可调节压缩质量，减小文件大小',
           url: '/image-compress/',
           cateId: 5,
-          cate: '图片处理'
+          cate: '图片处理',
+          name: 'imgcompress',
+          title_en: 'Image Compressor',
+          desc_en: 'Compress images online to reduce file size.'
         },
       ]
     },
@@ -503,7 +620,10 @@ export function getToolsCate() {
           url: '/bar/',
           cateId: 8,
           cate: '数据图表',
-        },{
+          name: 'bar',
+          title_en: 'Bar Chart',
+          desc_en: 'Create bar charts online easily.'
+        }, {
           id: 1,
           title: '折线图',
           logo: '/images/logo/line.png',
@@ -511,6 +631,9 @@ export function getToolsCate() {
           url: '/line/',
           cateId: 8,
           cate: '数据图表',
+          name: 'line',
+          title_en: 'Line Chart',
+          desc_en: 'Create line charts online easily.'
         },
         {
           id: 1,
@@ -520,6 +643,9 @@ export function getToolsCate() {
           url: '/pie/',
           cateId: 8,
           cate: '数据图表',
+          name: 'pie',
+          title_en: 'Pie Chart',
+          desc_en: 'Create pie charts online easily.'
         },
         {
           id: 1,
@@ -529,6 +655,9 @@ export function getToolsCate() {
           url: '/scatter/',
           cateId: 8,
           cate: '数据图表',
+          name: 'scatter',
+          title_en: 'Scatter Plot',
+          desc_en: 'Create scatter plots online easily.'
         }
       ]
     },
@@ -545,6 +674,9 @@ export function getToolsCate() {
           url: '/snake/',
           cateId: 11,
           cate: '趣味互动',
+          name: 'snake',
+          title_en: 'Snake Game',
+          desc_en: 'Classic Snake game to challenge your reflexes.'
         },
         {
           id: 2,
@@ -554,6 +686,9 @@ export function getToolsCate() {
           url: '/memory/',
           cateId: 11,
           cate: '趣味互动',
+          name: 'memory',
+          title_en: 'Memory Card',
+          desc_en: 'Flip card memory game.'
         },
         {
           id: 3,
@@ -563,6 +698,9 @@ export function getToolsCate() {
           url: '/tetris/',
           cateId: 11,
           cate: '趣味互动',
+          name: 'tetris',
+          title_en: 'Tetris',
+          desc_en: 'Classic Tetris game.'
         },
         {
           id: 4,
@@ -572,6 +710,9 @@ export function getToolsCate() {
           url: '/whackamole/',
           cateId: 11,
           cate: '趣味互动',
+          name: 'whackamole',
+          title_en: 'Whack-a-Mole',
+          desc_en: 'Classic Whack-a-Mole game.'
         },
         {
           id: 5,
@@ -581,6 +722,9 @@ export function getToolsCate() {
           url: '/game2048/',
           cateId: 11,
           cate: '趣味互动',
+          name: 'game2048',
+          title_en: '2048',
+          desc_en: 'Classic 2048 puzzle game.'
         },
         {
           id: 6,
@@ -590,6 +734,9 @@ export function getToolsCate() {
           url: '/minesweeper/',
           cateId: 11,
           cate: '趣味互动',
+          name: 'minesweeper',
+          title_en: 'Minesweeper',
+          desc_en: 'Classic Minesweeper game.'
         },
         {
           id: 7,
@@ -599,6 +746,9 @@ export function getToolsCate() {
           url: '/puzzle/',
           cateId: 11,
           cate: '趣味互动',
+          name: 'puzzle',
+          title_en: 'Number Puzzle',
+          desc_en: 'Sliding number puzzle game.'
         },
         {
           id: 8,
@@ -608,6 +758,9 @@ export function getToolsCate() {
           url: '/sudoku/',
           cateId: 11,
           cate: '趣味互动',
+          name: 'sudoku',
+          title_en: 'Sudoku',
+          desc_en: 'Classic Sudoku puzzle.'
         },
         {
           id: 9,
@@ -617,6 +770,9 @@ export function getToolsCate() {
           url: '/ai-gomoku/',
           cateId: 11,
           cate: '趣味互动',
+          name: 'gomoku',
+          title_en: 'AI Gomoku',
+          desc_en: 'Play Gomoku against AI.'
         },
         {
           id: 10,
@@ -626,6 +782,9 @@ export function getToolsCate() {
           url: '/guess-number/',
           cateId: 11,
           cate: '趣味互动',
+          name: 'guessnum',
+          title_en: 'Guess Number',
+          desc_en: 'Guess the random number between 1-100.'
         },
         {
           id: 11,
@@ -635,6 +794,9 @@ export function getToolsCate() {
           url: '/number-memory/',
           cateId: 11,
           cate: '趣味互动',
+          name: 'nummemo',
+          title_en: 'Number Memory',
+          desc_en: 'Test your immediate memory with numbers.'
         },
         {
           id: 12,
@@ -644,6 +806,9 @@ export function getToolsCate() {
           url: '/hundred-billion/',
           cateId: 11,
           cate: '趣味互动',
+          name: 'billion',
+          title_en: 'Spend 10 Billion',
+          desc_en: 'Simulation: How would you spend 10 billion?'
         },
       ]
     },
@@ -659,7 +824,10 @@ export function getToolsCate() {
           desc: '可定制范围内进行随机数字，可用于抽奖、点名等用途',
           url: '/random/',
           cateId: 9,
-          cate: '选择随机'
+          cate: '选择随机',
+          name: 'randomnum',
+          title_en: 'Random Number',
+          desc_en: 'Generate random numbers within a custom range.'
         },
         {
           id: 1,
@@ -668,7 +836,10 @@ export function getToolsCate() {
           desc: '选择困难，难以决定，今天吃什么，现在做什么，自定义选项都给你安排的明明白白',
           url: '/decision/',
           cateId: 9,
-          cate: '选择随机'
+          cate: '选择随机',
+          name: 'decision',
+          title_en: 'Decision Maker',
+          desc_en: 'Help you decide what to eat or do.'
         },
         {
           id: 1,
@@ -678,6 +849,9 @@ export function getToolsCate() {
           url: '/coin/',
           cateId: 9,
           cate: '选择随机',
+          name: 'coin',
+          title_en: 'Coin Flip',
+          desc_en: 'Flip a coin online.'
         },
         {
           id: 1,
@@ -687,6 +861,9 @@ export function getToolsCate() {
           url: '/dice/',
           cateId: 9,
           cate: '选择随机',
+          name: 'dice',
+          title_en: 'Dice Roller',
+          desc_en: 'Roll custom dice online.'
         },
       ]
     },
@@ -727,7 +904,10 @@ export function getToolsCate() {
           desc: '在线数字一键转换成人民币大写，中文大写转换数字',
           url: '/numbertochinese/',
           cateId: 7,
-          cate: '其他工具'
+          cate: '其他工具',
+          name: 'numtochinese',
+          title_en: 'Number to Chinese',
+          desc_en: 'Convert numbers to Chinese currency uppercase.'
         },
         {
           id: 1,
@@ -737,6 +917,9 @@ export function getToolsCate() {
           url: '/barrage/',
           cateId: 7,
           cate: '其他工具',
+          name: 'barrage',
+          title_en: 'Handheld Barrage',
+          desc_en: 'Scrolling LED text on your screen.'
         },
         {
           id: 1,
@@ -745,7 +928,10 @@ export function getToolsCate() {
           desc: '包含纯色、渐变与阶梯色和常用色彩组合',
           url: '/palettes/',
           cateId: 7,
-          cate: '其他工具'
+          cate: '其他工具',
+          name: 'palettes',
+          title_en: 'Color Palettes',
+          desc_en: 'Collection of solid, gradient, and ladder colors.'
         },
         {
           id: 1,
@@ -754,7 +940,10 @@ export function getToolsCate() {
           desc: '颜色选择器、在各种颜色空间如十六进制、rgb、hsl、css等等之间转换颜色',
           url: '/colorpicker/',
           cateId: 7,
-          cate: '其他工具'
+          cate: '其他工具',
+          name: 'colorpicker',
+          title_en: 'Color Picker',
+          desc_en: 'Convert colors between Hex, RGB, HSL, etc.'
         },
         {
           id: 1,
@@ -764,6 +953,9 @@ export function getToolsCate() {
           url: '/resume/',
           cateId: 7,
           cate: '其他工具',
+          name: 'resume',
+          title_en: 'Resume Builder',
+          desc_en: 'Create and manage resumes online.'
         },
         {
           id: 1,
@@ -773,6 +965,9 @@ export function getToolsCate() {
           url: '/company-compare/',
           cateId: 7,
           cate: '其他工具',
+          name: 'companycompare',
+          title_en: 'Company Compare',
+          desc_en: 'Compare company benefits and salaries.'
         },
         {
           id: 1,
@@ -782,6 +977,9 @@ export function getToolsCate() {
           url: '/minimum-wage/',
           cateId: 7,
           cate: '其他工具',
+          name: 'minwage',
+          title_en: 'Minimum Wage',
+          desc_en: 'Check minimum wage standards in China.'
         },
         {
           id: 1,
@@ -791,6 +989,9 @@ export function getToolsCate() {
           url: '/phone-directory/',
           cateId: 7,
           cate: '其他工具',
+          name: 'phonedir',
+          title_en: 'Phone Directory',
+          desc_en: 'Common useful phone numbers lookup.'
         },
       ]
     },
@@ -798,7 +999,7 @@ export function getToolsCate() {
       id: 10,
       title: 'AI工具',
       icon: '',
-      list:[
+      list: [
         {
           id: 1,
           title: '在线文生图',
@@ -806,7 +1007,10 @@ export function getToolsCate() {
           desc: '提供在线免费无限次数的AI文生图服务',
           url: '/ai-text-to-image/',
           cateId: 10,
-          cate: 'AI工具'
+          cate: 'AI工具',
+          name: 'aitexttoimage',
+          title_en: 'AI Text to Image',
+          desc_en: 'Free unlimited AI text-to-image generation.'
         },
         {
           id: 2,
@@ -815,7 +1019,10 @@ export function getToolsCate() {
           desc: '精选第三方AI工具分类导航，一键直达',
           url: '/aihub/',
           cateId: 10,
-          cate: 'AI工具'
+          cate: 'AI工具',
+          name: 'aihub',
+          title_en: 'AI Tools Hub',
+          desc_en: 'Curated list of AI tools.'
         },
         {
           id: 3,
@@ -824,7 +1031,10 @@ export function getToolsCate() {
           desc: '根据描述自动生成符合命名规范的变量名，支持多种命名风格与语言',
           url: '/ai-variable-name/',
           cateId: 10,
-          cate: 'AI工具'
+          cate: 'AI工具',
+          name: 'aivarname',
+          title_en: 'AI Variable Namer',
+          desc_en: 'Generate variable names from descriptions.'
         },
         {
           id: 4,
@@ -833,7 +1043,10 @@ export function getToolsCate() {
           desc: '输入父母姓氏、选择名长与性别，生成多个姓名并附命名理由',
           url: '/ai-name/',
           cateId: 10,
-          cate: 'AI工具'
+          cate: 'AI工具',
+          name: 'ainame',
+          title_en: 'AI Baby Namer',
+          desc_en: 'Generate Chinese names for babies.'
         },
         {
           id: 5,
@@ -842,7 +1055,10 @@ export function getToolsCate() {
           desc: '支持多语言互译，源语言自动检测',
           url: '/ai-translate/',
           cateId: 10,
-          cate: 'AI工具'
+          cate: 'AI工具',
+          name: 'aitranslate',
+          title_en: 'AI Translator',
+          desc_en: 'Smart multi-language translation.'
         },
         {
           id: 6,
@@ -851,7 +1067,10 @@ export function getToolsCate() {
           desc: '按年级/题材/关键词生成贴合小学生水平的作文',
           url: '/ai-elementary-essay/',
           cateId: 10,
-          cate: 'AI工具'
+          cate: 'AI工具',
+          name: 'aiessay',
+          title_en: 'AI Essay Writer',
+          desc_en: 'Generate elementary school essays.'
         },
         {
           id: 7,
@@ -860,7 +1079,10 @@ export function getToolsCate() {
           desc: 'AI智能生成每日励志鸡汤文，支持多种风格选择，定时刷新，为你的每一天注入正能量',
           url: '/ai-daily-motivation/',
           cateId: 10,
-          cate: 'AI工具'
+          cate: 'AI工具',
+          name: 'aimotivation',
+          title_en: 'AI Motivation',
+          desc_en: 'Daily AI-generated motivational quotes.'
         },
         {
           id: 8,
@@ -869,7 +1091,10 @@ export function getToolsCate() {
           desc: '智能AI对话助手，支持多轮对话，提供专业、准确的回答',
           url: '/ai-chat/',
           cateId: 10,
-          cate: 'AI工具'
+          cate: 'AI工具',
+          name: 'aichat',
+          title_en: 'AI Chat',
+          desc_en: 'Smart AI chat assistant.'
         },
         {
           id: 9,
@@ -878,7 +1103,10 @@ export function getToolsCate() {
           desc: 'AI智能面试助手，模拟真实面试场景，支持多种岗位类型，提升面试表现',
           url: '/ai-interview/',
           cateId: 10,
-          cate: 'AI工具'
+          cate: 'AI工具',
+          name: 'aiinterview',
+          title_en: 'AI Interviewer',
+          desc_en: 'Mock interview practice with AI.'
         },
         {
           id: 10,
@@ -887,7 +1115,10 @@ export function getToolsCate() {
           desc: '精选顶级AI提示词库，涵盖写作、编程、创意、分析等多个领域，助力提升AI对话效果',
           url: '/ai-prompt/',
           cateId: 10,
-          cate: 'AI工具'
+          cate: 'AI工具',
+          name: 'aiprompt',
+          title_en: 'AI Prompt Library',
+          desc_en: 'Curated collection of AI prompts.'
         },
         // {
         //   id: 2,
@@ -904,7 +1135,7 @@ export function getToolsCate() {
       id: 12,
       title: '好物网站',
       icon: '',
-      list:[
+      list: [
         {
           id: 1,
           title: '好物网站导航',
@@ -912,7 +1143,10 @@ export function getToolsCate() {
           desc: '精选优质网站分类导航，一键直达常用服务与网站',
           url: '/good-sites/',
           cateId: 12,
-          cate: '好物网站'
+          cate: '好物网站',
+          name: 'goodsites',
+          title_en: 'Good Sites',
+          desc_en: 'Directory of useful websites.'
         }
       ]
     }
@@ -953,16 +1187,22 @@ export function getTools(data: ToolsReqData) {
   //标题筛选
   if (title != '') {
     list = list.filter(item => {
+      let query = title.toLowerCase()
       let tmpValue = item.title.toLowerCase()
       let tmpDesc = item.desc.toLowerCase()
-      // console.log(tmpValue.indexOf(title.toLowerCase()))
-      return tmpValue.indexOf(title.toLowerCase()) !== -1 || tmpDesc.indexOf(title.toLowerCase()) !== -1;
+      let tmpValueEn = (item.title_en || '').toLowerCase()
+      let tmpDescEn = (item.desc_en || '').toLowerCase()
+
+      return tmpValue.indexOf(query) !== -1 ||
+        tmpDesc.indexOf(query) !== -1 ||
+        tmpValueEn.indexOf(query) !== -1 ||
+        tmpDescEn.indexOf(query) !== -1;
     });
   }
   //分类筛选
   if (cateId > 0) {
     list = list.filter(item => {
-      return item.cateId == cateId;  
+      return item.cateId == cateId;
     });
   }
   return list

@@ -1,10 +1,12 @@
 <script setup lang="ts">
 import { reactive } from 'vue'
+import { useI18n } from 'vue-i18n'
 import DetailHeader from '@/components/Layout/DetailHeader/DetailHeader.vue'
 import ToolDetail from '@/components/Layout/ToolDetail/ToolDetail.vue'
-// import { copy } from '@/utils/string'
+
+const { t } = useI18n()
+
 const info = reactive({
-  title: "生成随机数",
   startNum: 1,
   endNum: 100,
   resNum: 0,
@@ -23,16 +25,11 @@ const random = () => {
       }
   }, 50)
 }
-
-//copy
-// const copyRes = async (resStr: string) => {
-//   copy(resStr)
-// }
 </script>
 
 <template>
   <div class="flex flex-col mt-3 flex-1">
-    <DetailHeader :title="info.title"></DetailHeader>
+    <DetailHeader :title="$t('tools.randomnum.title')"></DetailHeader>
 
     <div class="flex flex-col items-center p-4 rounded-2xl bg-white">
       <div>
@@ -45,14 +42,14 @@ const random = () => {
       </div>
 
       <div>
-        <el-button @click="random" type="primary" size="large" v-if="!info.genStatus">生成</el-button>
-        <el-button @click="random" type="primary" size="large" disabled v-else>生成...</el-button>
+        <el-button @click="random" type="primary" size="large" v-if="!info.genStatus">{{ $t('tools.randomnum.generate') }}</el-button>
+        <el-button @click="random" type="primary" size="large" disabled v-else>{{ $t('tools.randomnum.generating') }}</el-button>
       </div>
     </div>
     <!-- desc -->
-    <ToolDetail title="描述">
+    <ToolDetail :title="$t('tools.randomnum.detail_title')">
       <el-text>
-        可定制范围内进行随机数字，可用于抽奖、点名等用途
+        {{ $t('tools.randomnum.detail_content') }}
       </el-text> 
     </ToolDetail>
 

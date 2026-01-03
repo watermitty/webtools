@@ -1,9 +1,12 @@
 <script setup lang="ts">
 import { ref, onMounted } from 'vue'
 import { useRoute } from 'vue-router'
+import { useI18n } from 'vue-i18n'
 import functionsRequest from '@/utils/functionsRequest'
 import { ElMessage } from 'element-plus'
 import { QuestionFilled, ChatDotRound, Share, CopyDocument } from '@element-plus/icons-vue'
+
+const { t } = useI18n()
 
 interface QAItem {
   id: string
@@ -35,11 +38,11 @@ const fetchQA = async () => {
     if (response.status === 200) {
       qa.value = response.data
     } else {
-      ElMessage.error('QA页面不存在或未公开')
+      ElMessage.error(t('tools.qa.msg_page_not_exist'))
     }
   } catch (error) {
     console.error('获取QA页面失败:', error)
-    ElMessage.error('获取QA页面失败')
+    ElMessage.error(t('tools.qa.msg_fetch_page_fail'))
   } finally {
     loading.value = false
   }
@@ -49,9 +52,9 @@ const fetchQA = async () => {
 const copyLink = async () => {
   try {
     await navigator.clipboard.writeText(window.location.href)
-    ElMessage.success('链接已复制到剪贴板')
+    ElMessage.success(t('tools.qa.msg_link_copied'))
   } catch (err) {
-    ElMessage.error('复制失败')
+    ElMessage.error(t('tools.qa.msg_copy_fail'))
   }
 }
 
@@ -96,14 +99,14 @@ onMounted(() => {
               :icon="CopyDocument"
               @click="copyLink"
             >
-              复制链接
+              {{ $t('tools.qa.copy_link') }}
             </el-button>
             <el-button 
               type="success" 
               :icon="Share"
               @click="shareToSocial('weibo')"
             >
-              分享到微博
+              {{ $t('tools.qa.share_weibo') }}
             </el-button>
           </div>
         </div>
@@ -125,7 +128,7 @@ onMounted(() => {
               <div class="qa-question-section">
                 <div class="section-header">
                   <el-icon class="section-icon"><QuestionFilled /></el-icon>
-                  <h2 class="section-title">问题 {{ index + 1 }}</h2>
+                  <h2 class="section-title">{{ $t('tools.qa.question_index', { index: index + 1 }) }}</h2>
                 </div>
                 <div class="section-content">
                   <div class="question-content">{{ item.question }}</div>
@@ -135,7 +138,7 @@ onMounted(() => {
               <div class="qa-answer-section">
                 <div class="section-header">
                   <el-icon class="section-icon"><ChatDotRound /></el-icon>
-                  <h2 class="section-title">答案 {{ index + 1 }}</h2>
+                  <h2 class="section-title">{{ $t('tools.qa.answer_index', { index: index + 1 }) }}</h2>
                 </div>
                 <div class="section-content">
                   <div class="answer-content">{{ item.answer }}</div>
@@ -149,20 +152,20 @@ onMounted(() => {
             <div class="qa-question-section">
               <div class="section-header">
                 <el-icon class="section-icon"><QuestionFilled /></el-icon>
-                <h2 class="section-title">问题</h2>
+                <h2 class="section-title">{{ $t('tools.qa.question_label') }}</h2>
               </div>
               <div class="section-content">
-                <div class="question-content">{{ qa.question || '暂无问题' }}</div>
+                <div class="question-content">{{ qa.question || $t('tools.qa.no_question') }}</div>
               </div>
             </div>
             
             <div class="qa-answer-section">
               <div class="section-header">
                 <el-icon class="section-icon"><ChatDotRound /></el-icon>
-                <h2 class="section-title">答案</h2>
+                <h2 class="section-title">{{ $t('tools.qa.answer_label') }}</h2>
               </div>
               <div class="section-content">
-                <div class="answer-content">{{ qa.answer || '暂无答案' }}</div>
+                <div class="answer-content">{{ qa.answer || $t('tools.qa.no_answer') }}</div>
               </div>
             </div>
           </div>
@@ -176,16 +179,16 @@ onMounted(() => {
         <!-- 页面信息 -->
         <div class="qa-page-info">
           <div class="page-meta">
-            <span class="meta-item">创建时间：{{ new Date(qa.createTime).toLocaleString('zh-CN') }}</span>
-            <span class="meta-item">更新时间：{{ new Date(qa.updateTime).toLocaleString('zh-CN') }}</span>
+            <span class="meta-item">{{ $t('tools.qa.created_time') }} {{ new Date(qa.createTime).toLocaleString('zh-CN') }}</span>
+            <span class="meta-item">{{ $t('tools.qa.updated_time') }} {{ new Date(qa.updateTime).toLocaleString('zh-CN') }}</span>
           </div>
         </div>
       </div>
       
       <div v-else-if="!loading" class="qa-not-found">
         <el-icon class="not-found-icon"><QuestionFilled /></el-icon>
-        <h2 class="not-found-title">QA页面不存在</h2>
-        <p class="not-found-desc">该QA页面可能已被删除或未公开</p>
+        <h2 class="not-found-title">{{ $t('tools.qa.qa_not_found') }}</h2>
+        <p class="not-found-desc">{{ $t('tools.qa.qa_not_found_desc') }}</p>
       </div>
     </div>
   </div>

@@ -3,9 +3,12 @@ import { reactive, ref, watch } from 'vue'
 import DetailHeader from '@/components/Layout/DetailHeader/DetailHeader.vue'
 import ToolDetail from '@/components/Layout/ToolDetail/ToolDetail.vue'
 import { copy } from '@/utils/string'
+import { useI18n } from 'vue-i18n'
+
+const { t } = useI18n()
 
 const info = reactive({
-  title: "URL编码/解码",
+  title: "tools.urlencode.title",
   content: '',
   tranRes: '',
 })
@@ -79,48 +82,48 @@ const copyContent = async () => {
     <div class="p-4 rounded-2xl bg-white">
       <div>
         <div class="mb-2 text-gray-500 text-sm">
-          原始文本：在此输入明文，上方将自动进行 URL 编码并显示在下方；也可只查看解码结果。
-          <el-link type="primary" class="ml-2" @click="copyContent">复制原始文本</el-link>
+          {{ $t('tools.urlencode.raw_text') }}
+          <el-link type="primary" class="ml-2" @click="copyContent">{{ $t('tools.urlencode.copy_raw') }}</el-link>
         </div>
         <div class="mb-1 text-xs text-gray-500 break-all">
-          示例：{{ exampleRaw }}
-          <el-link type="primary" class="ml-2" @click="fillExample">填充</el-link>
+          {{ $t('tools.urlencode.example') }}：{{ exampleRaw }}
+          <el-link type="primary" class="ml-2" @click="fillExample">{{ $t('tools.urlencode.fill') }}</el-link>
         </div>
         <el-input
           type="textarea"
           :rows="8"
           v-model="info.content"
-          placeholder="输入明文内容，自动编码到下方"
+          :placeholder="$t('tools.urlencode.placeholder_raw')"
         />
       </div>
 
       <div class="mt-4 flex flex-wrap gap-2 button-container">
-        <el-button @click="fillExample">填充示例</el-button>
-        <el-button type="primary" @click="toEncode">UrlEncode编码</el-button>
-        <el-button type="primary" @click="toDecode">UrlDecode解码</el-button>
-        <el-button type="primary" @click="copyRes">复制结果</el-button>
-        <el-button type="danger" @click="clear">清空内容</el-button>
+        <el-button @click="fillExample">{{ $t('tools.urlencode.fill_example') }}</el-button>
+        <el-button type="primary" @click="toEncode">{{ $t('tools.urlencode.btn_encode') }}</el-button>
+        <el-button type="primary" @click="toDecode">{{ $t('tools.urlencode.btn_decode') }}</el-button>
+        <el-button type="primary" @click="copyRes">{{ $t('tools.urlencode.btn_copy') }}</el-button>
+        <el-button type="danger" @click="clear">{{ $t('tools.urlencode.btn_clear') }}</el-button>
       </div>
 
       <div class="mt-3 min-h-md bg-gray-100 p-3 mb-3">
         <div class="mb-2 text-gray-500 text-sm">
-          URL 编码文本：在此输入/粘贴已编码文本，将自动解码并显示在上方。
-          <el-link type="primary" class="ml-2" @click="copyRes">复制 URL 编码文本</el-link>
+          {{ $t('tools.urlencode.encoded_text') }}
+          <el-link type="primary" class="ml-2" @click="copyRes">{{ $t('tools.urlencode.copy_encoded') }}</el-link>
         </div>
         <div class="mb-1 text-xs text-gray-500 break-all">示例：{{ exampleEncoded }}</div>
         <el-input
           type="textarea"
           :rows="8"
           v-model="info.tranRes"
-          placeholder="输入/粘贴已编码内容，自动解码到上方"
+          :placeholder="$t('tools.urlencode.placeholder_encoded')"
         />
       </div>
     </div>
 
     <!-- desc -->
-    <ToolDetail title="描述">
+    <ToolDetail :title="$t('tools.urlencode.desc')">
       <el-text>
-        在线url编码，在线url解码工具
+        {{ $t('tools.urlencode.desc') }}
       </el-text> 
     </ToolDetail>
 

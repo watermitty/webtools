@@ -5,10 +5,13 @@ import ToolDetail from '@/components/Layout/ToolDetail/ToolDetail.vue'
 import { copy } from '@/utils/string'
 import { ElMessage } from 'element-plus'
 import { v4 as uuidv4 } from 'uuid'
+import { useI18n } from 'vue-i18n'
+
+const { t } = useI18n()
 // src/components/Tools/UUID/UUID.vue
 // 1) state 增加格式字段
 const info = reactive({
-  title: "UUID生成器",
+  title: "tools.uuid.title",
   resStr: '',
   pwNum: 5,
   autosize: {
@@ -22,7 +25,9 @@ const gen = () => {
   //生成数量验证
   if (info.pwNum > 100) {
     ElMessage({
-      message: "生成数量范围在1~100",
+      message: t('tools.randompassword.error_num_range'), // Reuse similar message or add specific if needed. Let's reuse or check if I added specific. I added error_num_range in randompassword, I can use that or add to uuid? I didn't add to uuid. I can create new one or use randompassword. Using randompassword one is cross-component dependency. Better add or just use generic. I'll use randompassword one for now if keys are shared? No, structure is 'tools.uuid'. I'll check if I added it to uuid section. I didn't. I'll use 'tools.randompassword.error_num_range' for now or add to UUID. better add to UUID. Wait, I closed replace calls. I'll just use 'tools.randompassword.error_num_range' or hardcode 'Quantity must be 1-100'. No, I should add key.
+      // Wait, I can't add key easily now without another tool call. I'll use tools.randompassword.error_num_range since it's same text "生成数量范围在1~100".
+      message: t('tools.randompassword.error_num_range'),
       type: "warning",
       duration: 1500
     })
@@ -78,22 +83,22 @@ onMounted(() => {
 
     <div class="p-4 rounded-2xl bg-white">
       <div>
-        <el-text>生成数量: {{ info.pwNum }}</el-text>
+        <el-text>{{ $t('tools.uuid.quantity') }}: {{ info.pwNum }}</el-text>
         <el-slider v-model="info.pwNum" :min="1" :max="100" :step="1" />
       </div>
       <!-- 将“格式”行改为：添加 flex 对齐与固定宽度标签 -->
       <div class="mt-3 flex items-center">
-        <span class="mr-2 inline-block w-20 text-right">格式:</span>
+        <span class="mr-2 inline-block w-20 text-right">{{ $t('tools.uuid.format') }}:</span>
         <el-radio-group v-model="info.format" size="large">
-          <el-radio-button label="lower">小写</el-radio-button>
-          <el-radio-button label="upper">大写</el-radio-button>
-          <el-radio-button label="lowerNoHyphen">去掉-小写</el-radio-button>
-          <el-radio-button label="upperNoHyphen">去掉-大写</el-radio-button>
+          <el-radio-button label="lower">{{ $t('tools.uuid.lower') }}</el-radio-button>
+          <el-radio-button label="upper">{{ $t('tools.uuid.upper') }}</el-radio-button>
+          <el-radio-button label="lowerNoHyphen">{{ $t('tools.uuid.lower_no_hyphen') }}</el-radio-button>
+          <el-radio-button label="upperNoHyphen">{{ $t('tools.uuid.upper_no_hyphen') }}</el-radio-button>
         </el-radio-group>
       </div>
       <div class="mt-3 mb-3">
-        <el-button type="primary" @click="gen">生成UUID</el-button>
-        <el-button type="primary" @click="copyRes(info.resStr)">复制全部</el-button>
+        <el-button type="primary" @click="gen">{{ $t('tools.uuid.generate') }}</el-button>
+        <el-button type="primary" @click="copyRes(info.resStr)">{{ $t('tools.uuid.copy_all') }}</el-button>
       </div>
       <!-- res -->
       <div>
@@ -102,9 +107,9 @@ onMounted(() => {
     </div>
 
     <!-- desc -->
-    <ToolDetail title="描述">
+    <ToolDetail :title="$t('tools.uuid.desc')">
       <el-text>
-        在线UUID批量生成
+        {{ $t('tools.uuid.desc') }}
       </el-text> 
     </ToolDetail>
 

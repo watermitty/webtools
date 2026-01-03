@@ -1,12 +1,14 @@
 <script setup lang="ts">
 import { reactive, ref, shallowRef, onBeforeUnmount, onMounted } from 'vue'
+import { useI18n } from 'vue-i18n'
 import DetailHeader from '@/components/Layout/DetailHeader/DetailHeader.vue'
 import ToolDetail from '@/components/Layout/ToolDetail/ToolDetail.vue'
 import '@wangeditor/editor/dist/css/style.css' // 引入富文本 css
 import { Editor, Toolbar } from '@wangeditor/editor-for-vue'  //富文本组件
 import { copy } from '@/utils/string'
+const { t } = useI18n()
 const info = reactive({
-  title: "在线文本编辑/HTML获取",
+  title: "tools.textedit.title",
   mode: 'default',
 })
 // 编辑器实例，必须用 shallowRef
@@ -27,7 +29,7 @@ const toolbarConfig = {
 }
 
 //编辑器配置
-const editorConfig = { placeholder: '请输入内容...' }
+const editorConfig = { placeholder: t('tools.textedit.placeholder') }
 
 const handleCreated = (editor) => {
   editorRef.value = editor // 记录 editor 实例，重要！
@@ -81,21 +83,22 @@ const copyRes = async (resStr: string) => {
     </div>
 
     <div class="p-4 mt-3 rounded-2xl bg-white">
-      <el-button type="primary" @click="copyRes(html)">复制HTML</el-button>
+      <el-button type="primary" @click="copyRes(html)">{{ $t('tools.textedit.copy_html') }}</el-button>
       <el-input
         v-model="html"
         disabled
         class="mt-3"
         type="textarea"
         autosize
-        placeholder="html预览处"
+        :placeholder="$t('tools.textedit.preview_placeholder')"
       />
     </div>
 
     <!-- desc -->
-    <ToolDetail title="描述">
+    <!-- desc -->
+    <ToolDetail :title="$t('tools.textedit.desc_title')">
       <el-text>
-        在线富文本编辑, html实时预览，在线编辑文本，文本编辑获取html
+        {{ $t('tools.textedit.desc_content') }}
       </el-text> 
     </ToolDetail>
 

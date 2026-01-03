@@ -4,8 +4,11 @@ import DetailHeader from '@/components/Layout/DetailHeader/DetailHeader.vue'
 import ToolDetail from '@/components/Layout/ToolDetail/ToolDetail.vue'
 import { copy } from '@/utils/string'
 import figlet from 'figlet';
+import { useI18n } from 'vue-i18n'
+
+const { t } = useI18n()
 const info = reactive({
-  title: "ASCII字形生成器",
+  title: "tools.asciiwordpic.title",
 })
 figlet.defaults({ fontPath: '//unpkg.com/figlet@1.6.0/fonts' });
 
@@ -135,15 +138,15 @@ onMounted(() => {
 
 <template>
   <div class="flex flex-col mt-3 flex-1">
-    <DetailHeader :title="info.title"></DetailHeader>
+    <DetailHeader :title="$t(info.title)"></DetailHeader>
 
     <div class="p-4 rounded-2xl bg-white ">
       <div class="mb-6">
-        <el-input v-model="content" :rows="4" type="textarea" placeholder="请输入内容"></el-input>
+        <el-input v-model="content" :rows="4" type="textarea" :placeholder="$t('tools.asciiwordpic.placeholder')"></el-input>
         <div class="mt-3 flex items-center">
           <div class="flex items-center mr-3 w-48">
             <div class="w-10">
-              <el-text class="">风格</el-text>
+              <el-text class="">{{ $t('tools.asciiwordpic.label_style') }}</el-text>
             </div>
             <el-select
               v-model="fontStyle"
@@ -162,7 +165,7 @@ onMounted(() => {
           
           <div class="flex items-center mr-3 w-48">
             <div class="w-14">
-              <el-text class="">最大宽度</el-text>
+              <el-text class="">{{ $t('tools.asciiwordpic.label_width') }}</el-text>
             </div>
             <el-input-number
               v-model="maxWidth"
@@ -174,16 +177,16 @@ onMounted(() => {
             />
           </div>
           
-          <el-button type="primary" @click="gen()" :loading="loading">生成</el-button>
-          <el-button type="primary" @click="copy(contentRes)">复制结果</el-button>
-          <el-button type="primary" @click="clear">清除</el-button>
+          <el-button type="primary" @click="gen()" :loading="loading">{{ $t('tools.asciiwordpic.btn_generate') }}</el-button>
+          <el-button type="primary" @click="copy(contentRes)">{{ $t('tools.asciiwordpic.btn_copy') }}</el-button>
+          <el-button type="primary" @click="clear">{{ $t('tools.asciiwordpic.btn_clear') }}</el-button>
         </div>
       </div>
 
       <div>
         <div v-if="loading" class="flex justify-center items-center py-8">
           <el-icon class="is-loading mr-2"><Loading /></el-icon>
-          <span>正在生成ASCII字形...</span>
+          <span>{{ $t('tools.asciiwordpic.loading_text') }}</span>
         </div>
         <pre v-else tabindex="0"><code>{{ contentRes }}</code></pre>
       </div>
@@ -191,9 +194,9 @@ onMounted(() => {
     </div>
   
     <!-- desc -->
-    <ToolDetail title="描述">
+    <ToolDetail :title="$t('tools.asciiwordpic.detail_title')">
       <el-text>
-        好用的ASCII字形生成器，输入框中输入需要生成的字母；提供多种风格选择，可设置输出最大宽度，暂不支持中文
+        {{ $t('tools.asciiwordpic.desc') }}
       </el-text> 
     </ToolDetail>
   

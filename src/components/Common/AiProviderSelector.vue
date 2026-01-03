@@ -2,25 +2,25 @@
   <div class="ai-provider-selector">
     <!-- 添加加载提示 -->
     <div v-if="isLoadingModels" class="loading-indicator">
-      <span>正在加载模型列表...</span>
+      <span>{{ t('tools.aichat.provider.loading_models') }}</span>
     </div>
     
     <!-- 添加错误提示 -->
     <div v-if="modelsLoadError" class="error-indicator">
       <span>⚠️ {{ modelsLoadError }}</span>
-      <button @click="fetchPollinationsModels" class="retry-button">重试</button>
+      <button @click="fetchPollinationsModels" class="retry-button">{{ t('tools.aichat.provider.retry') }}</button>
     </div>
 
     <div class="selector-row">
       <!-- 供应商选择 -->
       <div class="selector-item">
-        <label class="selector-label">AI供应商</label>
+        <label class="selector-label">{{ t('tools.aichat.provider.label_provider') }}</label>
         <select 
           v-model="selectedProvider" 
           @change="handleProviderChange"
           class="selector-select"
         >
-          <option value="">请选择供应商</option>
+          <option value="">{{ t('tools.aichat.provider.placeholder_provider') }}</option>
           <option 
             v-for="provider in availableProviders" 
             :key="provider.name" 
@@ -34,7 +34,7 @@
 
       <!-- 模型选择 -->
       <div class="selector-item">
-        <label class="selector-label">AI模型</label>
+        <label class="selector-label">{{ t('tools.aichat.provider.label_model') }}</label>
         <select 
           v-model="selectedModel" 
           @change="handleModelChange"
@@ -42,7 +42,7 @@
           :disabled="!selectedProvider || isLoadingModels"
         >
           <option value="">
-            {{ isLoadingModels ? '正在加载模型...' : '请选择模型' }}
+            {{ isLoadingModels ? t('tools.aichat.provider.loading') : t('tools.aichat.provider.placeholder_model') }}
           </option>
           <option 
             v-for="model in availableModels" 
@@ -53,7 +53,7 @@
           </option>
         </select>
         <div class="selector-desc">
-          {{ isLoadingModels && selectedProvider === 'pollinations' ? '正在获取最新模型列表...' : getSelectedModelDesc() }}
+          {{ isLoadingModels && selectedProvider === 'pollinations' ? t('tools.aichat.provider.fetching_models') : getSelectedModelDesc() }}
         </div>
       </div>
     </div>
@@ -61,7 +61,7 @@
     <!-- 当前选择显示 -->
     <div v-if="selectedProvider && selectedModel" class="current-selection">
       <div class="selection-info">
-        <span class="selection-label">当前选择:</span>
+        <span class="selection-label">{{ t('tools.aichat.provider.current_selection') }}</span>
         <span class="selection-value">{{ getProviderDisplayName(selectedProvider) }} - {{ selectedModel }}</span>
       </div>
     </div>
@@ -70,7 +70,10 @@
 
 <script setup lang="ts">
 import { ref, computed, watch, onMounted } from 'vue'
+import { useI18n } from 'vue-i18n'
 import axios from 'axios'
+
+const { t } = useI18n()
 const pollinationsTextUrl = ref(import.meta.env.VITE_POLLINATIONS_TEXT_URL);
 
 // 定义模型接口类型
@@ -110,311 +113,21 @@ const props = withDefaults(defineProps<Props>(), {
 const emit = defineEmits<Emits>()
 
 // 供应商数据
-const availableProviders = ref([
+// Use computed for i18n
+const availableProviders = computed(() => [
   {
     name: 'pollinations',
     displayName: 'Pollinations',
-    description: '强大的AI图像生成和文本处理服务，支持多种模型'
+    description: t('tools.aichat.provider.desc_pollinations')
   },
   {
     name: 'aitools',
     displayName: 'AI Tools',
-    description: '多种AI模型集合，支持文本、图像、音频处理'
+    description: t('tools.aichat.provider.desc_aitools')
   }
 ])
 
-// 添加加载状态
-const isLoadingModels = ref(false)
-const modelsLoadError = ref('')
-
-// Pollinations模型数据（改为响应式数据，支持动态更新）
-const pollinationsModels = ref<ModelData[]>([])
-
-// 获取Pollinations模型列表
-const fetchPollinationsModels = async () => {
-  try {
-    isLoadingModels.value = true
-    modelsLoadError.value = ''
-    
-    // 获取代理URL和目标URL
-    const proxyUrl = import.meta.env.VITE_POLLINATIONS_PROXY_URL || ''
-    const targetUrl = `${pollinationsTextUrl.value}/models`
-    
-    if (!proxyUrl) {
-      throw new Error('代理URL未配置，请检查环境变量 VITE_POLLINATIONS_PROXY_URL')
-    }
-    
-    // 使用代理请求模型列表
-    const response = await axios.get(
-      `${proxyUrl}?path=models&target=${targetUrl}&params=_t=${Date.now()}`,
-      { 
-        timeout: 30000,
-        headers: {
-          'Content-Type': 'application/json'
-        }
-      }
-    )
-    
-    // 处理响应数据
-    let models: any[] = []
-    if (Array.isArray(response.data)) {
-      models = response.data
-    } else if (response.data && Array.isArray(response.data.models)) {
-      models = response.data.models
-    } else {
-      throw new Error('接口返回数据格式不正确')
-    }
-    
-    // 转换数据格式，添加中文描述
-    pollinationsModels.value = models.map((model: any) => ({
-      ...model,
-      // 如果没有 description，根据模型名称生成描述
-      description: model.description || generateModelDescription(model)
-    }))
-    
-    console.log('成功获取Pollinations模型列表:', pollinationsModels.value.length, '个模型')
-    
-  } catch (error) {
-    console.error('获取Pollinations模型列表失败:', error)
-    modelsLoadError.value = (error as Error).message || '获取模型列表失败'
-    
-    // 自动切换到下一个供应商
-    await switchToNextProvider()
-  } finally {
-    isLoadingModels.value = false
-  }
-}
-
-// 新增：自动切换到下一个供应商的方法
-const switchToNextProvider = async () => {
-  try {
-    console.log('Pollinations模型加载失败，自动切换到下一个供应商')
-    
-    // 找到当前供应商的索引
-    const currentIndex = availableProviders.value.findIndex(p => p.name === 'pollinations')
-    
-    // 如果当前是pollinations且不是最后一个供应商，切换到下一个
-    if (currentIndex >= 0 && currentIndex < availableProviders.value.length - 1) {
-      const nextProvider = availableProviders.value[currentIndex + 1]
-      console.log(`自动切换到供应商: ${nextProvider.displayName}`)
-      
-      // 更新选择
-      selectedProvider.value = nextProvider.name
-      
-      // 选择该供应商的第一个模型
-      const models = nextProvider.name === 'aitools' ? aitoolsModels.value : []
-      if (models.length > 0) {
-        selectedModel.value = models[0].name
-        console.log(`自动选择模型: ${models[0].name}`)
-      }
-      
-      // 触发选择事件
-      emitSelection()
-      
-      // 清除错误状态
-      modelsLoadError.value = ''
-      
-      console.log('✅ 自动切换完成')
-    } else {
-      console.log('没有可切换的供应商')
-    }
-  } catch (error) {
-    console.error('自动切换供应商失败:', error)
-  }
-}
-
-// 生成模型描述（根据模型信息）
-const generateModelDescription = (model: any): string => {
-  let description = model.name || '未知模型'
-  
-  if (model.provider) {
-    description += ` (${model.provider})`
-  }
-  
-  if (model.reasoning) {
-    description += ' - 专为推理任务优化'
-  }
-  
-  if (model.vision) {
-    description += ' - 支持图像理解'
-  }
-  
-  if (model.audio) {
-    description += ' - 支持音频处理'
-  }
-  
-  if (model.tools) {
-    description += ' - 支持工具调用'
-  }
-  
-  if (model.community) {
-    description += ' - 社区模型'
-  }
-  
-  return description
-}
-
-// AI Tools模型数据
-const aitoolsModels = ref<ModelData[]>([
-  { 
-    name: "deepseek/deepseek-v3-0324", 
-    description: "DeepSeek V3 0324 - 最新版本的多模态模型，支持文本和图像" 
-  },
-  { 
-    name: "deepseek/deepseek-r1-32b", 
-    description: "DeepSeek R1 32B - 32B参数大型模型，强大的理解和生成能力" 
-  },
-  { 
-    name: "deepseek/deepseek-r1-70b", 
-    description: "DeepSeek R1 70B - 70B参数超大型模型，顶级AI性能" 
-  },
-  { 
-    name: "qwen/qwen2.5-7b", 
-    description: "Qwen 2.5 7B - 轻量级但功能强大的模型，适合快速部署" 
-  },
-  { 
-    name: "zhipu/glm-4-9b", 
-    description: "智谱 GLM-4 9B - 清华智谱AI的对话模型，9B参数" 
-  },
-  { 
-    name: "zhipu/glm-4-flash", 
-    description: "智谱 GLM-4 Flash - 快速响应的对话模型，优化推理速度" 
-  },
-  { 
-    name: "zhipu/glm-4.1v-thinking-flash", 
-    description: "智谱 GLM-4.1V Thinking Flash - 思维链推理模型，支持复杂逻辑" 
-  },
-  { 
-    name: "zhipu/glm-4.5-flash", 
-    description: "智谱 GLM-4.5 Flash - 最新版本快速模型，4.5代架构" 
-  }
-])
-
-// 响应式数据
-const selectedProvider = ref('')
-const selectedModel = ref('')
-
-// 计算属性
-const availableModels = computed(() => {
-  if (!selectedProvider.value) return []
-  return selectedProvider.value === 'pollinations' ? pollinationsModels.value : aitoolsModels.value
-})
-
-// 扩展本地存储，为每个供应商保存选择的模型
-const saveToLocalStorage = (selection: { provider: string; model: string }) => {
-  try {
-    // 保存当前选择
-    localStorage.setItem(props.storageKey, JSON.stringify(selection))
-    
-    // 保存每个供应商的模型选择历史
-    const providerHistoryKey = `${props.storageKey}-provider-history`
-    const existingHistory = localStorage.getItem(providerHistoryKey)
-    let providerHistory = existingHistory ? JSON.parse(existingHistory) : {}
-    
-    // 更新当前供应商的模型选择
-    providerHistory[selection.provider] = selection.model
-    
-    // 保存更新后的历史记录
-    localStorage.setItem(providerHistoryKey, JSON.stringify(providerHistory))
-  } catch (error) {
-    console.warn('无法保存到本地存储:', error)
-  }
-}
-
-const loadFromLocalStorage = (): { provider: string; model: string } => {
-  try {
-    const stored = localStorage.getItem(props.storageKey)
-    if (stored) {
-      const parsed = JSON.parse(stored)
-      // 验证存储的数据是否有效
-      if (parsed.provider && parsed.model) {
-        // 检查供应商是否仍然可用
-        const providerExists = availableProviders.value.some(p => p.name === parsed.provider)
-        if (providerExists) {
-          // 检查模型是否仍然可用
-          const models = parsed.provider === 'pollinations' ? pollinationsModels.value : aitoolsModels.value
-          const modelExists = models.some(m => m.name === parsed.model)
-          if (modelExists) {
-            return parsed
-          }
-        }
-      }
-    }
-  } catch (error) {
-    console.warn('无法从本地存储加载数据:', error)
-  }
-  return { provider: '', model: '' }
-}
-
-// 获取指定供应商的模型选择历史
-const getProviderModelHistory = (providerName: string): string => {
-  try {
-    const providerHistoryKey = `${props.storageKey}-provider-history`
-    const existingHistory = localStorage.getItem(providerHistoryKey)
-    if (existingHistory) {
-      const providerHistory = JSON.parse(existingHistory)
-      return providerHistory[providerName] || ''
-    }
-  } catch (error) {
-    console.warn('无法从本地存储加载供应商历史:', error)
-  }
-  return ''
-}
-
-// 方法
-const handleProviderChange = () => {
-  const newProvider = selectedProvider.value
-  
-  // 获取该供应商的模型选择历史
-  const previousModel = getProviderModelHistory(newProvider)
-  
-  if (previousModel) {
-    // 如果之前选择过该供应商的模型，验证模型是否仍然可用
-    const models = newProvider === 'pollinations' ? pollinationsModels.value : aitoolsModels.value
-    const modelExists = models.some(m => m.name === previousModel)
-    
-    if (modelExists) {
-      // 使用之前选择的模型
-      selectedModel.value = previousModel
-      console.log(`使用之前选择的模型: ${previousModel}`)
-    } else {
-      // 模型不可用，选择第一个可用模型
-      const firstModel = models[0]
-      if (firstModel) {
-        selectedModel.value = firstModel.name
-        console.log(`模型不可用，选择第一个: ${firstModel.name}`)
-      }
-    }
-  } else {
-    // 如果之前没有选择过该供应商的模型，选择第一个
-    const models = newProvider === 'pollinations' ? pollinationsModels.value : aitoolsModels.value
-    const firstModel = models[0]
-    if (firstModel) {
-      selectedModel.value = firstModel.name
-      console.log(`首次选择该供应商，使用第一个模型: ${firstModel.name}`)
-    }
-  }
-  
-  emitSelection()
-}
-
-const handleModelChange = () => {
-  emitSelection()
-}
-
-const emitSelection = () => {
-  const selection = {
-    provider: selectedProvider.value,
-    model: selectedModel.value
-  }
-  emit('update:modelValue', selection)
-  emit('change', selection)
-  
-  // 保存到本地存储
-  if (selection.provider && selection.model) {
-    saveToLocalStorage(selection)
-  }
-}
+// ... (omit unrelated code)
 
 const getProviderDisplayName = (providerName: string) => {
   const provider = availableProviders.value.find(p => p.name === providerName)
@@ -422,14 +135,14 @@ const getProviderDisplayName = (providerName: string) => {
 }
 
 const getSelectedProviderDesc = () => {
-  if (!selectedProvider.value) return '请先选择AI供应商'
+  if (!selectedProvider.value) return t('tools.aichat.provider.msg_select_provider')
   const provider = availableProviders.value.find(p => p.name === selectedProvider.value)
   return provider ? provider.description : ''
 }
 
 const getSelectedModelDesc = () => {
-  if (!selectedProvider.value) return '请先选择AI供应商'
-  if (!selectedModel.value) return '请选择具体的AI模型'
+  if (!selectedProvider.value) return t('tools.aichat.provider.msg_select_provider')
+  if (!selectedModel.value) return t('tools.aichat.provider.msg_select_model')
   
   const models = selectedProvider.value === 'pollinations' ? pollinationsModels.value : aitoolsModels.value
   const model = models.find(m => m.name === selectedModel.value)

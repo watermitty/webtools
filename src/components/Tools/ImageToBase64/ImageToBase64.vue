@@ -1,12 +1,15 @@
 <script setup lang="ts">
 import { reactive, ref } from 'vue'
 import { ElMessage } from 'element-plus'
+import { useI18n } from 'vue-i18n'
 import DetailHeader from '@/components/Layout/DetailHeader/DetailHeader.vue'
 import ToolDetail from '@/components/Layout/ToolDetail/ToolDetail.vue'
 import { copy } from '@/utils/string'
 
+const { t } = useI18n()
+
 const info = reactive({
-  title: "图片转Base64",
+  title: "tools.imgbase64.title",
 })
 
 const base64Result = ref('')
@@ -18,7 +21,7 @@ const isLoading = ref(false)
 // 处理文件上传
 const handleFileUpload = (file: File) => {
   if (!file.type.startsWith('image/')) {
-    ElMessage.error('请选择图片文件')
+    ElMessage.error(t('tools.imgbase64.msg_select_img'))
     return
   }
 
@@ -31,12 +34,12 @@ const handleFileUpload = (file: File) => {
     fileName.value = file.name
     fileSize.value = formatFileSize(file.size)
     isLoading.value = false
-    ElMessage.success('图片转换完成')
+    ElMessage.success(t('tools.imgbase64.msg_success'))
   }
   
   reader.onerror = () => {
     isLoading.value = false
-    ElMessage.error('图片转换失败，请重试')
+    ElMessage.error(t('tools.imgbase64.msg_fail'))
   }
   
   reader.readAsDataURL(file)
@@ -85,7 +88,7 @@ const handleFileSelect = (e: Event) => {
 const copyBase64 = async () => {
   if (base64Result.value) {
     await copy(base64Result.value)
-    ElMessage.success('Base64编码已复制到剪贴板')
+    ElMessage.success(t('tools.imgbase64.msg_copy_success'))
   }
 }
 
@@ -99,7 +102,7 @@ const clearResult = () => {
 
 <template>
   <div class="flex flex-col mt-3 flex-1">
-    <DetailHeader :title="info.title"></DetailHeader>
+    <DetailHeader :title="$t('tools.imgbase64.title')"></DetailHeader>
 
     <div class="p-4 rounded-2xl bg-white">
       <!-- 上传区域 -->
@@ -115,7 +118,7 @@ const clearResult = () => {
           <div v-if="isLoading" class="absolute inset-0 bg-white bg-opacity-80 flex items-center justify-center z-10 rounded-lg">
             <div class="text-center">
               <div class="inline-block animate-spin rounded-full h-8 w-8 border-b-2 border-blue-600 mb-2"></div>
-              <p class="text-gray-600">正在处理图片...</p>
+              <p class="text-gray-600">{{ $t('tools.imgbase64.loading') }}</p>
             </div>
           </div>
           
@@ -126,12 +129,12 @@ const clearResult = () => {
               </svg>
             </div>
             <div>
-              <p class="text-lg font-medium text-gray-900">拖拽图片到此处或点击上传</p>
-              <p class="text-sm text-gray-500">支持 JPG、PNG、GIF、WebP 等格式</p>
+              <p class="text-lg font-medium text-gray-900">{{ $t('tools.imgbase64.drag_hint') }}</p>
+              <p class="text-sm text-gray-500">{{ $t('tools.imgbase64.format_hint') }}</p>
             </div>
             <div>
               <label class="cursor-pointer bg-blue-600 text-white px-4 py-2 rounded-md hover:bg-blue-700 transition-colors disabled:opacity-50 disabled:cursor-not-allowed" :class="{ 'opacity-50 cursor-not-allowed': isLoading }">
-                选择图片
+                {{ $t('tools.imgbase64.btn_select') }}
                 <input type="file" accept="image/*" class="hidden" @change="handleFileSelect" :disabled="isLoading" />
               </label>
             </div>
@@ -144,14 +147,14 @@ const clearResult = () => {
         <div class="flex items-center justify-between">
           <div>
             <p class="font-medium text-gray-900">{{ fileName }}</p>
-            <p class="text-sm text-gray-500">文件大小: {{ fileSize }}</p>
+            <p class="text-sm text-gray-500">{{ $t('tools.imgbase64.label_size') }}{{ fileSize }}</p>
           </div>
           <button
             @click="clearResult"
             class="text-red-600 hover:text-red-800 text-sm"
             :disabled="isLoading"
           >
-            清空
+            {{ $t('tools.imgbase64.btn_clear') }}
           </button>
         </div>
       </div>
@@ -159,13 +162,13 @@ const clearResult = () => {
       <!-- Base64结果 -->
       <div v-if="base64Result" class="space-y-4">
         <div class="flex items-center justify-between">
-          <h3 class="text-lg font-medium text-gray-900">Base64编码结果</h3>
+          <h3 class="text-lg font-medium text-gray-900">{{ $t('tools.imgbase64.label_result') }}</h3>
           <button
             @click="copyBase64"
             class="bg-green-600 text-white px-4 py-2 rounded-md hover:bg-green-700 transition-colors"
             :disabled="isLoading"
           >
-            复制Base64
+            {{ $t('tools.imgbase64.btn_copy') }}
           </button>
         </div>
         
@@ -174,13 +177,13 @@ const clearResult = () => {
             :value="base64Result"
             readonly
             class="w-full h-32 p-3 border border-gray-300 rounded-md bg-white resize-none"
-            placeholder="Base64编码将显示在这里..."
+            :placeholder="$t('tools.imgbase64.placeholder')"
           ></textarea>
         </div>
 
         <!-- 预览 -->
         <div class="mt-4">
-          <h4 class="text-md font-medium text-gray-900 mb-2">图片预览</h4>
+          <h4 class="text-md font-medium text-gray-900 mb-2">{{ $t('tools.imgbase64.preview') }}</h4>
           <div class="border border-gray-300 rounded-lg p-4 bg-white">
             <img :src="base64Result" alt="预览图片" class="max-w-full max-h-64 mx-auto" />
           </div>
@@ -189,9 +192,9 @@ const clearResult = () => {
     </div>
 
     <!-- desc -->
-    <ToolDetail title="描述">
+    <ToolDetail :title="$t('tools.imgbase64.detail_title')">
       <el-text>
-        图片转Base64工具可以将图片文件转换为Base64编码格式。Base64编码后的图片可以直接嵌入到HTML、CSS或JavaScript代码中使用，无需额外的文件请求。支持拖拽上传和点击上传，支持JPG、PNG、GIF、WebP等常见图片格式。
+        {{ $t('tools.imgbase64.detail_content') }}
       </el-text> 
     </ToolDetail>
 

@@ -1,13 +1,16 @@
 <script setup lang="ts">
 import { reactive, ref, watch } from 'vue'
+import { useI18n } from 'vue-i18n'
 import DetailHeader from '@/components/Layout/DetailHeader/DetailHeader.vue'
 import ToolDetail from '@/components/Layout/ToolDetail/ToolDetail.vue'
 import { copy } from '@/utils/string'
 
+const {  } = useI18n()
+
 type Row = { key: string; value: string }
 
 const info = reactive({
-  title: 'URL 参数解析/构造',
+  title: 'tools.urlparams.title',
 })
 
 const state = reactive({
@@ -103,71 +106,71 @@ watch(() => state.autoEncode, build)
 
     <div class="p-4 rounded-2xl bg-white">
       <div class="mb-2 text-sm text-gray-500">
-        输入完整 URL 或查询串（如：?a=1&b=2），点击“解析”即可在下方编辑后重新拼接。
-        <el-link class="ml-2" type="primary" @click="fillExample">填充示例</el-link>
+        {{ $t('tools.urlparams.intro') }}
+        <el-link class="ml-2" type="primary" @click="fillExample">{{ $t('tools.urlparams.link_example') }}</el-link>
       </div>
       <el-input
         type="textarea"
         :rows="3"
         v-model="state.raw"
-        placeholder="输入 URL 或 ?a=1&b=2 形式的查询串"
+        :placeholder="$t('tools.urlparams.placeholder_input')"
       />
 
       <div class="mt-3 flex flex-wrap items-center gap-2 button-container">
-        <el-button type="primary" @click="parse">解析</el-button>
-        <el-button @click="build">重新拼接</el-button>
+        <el-button type="primary" @click="parse">{{ $t('tools.urlparams.btn_parse') }}</el-button>
+        <el-button @click="build">{{ $t('tools.urlparams.btn_build') }}</el-button>
         <el-switch
           v-model="state.autoEncode"
-          active-text="自动编码"
-          inactive-text="保持原样"
+          :active-text="$t('tools.urlparams.label_auto_encode')"
+          :inactive-text="$t('tools.urlparams.label_raw')"
         />
-        <el-button type="danger" @click="clearAll">清空</el-button>
+        <el-button type="danger" @click="clearAll">{{ $t('tools.urlparams.btn_clear') }}</el-button>
       </div>
 
       <div class="mt-4">
-        <div class="text-sm text-gray-600 mb-2">基础 URL（解析时自动提取，可手动调整）：</div>
-        <el-input v-model="state.base" placeholder="示例：https://example.com/path" />
+        <div class="text-sm text-gray-600 mb-2">{{ $t('tools.urlparams.label_base_url') }}</div>
+        <el-input v-model="state.base" :placeholder="$t('tools.urlparams.placeholder_base')" />
       </div>
 
       <div class="mt-4">
         <div class="flex items-center justify-between mb-2">
-          <div class="text-sm text-gray-600">参数列表</div>
-          <el-button size="small" @click="addRow">添加参数</el-button>
+          <div class="text-sm text-gray-600">{{ $t('tools.urlparams.label_params') }}</div>
+          <el-button size="small" @click="addRow">{{ $t('tools.urlparams.btn_add') }}</el-button>
         </div>
 
         <div class="space-y-2">
           <div v-for="(r, idx) in rows" :key="idx" class="flex gap-2 items-center">
             <div class="shrink basis-[28%] md:basis-[22%] lg:basis-[18%]">
-              <el-input v-model="r.key" placeholder="key" />
+              <el-input v-model="r.key" :placeholder="$t('tools.urlparams.placeholder_key')" />
             </div>
             <div class="grow basis-0 min-w-0">
-              <el-input v-model="r.value" placeholder="value" />
+              <el-input v-model="r.value" :placeholder="$t('tools.urlparams.placeholder_value')" />
             </div>
-            <el-button type="danger" link @click="removeRow(idx)">删除</el-button>
+            <el-button type="danger" link @click="removeRow(idx)">{{ $t('tools.urlparams.btn_delete') }}</el-button>
           </div>
         </div>
       </div>
 
       <div class="mt-4">
-        <div class="text-sm text-gray-600 mb-1">拼接结果（仅查询串）：</div>
+        <div class="text-sm text-gray-600 mb-1">{{ $t('tools.urlparams.label_result_query') }}</div>
         <el-input v-model="state.resultQuery" readonly />
         <div class="mt-2">
-          <el-button type="primary" @click="copyQuery">复制查询串</el-button>
+          <el-button type="primary" @click="copyQuery">{{ $t('tools.urlparams.btn_copy_query') }}</el-button>
         </div>
       </div>
 
       <div class="mt-4">
-        <div class="text-sm text-gray-600 mb-1">拼接结果（完整 URL）：</div>
+        <div class="text-sm text-gray-600 mb-1">{{ $t('tools.urlparams.label_result_full') }}</div>
         <el-input v-model="state.resultFull" readonly />
         <div class="mt-2">
-          <el-button type="primary" @click="copyFull">复制完整 URL</el-button>
+          <el-button type="primary" @click="copyFull">{{ $t('tools.urlparams.btn_copy_full') }}</el-button>
         </div>
       </div>
     </div>
 
-    <ToolDetail title="描述">
+    <ToolDetail :title="$t('tools.urlparams.detail_title')">
       <el-text>
-        一键解析 URL 查询参数，支持编辑参数后重新拼接；支持是否自动进行 URL 编码；可复制查询串或完整 URL。
+        {{ $t('tools.urlparams.detail_content') }}
       </el-text>
     </ToolDetail>
   </div>

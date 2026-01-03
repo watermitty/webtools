@@ -1,10 +1,13 @@
 <script setup lang="ts">
 import { reactive, ref, watch, nextTick, computed } from "vue";
+import { useI18n } from 'vue-i18n';
 import { Search } from "@element-plus/icons-vue";
 import DetailHeader from "@/components/Layout/DetailHeader/DetailHeader.vue";
 import ToolDetail from "@/components/Layout/ToolDetail/ToolDetail.vue";
 import { copy } from "@/utils/string";
 import { ElMessage } from "element-plus";
+
+const { t } = useI18n();
 
 type CookieRow = {
   name: string;
@@ -19,7 +22,7 @@ type CookieRow = {
 };
 
 const info = reactive({
-  title: "Cookie解析/构造",
+  title: "tools.cookie.title",
 });
 
 const state = reactive({
@@ -454,7 +457,7 @@ const importCookies = () => {
 
         // 验证数据格式
         if (!importData.cookies || !Array.isArray(importData.cookies)) {
-          ElMessage.error("无效的文件格式：缺少cookies数组");
+          ElMessage.error(t('tools.cookie.msg_import_err_format'));
           return;
         }
 
@@ -470,7 +473,7 @@ const importCookies = () => {
         );
 
         if (validImportedCookies.length === 0) {
-          ElMessage.error("文件中没有有效的Cookie数据");
+          ElMessage.error(t('tools.cookie.msg_import_no_valid'));
           return;
         }
 
@@ -490,7 +493,7 @@ const importCookies = () => {
         // 询问是否替换现有数据
         if (cookies.value.some((c) => c.name.trim() !== "")) {
           const confirmReplace = confirm(
-            `将导入${normalizedCookies.length}个Cookie，是否替换当前数据？\n点击"确定"替换，点击"取消"追加到现有数据`
+            t('tools.cookie.msg_confirm_replace', { count: normalizedCookies.length })
           );
 
           if (confirmReplace) {
@@ -516,7 +519,7 @@ const importCookies = () => {
               cookies.value.push(...newCookies);
             }
 
-            ElMessage.success(`成功追加${newCookies.length}个新Cookie`);
+            ElMessage.success(t('tools.cookie.msg_append_success', { count: newCookies.length }));
             return;
           }
         } else {
@@ -533,9 +536,9 @@ const importCookies = () => {
           state.viewMode = importData.viewMode;
         }
 
-        ElMessage.success(`成功导入${normalizedCookies.length}个Cookie`);
+        ElMessage.success(t('tools.cookie.msg_import_success', { count: normalizedCookies.length }));
       } catch (error) {
-        ElMessage.error("文件解析失败：请确保是有效的JSON文件");
+        ElMessage.error(t('tools.cookie.msg_parse_err'));
         console.error("Import error:", error);
       }
     };
@@ -576,13 +579,13 @@ const copySingleCookie = (cookie: any) => {
 // 验证Cookie名称是否合规
 const validateCookieName = (name: string) => {
   if (!name.trim()) {
-    return { valid: false, message: 'Cookie名称不能为空' }
+    return { valid: false, message: t('tools.cookie.err_name_empty') }
   }
   
   // Cookie名称不能包含这些字符：空格、分号、逗号、等号、控制字符等
   const invalidChars = /[;,\s=\(\)<>@"\/\[\]?:{}\\]/
   if (invalidChars.test(name)) {
-    return { valid: false, message: '名称包含非法字符(不能包含空格、分号、逗号、等号等)' }
+    return { valid: false, message: t('tools.cookie.err_name_invalid') }
   }
   
   return { valid: true, message: '' }
@@ -593,7 +596,7 @@ const validateCookieValue = (value: string) => {
   // Cookie值中不能包含分号、逗号、空格(除非被引号包围)
   const invalidChars = /[;,]/
   if (invalidChars.test(value)) {
-    return { valid: false, message: '值不能包含分号或逗号' }
+    return { valid: false, message: t('tools.cookie.err_value_invalid') }
   }
   
   return { valid: true, message: '' }
@@ -606,7 +609,7 @@ const validateDomain = (domain: string) => {
   // 基本域名格式验证
   const domainRegex = /^(?:\*\.)?[a-zA-Z0-9]([a-zA-Z0-9-]*[a-zA-Z0-9])?(\.[a-zA-Z0-9]([a-zA-Z0-9-]*[a-zA-Z0-9])?)*\.?$/
   if (!domainRegex.test(domain) && !domain.startsWith('.')) {
-    return { valid: false, message: '域名格式不正确' }
+    return { valid: false, message: t('tools.cookie.err_domain') }
   }
   
   return { valid: true, message: '' }
@@ -617,7 +620,7 @@ const validatePath = (path: string) => {
   if (!path.trim()) return { valid: true, message: '' }
   
   if (!path.startsWith('/')) {
-    return { valid: false, message: '路径必须以 / 开头' }
+    return { valid: false, message: t('tools.cookie.err_path') }
   }
   
   return { valid: true, message: '' }
@@ -629,7 +632,7 @@ const validateMaxAge = (maxAge: string) => {
   
   const num = parseInt(maxAge)
   if (isNaN(num) || num < 0) {
-    return { valid: false, message: 'Max-Age必须是非负整数' }
+    return { valid: false, message: t('tools.cookie.err_max_age') }
   }
   
   return { valid: true, message: '' }
@@ -800,10 +803,9 @@ const shouldHighlight = (text: string | undefined) => {
 
     <div class="p-4 rounded-2xl bg-white">
       <div class="mb-2 text-sm text-gray-500">
-        支持解析请求头Cookie（name1=value1;
-        name2=value2）和响应头Set-Cookie格式，输入内容后自动解析，编辑Cookie列表后自动同步。
+        {{ $t('tools.cookie.intro') }}
         <el-link class="ml-2" type="primary" @click="fillExample"
-          >填充示例</el-link
+          >{{ $t('tools.cookie.link_example') }}</el-link
         >
       </div>
 
@@ -813,24 +815,24 @@ const shouldHighlight = (text: string | undefined) => {
         v-model="state.raw"
         :placeholder="
           state.viewMode === 'simple'
-            ? '输入Cookie字符串，如：name1=value1; name2=value2（自动解析）'
-            : '输入Set-Cookie格式，如：name=value; Domain=example.com; Path=/; Secure（自动解析）'
+            ? $t('tools.cookie.placeholder_simple')
+            : $t('tools.cookie.placeholder_detailed')
         "
       />
 
       <div class="mt-3 flex flex-wrap items-center gap-2 button-container">
         <el-button @click="toggleViewMode">
-          切换到{{ state.viewMode === "simple" ? "详细" : "简单" }}模式
+          {{ $t('tools.cookie.mode_switch_to', { mode: state.viewMode === "simple" ? $t('tools.cookie.mode_detailed') : $t('tools.cookie.mode_simple') }) }}
         </el-button>
         <el-button
           @click="exportCookies"
           type="success"
           :disabled="!hasValidCookies"
         >
-          导出JSON{{ hasValidCookies ? "" : "(无数据)" }}
+          {{ $t('tools.cookie.btn_export') }}{{ hasValidCookies ? "" : $t('tools.cookie.suffix_no_data') }}
         </el-button>
-        <el-button @click="importCookies" type="primary">导入JSON</el-button>
-        <el-button type="danger" @click="clearAll">清空</el-button>
+        <el-button @click="importCookies" type="primary">{{ $t('tools.cookie.btn_import') }}</el-button>
+        <el-button type="danger" @click="clearAll">{{ $t('tools.cookie.btn_clear') }}</el-button>
       </div>
 
       <div class="mt-4">
@@ -838,7 +840,7 @@ const shouldHighlight = (text: string | undefined) => {
         <div class="mb-3">
           <el-input
             v-model="state.searchText"
-            placeholder="搜索Cookie名称、值、域名等..."
+            :placeholder="$t('tools.cookie.placeholder_search')"
             prefix-icon="Search"
             clearable
             class="max-w-md"
@@ -854,19 +856,18 @@ const shouldHighlight = (text: string | undefined) => {
 
         <div class="flex items-center justify-between mb-2">
           <div class="text-sm text-gray-600">
-            Cookie列表（实时同步）- {{ getValidCookieCount() }}个有效Cookie，总计{{ getTotalFieldCount() }}个字段，
-            总大小: {{ formatBytes(getTotalSize()) }}
+            {{ $t('tools.cookie.label_list_stat', { valid: getValidCookieCount(), fields: getTotalFieldCount(), size: formatBytes(getTotalSize()) }) }}
             <span v-if="getAllValidationErrors().length > 0" class="ml-2 text-red-600">
-              ({{ getAllValidationErrors().length }}个错误)
+              {{ $t('tools.cookie.label_error_count', { count: getAllValidationErrors().length }) }}
             </span>
             <span v-if="state.searchText.trim()" class="ml-2 text-blue-600">
-              (显示{{ matchedCount }}个匹配项)
+              {{ $t('tools.cookie.label_match_count', { count: matchedCount }) }}
             </span>
             <el-tag size="small" class="ml-2">{{
-              state.viewMode === "simple" ? "简单模式" : "详细模式"
+              state.viewMode === "simple" ? $t('tools.cookie.mode_simple') : $t('tools.cookie.mode_detailed')
             }}</el-tag>
           </div>
-          <el-button size="small" @click="addCookie">添加Cookie</el-button>
+          <el-button size="small" @click="addCookie">{{ $t('tools.cookie.btn_add') }}</el-button>
         </div>
 
         <!-- 搜索无结果提示 -->
@@ -875,8 +876,8 @@ const shouldHighlight = (text: string | undefined) => {
           class="text-center py-8 text-gray-500"
         >
           <el-icon size="48" class="mb-2"><Search /></el-icon>
-          <p>没有找到匹配"{{ state.searchText }}"的Cookie</p>
-          <el-button link @click="clearSearch">清除搜索条件</el-button>
+          <p>{{ $t('tools.cookie.msg_no_match', { text: state.searchText }) }}</p>
+          <el-button link @click="clearSearch">{{ $t('tools.cookie.msg_clear_search') }}</el-button>
         </div>
 
         <!-- 空状态 -->
@@ -884,7 +885,7 @@ const shouldHighlight = (text: string | undefined) => {
           v-else-if="!state.searchText.trim() && cookies.length === 0"
           class="text-center py-8 text-gray-500"
         >
-          <p>暂无Cookie数据，点击"添加Cookie"开始</p>
+          <p>{{ $t('tools.cookie.msg_empty') }}</p>
         </div>
 
         <!-- Cookie列表 -->
@@ -918,7 +919,7 @@ const shouldHighlight = (text: string | undefined) => {
                 <div class="basis-[35%]">
                   <el-input
                     :model-value="item.name || ''"
-                    placeholder="Cookie名称"
+                    :placeholder="$t('tools.cookie.col_name')"
                     size="small"
                     :status="getCookieValidation(item).name.valid ? '' : 'error'"
                     @input="
@@ -951,7 +952,7 @@ const shouldHighlight = (text: string | undefined) => {
                 <div class="basis-[45%]">
                   <el-input
                     :model-value="item.value || ''"
-                    placeholder="Cookie值"
+                    :placeholder="$t('tools.cookie.col_value')"
                     size="small"
                     :status="getCookieValidation(item).value.valid ? '' : 'error'"
                     @input="
@@ -988,14 +989,14 @@ const shouldHighlight = (text: string | undefined) => {
                   size="small"
                   title="复制此Cookie"
                   :disabled="getCookieValidation(item).hasErrors"
-                  >复制</el-button
+                  >{{ $t('tools.cookie.btn_copy') }}</el-button
                 >
                 <el-button
                   type="danger"
                   link
                   @click="removeCookie(item.originalIndex ?? index)"
                   size="small"
-                  >删除</el-button
+                  >{{ $t('tools.cookie.btn_delete') }}</el-button
                 >
               </div>
 
@@ -1165,9 +1166,7 @@ const shouldHighlight = (text: string | undefined) => {
 
       <div class="mt-4">
         <div class="text-sm text-gray-600 mb-1">
-          生成结果（{{
-            state.viewMode === "simple" ? "请求头Cookie格式" : "Set-Cookie格式"
-          }}）：
+          {{ $t('tools.cookie.label_result', { format: state.viewMode === "simple" ? $t('tools.cookie.format_req') : $t('tools.cookie.format_res') }) }}
         </div>
         <el-input
           type="textarea"
@@ -1181,58 +1180,14 @@ const shouldHighlight = (text: string | undefined) => {
             @click="copyResult"
             :disabled="!state.result.trim()"
           >
-            复制结果{{ state.result.trim() ? '' : '(无结果)' }}
+            {{ $t('tools.cookie.btn_copy_result') }}{{ state.result.trim() ? '' : $t('tools.cookie.suffix_no_result') }}
           </el-button>
         </div>
       </div>
     </div>
 
-    <ToolDetail title="功能说明">
-      <div class="space-y-2">
-        <p>
-          <strong>简单模式：</strong
-          >适用于解析和构造请求头中的Cookie字符串（name1=value1; name2=value2）
-        </p>
-        <p>
-          <strong>详细模式：</strong
-          >适用于解析和构造响应头中的Set-Cookie字符串，包含Domain、Path、Expires、Max-Age、Secure、HttpOnly、SameSite等属性
-        </p>
-        <p><strong>核心功能：</strong></p>
-        <ul class="list-disc list-inside ml-4 space-y-1">
-          <li>输入内容后自动解析，无需点击按钮</li>
-          <li>编辑Cookie列表后自动同步到输入框</li>
-          <li>自动识别Cookie格式（请求头或响应头）</li>
-          <li>添加/删除Cookie条目，支持智能防重复添加</li>
-          <li>在简单模式和详细模式间切换</li>
-          <li>一键复制生成结果</li>
-        </ul>
-        <p><strong>高级功能：</strong></p>
-        <ul class="list-disc list-inside ml-4 space-y-1">
-          <li>支持导出为JSON文件，包含时间戳和模式信息</li>
-          <li>支持从JSON文件导入Cookie，可选择替换或追加模式</li>
-          <li>实时搜索过滤Cookie，支持名称、值、域名等多字段搜索</li>
-          <li>复制单个Cookie，根据当前模式生成对应格式</li>
-          <li>显示详细统计信息：有效数量、总字段数、总字节大小</li>
-          <li>显示每个Cookie的字节大小和字符长度</li>
-        </ul>
-        <p><strong>验证与错误提示：</strong></p>
-        <ul class="list-disc list-inside ml-4 space-y-1">
-          <li>实时验证Cookie名称格式（不能包含非法字符）</li>
-          <li>验证Cookie值格式（不能包含分号、逗号）</li>
-          <li>验证域名格式和路径格式</li>
-          <li>验证Max-Age数值有效性</li>
-          <li>错误项目显示红色边框和详细错误信息</li>
-          <li>有错误的Cookie无法复制，确保数据质量</li>
-        </ul>
-        <p><strong>用户体验：</strong></p>
-        <ul class="list-disc list-inside ml-4 space-y-1">
-          <li>添加Cookie后自动滚动并聚焦到新项目</li>
-          <li>搜索高亮匹配项目，显示匹配数量统计</li>
-          <li>智能格式化字节数显示（B/KB/MB）</li>
-          <li>支持键盘操作和清除功能</li>
-          <li>紧凑的界面设计，一页可显示更多Cookie</li>
-        </ul>
-      </div>
+    <ToolDetail :title="$t('tools.cookie.detail_title')">
+      <div class="space-y-2" v-html="$t('tools.cookie.detail_content')"></div>
     </ToolDetail>
   </div>
 </template>

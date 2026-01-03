@@ -1,10 +1,13 @@
 <script setup lang="ts">
 import { reactive, ref, onMounted, onUnmounted, computed } from 'vue'
+import { useI18n } from 'vue-i18n'
 import DetailHeader from '@/components/Layout/DetailHeader/DetailHeader.vue'
 import ToolDetail from '@/components/Layout/ToolDetail/ToolDetail.vue'
 
+const { t } = useI18n()
+
 const info = reactive({
-  title: "打地鼠",
+  title: "tools.whackamole.title",
 })
 
 // 游戏状态
@@ -238,34 +241,34 @@ onUnmounted(() => {
 
 <template>
   <div class="flex flex-col mt-3 ml-4 flex-1 mr-3">
-    <DetailHeader :title="info.title"></DetailHeader>
+    <DetailHeader :title="$t(info.title)"></DetailHeader>
 
     <div class="p-6 rounded-2xl bg-white shadow-sm border border-gray-200">
       <div class="max-w-4xl mx-auto">
         <!-- 游戏信息 -->
         <div class="grid grid-cols-2 md:grid-cols-6 gap-4 mb-6">
           <div class="text-center bg-blue-50 p-3 rounded-lg border border-blue-200">
-            <h3 class="text-sm font-medium text-blue-900">得分</h3>
+            <h3 class="text-sm font-medium text-blue-900">{{ $t('tools.whackamole.score') }}</h3>
             <p class="text-xl font-bold text-blue-600">{{ gameState.score }}</p>
           </div>
           <div class="text-center bg-green-50 p-3 rounded-lg border border-green-200">
-            <h3 class="text-sm font-medium text-green-900">最高分</h3>
+            <h3 class="text-sm font-medium text-green-900">{{ $t('tools.whackamole.high_score') }}</h3>
             <p class="text-xl font-bold text-green-600">{{ gameState.highScore }}</p>
           </div>
           <div class="text-center bg-red-50 p-3 rounded-lg border border-red-200">
-            <h3 class="text-sm font-medium text-red-900">时间</h3>
+            <h3 class="text-sm font-medium text-red-900">{{ $t('tools.whackamole.time') }}</h3>
             <p class="text-xl font-bold text-red-600">{{ formatTime(gameState.time) }}</p>
           </div>
           <div class="text-center bg-purple-50 p-3 rounded-lg border border-purple-200">
-            <h3 class="text-sm font-medium text-purple-900">命中</h3>
+            <h3 class="text-sm font-medium text-purple-900">{{ $t('tools.whackamole.hits') }}</h3>
             <p class="text-xl font-bold text-purple-600">{{ gameState.hits }}</p>
           </div>
           <div class="text-center bg-orange-50 p-3 rounded-lg border border-orange-200">
-            <h3 class="text-sm font-medium text-orange-900">命中率</h3>
+            <h3 class="text-sm font-medium text-orange-900">{{ $t('tools.whackamole.accuracy') }}</h3>
             <p class="text-xl font-bold text-orange-600">{{ accuracy }}%</p>
           </div>
           <div class="text-center bg-indigo-50 p-3 rounded-lg border border-indigo-200">
-            <h3 class="text-sm font-medium text-indigo-900">游戏板</h3>
+            <h3 class="text-sm font-medium text-indigo-900">{{ $t('tools.whackamole.game_board') }}</h3>
             <p class="text-xl font-bold text-indigo-600">{{ config.gridSize }}×{{ config.gridSize }}</p>
           </div>
         </div>
@@ -278,7 +281,7 @@ onUnmounted(() => {
             type="primary"
             class="bg-blue-500 hover:bg-blue-600 border-blue-600"
           >
-            开始游戏
+            {{ $t('tools.whackamole.btn_start') }}
           </el-button>
           <el-button 
             v-if="gameState.gameOver"
@@ -286,7 +289,7 @@ onUnmounted(() => {
             type="success"
             class="bg-green-500 hover:bg-green-600 border-green-600"
           >
-            重新开始
+            {{ $t('tools.whackamole.btn_restart') }}
           </el-button>
         </div>
 
@@ -300,7 +303,7 @@ onUnmounted(() => {
             <div class="bg-yellow-100 border-4 border-yellow-400 rounded-full p-8 shadow-2xl">
               <div class="text-center">
                 <div class="text-6xl font-bold text-yellow-600 mb-2">{{ gameState.countdown }}</div>
-                <div class="text-lg text-yellow-700">准备开始</div>
+                <div class="text-lg text-yellow-700">{{ $t('tools.whackamole.prepare') }}</div>
               </div>
             </div>
           </div>
@@ -371,27 +374,27 @@ onUnmounted(() => {
         <!-- 游戏结束提示 -->
         <div v-if="gameState.gameOver" class="text-center mb-6">
           <div class="bg-green-50 border-2 border-green-300 rounded-lg p-4 shadow-md">
-            <h3 class="text-lg font-medium text-green-900 mb-2">游戏结束！</h3>
-            <p class="text-green-600">最终得分: {{ gameState.score }}</p>
-            <p class="text-green-600">命中次数: {{ gameState.hits }}</p>
-            <p class="text-green-600">命中率: {{ accuracy }}%</p>
+            <h3 class="text-lg font-medium text-green-900 mb-2">{{ $t('tools.whackamole.game_over') }}</h3>
+            <p class="text-green-600">{{ $t('tools.whackamole.final_score') }}{{ gameState.score }}</p>
+            <p class="text-green-600">{{ $t('tools.whackamole.hits_count') }}{{ gameState.hits }}</p>
+            <p class="text-green-600">{{ $t('tools.whackamole.accuracy') }}: {{ accuracy }}%</p>
             <p v-if="gameState.score > gameState.highScore" class="text-yellow-600 font-medium mt-2">
-              新纪录！恭喜你创造了新的最高分！
+              {{ $t('tools.whackamole.new_record') }}
             </p>
           </div>
         </div>
 
         <!-- 游戏说明 -->
         <div class="bg-gray-50 rounded-lg p-4 border-2 border-gray-200 shadow-sm">
-          <h3 class="text-lg font-medium text-gray-900 mb-3">游戏说明</h3>
+          <h3 class="text-lg font-medium text-gray-900 mb-3">{{ $t('tools.whackamole.instructions') }}</h3>
           <div class="grid grid-cols-1 md:grid-cols-2 gap-4 text-sm text-gray-600">
             <div class="bg-white p-3 rounded border border-gray-200">
-              <p><strong class="text-blue-600">游戏目标：</strong>在30秒内击中尽可能多的地鼠</p>
-              <p><strong class="text-blue-600">操作方式：</strong>点击出现的地鼠进行击中</p>
+              <p><strong class="text-blue-600">{{ $t('tools.whackamole.goal_label') }}</strong>{{ $t('tools.whackamole.goal_content') }}</p>
+              <p><strong class="text-blue-600">{{ $t('tools.whackamole.controls_label') }}</strong>{{ $t('tools.whackamole.controls_content') }}</p>
             </div>
             <div class="bg-white p-3 rounded border border-gray-200">
-              <p><strong class="text-green-600">得分规则：</strong>每击中一个地鼠+10分</p>
-              <p><strong class="text-red-600">挑战：</strong>提高命中率，获得更高分数</p>
+              <p><strong class="text-green-600">{{ $t('tools.whackamole.score_rule_label') }}</strong>{{ $t('tools.whackamole.score_rule_content') }}</p>
+              <p><strong class="text-red-600">{{ $t('tools.whackamole.challenge_label') }}</strong>{{ $t('tools.whackamole.challenge_content') }}</p>
             </div>
           </div>
         </div>
@@ -399,16 +402,9 @@ onUnmounted(() => {
     </div>
 
     <!-- 工具详情 -->
-    <ToolDetail title="描述">
+    <ToolDetail :title="$t('tools.whackamole.detail_title')">
       <el-text>
-        经典打地鼠游戏，考验你的反应速度和手眼协调：<br><br>
-        
-        游戏特色：经典打地鼠玩法，随机出现的地鼠，实时得分统计<br>
-        操作方式：点击出现的地鼠进行击中，30秒倒计时挑战<br>
-        游戏目标：在限定时间内击中尽可能多的地鼠，获得高分<br>
-        训练效果：锻炼反应速度、手眼协调能力和注意力集中<br><br>
-        
-        适合所有年龄段，是经典的街机游戏。
+        {{ $t('tools.whackamole.detail_content') }}
       </el-text>
     </ToolDetail>
   </div>

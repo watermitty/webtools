@@ -1,13 +1,12 @@
 <script setup lang="ts">
 import { reactive, watch } from 'vue'
+import { useI18n } from 'vue-i18n'
 import DetailHeader from '@/components/Layout/DetailHeader/DetailHeader.vue'
 import ToolDetail from '@/components/Layout/ToolDetail/ToolDetail.vue'
 import { copy } from '@/utils/string'
 import { ElMessage } from 'element-plus'
 
-const info = reactive({
-  title: '哈希校验/HMAC',
-})
+const { t } = useI18n()
 
 type Algo = 'SHA-1' | 'SHA-256' | 'SHA-512' | 'HMAC-SHA256'
 
@@ -32,7 +31,7 @@ const toHex = (buf: ArrayBuffer) => {
 
 const ensureCrypto = () => {
   if (!window.crypto || !window.crypto.subtle) {
-    ElMessage.error('当前环境不支持 Web Crypto')
+    ElMessage.error(t('tools.hash.error_crypto'))
     throw new Error('WebCrypto not available')
   }
 }
@@ -129,9 +128,7 @@ const fillExample = () => {
 watch(
   () => [state.text, state.algo, state.hmacKey],
   () => {
-    // 文本实时计算
     digestText()
-    // 变更算法/密钥后，若已有文件则自动重新计算
     if (state.file) digestFile(state.file)
   }
 )
@@ -139,11 +136,11 @@ watch(
 
 <template>
   <div class="flex flex-col mt-3 flex-1">
-    <DetailHeader :title="info.title" />
+    <DetailHeader :title="$t('tools.hash.title')" />
     <div class="p-4 rounded-2xl bg-white">
       <div class="flex flex-wrap gap-3 items-center">
         <div>
-          <el-select v-model="state.algo" placeholder="选择算法" style="width: 180px;">
+          <el-select v-model="state.algo" :placeholder="$t('tools.hash.select_algo')" style="width: 180px;">
             <el-option label="SHA-1" value="SHA-1" />
             <el-option label="SHA-256" value="SHA-256" />
             <el-option label="SHA-512" value="SHA-512" />
@@ -151,54 +148,54 @@ watch(
           </el-select>
         </div>
         <div v-if="state.algo === 'HMAC-SHA256'" class="flex-1 min-w-[240px]">
-          <el-input v-model="state.hmacKey" placeholder="HMAC 密钥（文本）" />
+          <el-input v-model="state.hmacKey" :placeholder="$t('tools.hash.hmac_key')" />
         </div>
       </div>
 
-      <!-- 文本摘要/HMAC -->
+      <!-- Text Hash/HMAC -->
       <div class="mt-4">
         <div class="mb-2 text-sm text-gray-600">
-          文本摘要/HMAC
-          <el-link class="ml-2" type="primary" @click="fillExample">填充示例</el-link>
+          {{ $t('tools.hash.text_hash') }}
+          <el-link class="ml-2" type="primary" @click="fillExample">{{ $t('tools.hash.fill_example') }}</el-link>
         </div>
         <el-input
           v-model="state.text"
           type="textarea"
           :rows="6"
-          placeholder="在此输入文本"
+          :placeholder="$t('tools.hash.placeholder')"
         />
         <div class="mt-2 flex flex-wrap gap-2 button-container">
-          <el-button @click="copyTextRes">复制结果</el-button>
-          <el-button type="danger" @click="clearText">清空</el-button>
+          <el-button @click="copyTextRes">{{ $t('tools.hash.copy_result') }}</el-button>
+          <el-button type="danger" @click="clearText">{{ $t('tools.hash.clear') }}</el-button>
         </div>
         <div class="mt-3">
-          <div class="text-sm text-gray-600 mb-1">结果：</div>
+          <div class="text-sm text-gray-600 mb-1">{{ $t('tools.hash.result') }}</div>
           <el-input v-model="state.textResult" readonly />
         </div>
       </div>
 
-      <!-- 文件摘要/HMAC -->
+      <!-- File Hash/HMAC -->
       <div class="mt-6">
-        <div class="mb-2 text-sm text-gray-600">文件摘要/HMAC</div>
+        <div class="mb-2 text-sm text-gray-600">{{ $t('tools.hash.file_hash') }}</div>
         <input type="file" @change="onFileChange" />
         <div v-if="state.fileName" class="mt-2 text-xs text-gray-500">
-          文件：{{ state.fileName }}（{{ state.fileSize }} 字节 ≈ {{ (state.fileSize/1024).toFixed(2) }} KB / {{ (state.fileSize/1024/1024).toFixed(2) }} MB / {{ (state.fileSize/1024/1024/1024).toFixed(2) }} GB）
+          {{ $t('tools.hash.file') }}{{ state.fileName }}（{{ state.fileSize }} {{ $t('tools.hash.bytes') }} ≈ {{ (state.fileSize/1024).toFixed(2) }} KB / {{ (state.fileSize/1024/1024).toFixed(2) }} MB / {{ (state.fileSize/1024/1024/1024).toFixed(2) }} GB）
         </div>
         <div class="mt-2 flex flex-wrap gap-2 button-container">
-          <el-button @click="copyFileRes">复制结果</el-button>
-          <el-button type="danger" @click="clearFile($event?.target as HTMLInputElement)">清空</el-button>
-          <el-button v-if="state.loadingFile" :loading="true" disabled>计算中</el-button>
+          <el-button @click="copyFileRes">{{ $t('tools.hash.copy_result') }}</el-button>
+          <el-button type="danger" @click="clearFile($event?.target as HTMLInputElement)">{{ $t('tools.hash.clear') }}</el-button>
+          <el-button v-if="state.loadingFile" :loading="true" disabled>{{ $t('tools.hash.computing') }}</el-button>
         </div>
         <div class="mt-3">
-          <div class="text-sm text-gray-600 mb-1">结果：</div>
+          <div class="text-sm text-gray-600 mb-1">{{ $t('tools.hash.result') }}</div>
           <el-input v-model="state.fileResult" readonly />
         </div>
       </div>
     </div>
 
-    <ToolDetail title="描述">
+    <ToolDetail :title="$t('tools.hash.detail_title')">
       <el-text>
-        支持 SHA-1、SHA-256、SHA-512 与 HMAC-SHA256；文本/文件摘要；结果十六进制显示，可复制。
+        {{ $t('tools.hash.detail_content') }}
       </el-text>
     </ToolDetail>
   </div>

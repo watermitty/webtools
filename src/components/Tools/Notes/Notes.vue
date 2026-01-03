@@ -1,10 +1,13 @@
 <script setup lang="ts">
 import { reactive, ref, onMounted, computed } from 'vue'
+import { useI18n } from 'vue-i18n'
 import functionsRequest from '@/utils/functionsRequest'
 import DetailHeader from '@/components/Layout/DetailHeader/DetailHeader.vue'
 import ToolDetail from '@/components/Layout/ToolDetail/ToolDetail.vue'
 import { ElMessage, ElMessageBox } from 'element-plus'
 import { Refresh, Plus, Edit, Delete, View, Document } from '@element-plus/icons-vue'
+
+const { t } = useI18n()
 
 interface Note {
   id: string
@@ -24,7 +27,7 @@ interface Pagination {
 }
 
 const info = reactive({
-  title: "笔记备忘录",
+  title: "tools.notes.title",
 })
 
 const notes = ref<Note[]>([])
@@ -68,7 +71,7 @@ const fetchNotes = async (page = 1, pageSize = 12) => {
     }
   } catch (error) {
     console.error('获取笔记列表失败:', error)
-    ElMessage.error('获取笔记列表失败')
+    ElMessage.error(t('tools.notes.msg_fetch_fail'))
   } finally {
     loading.value = false
   }
@@ -88,7 +91,7 @@ const handleSizeChange = (pageSize: number) => {
 // 创建笔记
 const createNote = async () => {
   if (!formData.title.trim() || !formData.content.trim()) {
-    ElMessage.warning('标题和内容不能为空')
+    ElMessage.warning(t('tools.notes.msg_empty_input'))
     return
   }
 
@@ -100,17 +103,17 @@ const createNote = async () => {
     })
 
     if (response.status === 201) {
-      ElMessage.success('创建成功')
+      ElMessage.success(t('tools.notes.msg_create_success'))
       showForm.value = false
       resetForm()
       // 刷新当前页
       await fetchNotes(pagination.value.page, pagination.value.pageSize)
     } else {
-      ElMessage.error('创建失败')
+      ElMessage.error(t('tools.notes.msg_create_fail'))
     }
   } catch (error) {
     console.error('创建笔记失败:', error)
-    ElMessage.error('创建失败')
+    ElMessage.error(t('tools.notes.msg_create_fail'))
   } finally {
     operationLoading.value = false
   }
@@ -119,7 +122,7 @@ const createNote = async () => {
 // 修改更新笔记函数
 const updateNote = async () => {
   if (!editingNoteId.value || !formData.title.trim() || !formData.content.trim()) {
-    ElMessage.warning('标题和内容不能为空')
+    ElMessage.warning(t('tools.notes.msg_empty_input'))
     return
   }
 
@@ -131,7 +134,7 @@ const updateNote = async () => {
     })
 
     if (response.status === 200) {
-      ElMessage.success('更新成功')
+      ElMessage.success(t('tools.notes.msg_update_success'))
       showForm.value = false
       isEditing.value = false
       editingNoteId.value = null
@@ -139,11 +142,11 @@ const updateNote = async () => {
       // 刷新当前页
       await fetchNotes(pagination.value.page, pagination.value.pageSize)
     } else {
-      ElMessage.error('更新失败')
+      ElMessage.error(t('tools.notes.msg_update_fail'))
     }
   } catch (error) {
     console.error('更新笔记失败:', error)
-    ElMessage.error('更新失败')
+    ElMessage.error(t('tools.notes.msg_update_fail'))
   } finally {
     operationLoading.value = false
   }
@@ -151,9 +154,9 @@ const updateNote = async () => {
 
 // 删除笔记
 const deleteNote = async (note: Note) => {
-  await ElMessageBox.confirm('确定要删除这条笔记吗？', '提示', {
-    confirmButtonText: '确定',
-    cancelButtonText: '取消',
+  await ElMessageBox.confirm(t('tools.notes.delete_confirm'), t('tools.notes.tips'), {
+    confirmButtonText: t('tools.notes.confirm'),
+    cancelButtonText: t('tools.notes.cancel'),
     type: 'warning',
   })
 
@@ -162,7 +165,7 @@ const deleteNote = async (note: Note) => {
     const response = await functionsRequest.delete(`/api/notes/${note.id}`)
 
     if (response.status === 200) {
-      ElMessage.success('删除成功')
+      ElMessage.success(t('tools.notes.msg_delete_success'))
       if (currentNote.value?.id === note.id) {
         currentNote.value = null
       }
@@ -173,11 +176,11 @@ const deleteNote = async (note: Note) => {
         await fetchNotes(pagination.value.page, pagination.value.pageSize)
       }
     } else {
-      ElMessage.error('删除失败')
+      ElMessage.error(t('tools.notes.msg_delete_fail'))
     }
   } catch (error) {
     console.error('删除笔记失败:', error)
-    ElMessage.error('删除失败')
+    ElMessage.error(t('tools.notes.msg_delete_fail'))
   } finally {
     operationLoading.value = false
   }
@@ -234,7 +237,7 @@ onMounted(() => {
 
 <template>
   <div class="flex flex-col mt-3 flex-1">
-    <DetailHeader :title="info.title"></DetailHeader>
+    <DetailHeader :title="$t(info.title)"></DetailHeader>
 
     <div class="notes-container">
       <!-- 操作栏 -->
@@ -244,8 +247,8 @@ onMounted(() => {
             <el-icon class="header-icon"><Document /></el-icon>
           </div>
           <div>
-            <h3 class="header-title">我的笔记</h3>
-            <p class="header-subtitle">共 {{ pagination.total }} 条笔记</p>
+            <h3 class="header-title">{{ $t('tools.notes.my_notes') }}</h3>
+            <p class="header-subtitle">{{ $t('tools.notes.total_notes', { count: pagination.total }) }}</p>
           </div>
         </div>
         <div class="header-actions">
@@ -263,7 +266,7 @@ onMounted(() => {
             @click="newNote" 
             :icon="Plus"
           >
-            新建笔记
+            {{ $t('tools.notes.new_note') }}
           </el-button>
         </div>
       </div>
@@ -272,9 +275,9 @@ onMounted(() => {
       <div v-loading="loading" class="notes-grid">
         <div v-if="notes.length === 0 && !loading" class="empty-state">
           <el-icon class="empty-icon"><Document /></el-icon>
-          <h3 class="empty-title">暂无笔记</h3>
-          <p class="empty-desc">开始创建你的第一条笔记吧</p>
-          <el-button type="primary" @click="newNote" :icon="Plus">创建笔记</el-button>
+          <h3 class="empty-title">{{ $t('tools.notes.no_notes') }}</h3>
+          <p class="empty-desc">{{ $t('tools.notes.start_creating') }}</p>
+          <el-button type="primary" @click="newNote" :icon="Plus">{{ $t('tools.notes.create_note') }}</el-button>
         </div>
         
         <div
@@ -326,7 +329,7 @@ onMounted(() => {
           
           <div class="note-footer">
             <div class="note-time">
-              <span class="time-label">更新于</span>
+              <span class="time-label">{{ $t('tools.notes.updated_at') }}</span>
               <span class="time-value">{{ formatTime(note.updateTime) }}</span>
             </div>
           </div>
@@ -351,7 +354,7 @@ onMounted(() => {
       <!-- 笔记表单 -->
       <el-dialog
         v-model="showForm"
-        :title="isEditing ? '编辑笔记' : '新建笔记'"
+        :title="isEditing ? $t('tools.notes.edit_note') : $t('tools.notes.new_note')"
         width="90%"
         max-width="600px"
         class="note-dialog"
@@ -360,20 +363,20 @@ onMounted(() => {
       >
         <div class="form-container">
           <el-form :model="formData" label-position="top">
-            <el-form-item label="笔记标题" required class="form-item">
+            <el-form-item :label="$t('tools.notes.note_title')" required class="form-item">
               <el-input 
                 v-model="formData.title" 
-                placeholder="请输入笔记标题" 
+                :placeholder="$t('tools.notes.enter_title')" 
                 size="large"
                 class="title-input"
               />
             </el-form-item>
-            <el-form-item label="笔记内容" required class="form-item">
+            <el-form-item :label="$t('tools.notes.note_content')" required class="form-item">
               <el-input
                 v-model="formData.content"
                 type="textarea"
                 :rows="12"
-                placeholder="在这里记录你的想法..."
+                :placeholder="$t('tools.notes.enter_content')"
                 class="content-textarea"
                 resize="vertical"
               />
@@ -387,7 +390,7 @@ onMounted(() => {
               :disabled="operationLoading" 
               @click="showForm = false; isEditing = false"
             >
-              取消
+              {{ $t('tools.notes.cancel') }}
             </el-button>
             <el-button 
               type="primary" 
@@ -396,7 +399,7 @@ onMounted(() => {
               :disabled="operationLoading"
               @click="isEditing ? updateNote() : createNote()"
             >
-              {{ isEditing ? '保存修改' : '创建笔记' }}
+              {{ isEditing ? $t('tools.notes.save_changes') : $t('tools.notes.create_note') }}
             </el-button>
           </div>
         </template>
@@ -405,7 +408,7 @@ onMounted(() => {
       <!-- 笔记详情 -->
       <el-dialog
         v-model="showNoteDetail"
-        title="笔记详情"
+        :title="$t('tools.notes.note_detail')"
         width="90%"
         max-width="700px"
         class="detail-dialog"
@@ -418,11 +421,11 @@ onMounted(() => {
             <div class="detail-meta">
               <span class="meta-item">
                 <el-icon><Document /></el-icon>
-                创建于 {{ formatTime(currentNote.createTime) }}
+                {{ $t('tools.notes.created_at') }} {{ formatTime(currentNote.createTime) }}
               </span>
               <span class="meta-item">
                 <el-icon><Edit /></el-icon>
-                更新于 {{ formatTime(currentNote.updateTime) }}
+                {{ $t('tools.notes.updated_at') }} {{ formatTime(currentNote.updateTime) }}
               </span>
             </div>
           </div>
@@ -435,14 +438,14 @@ onMounted(() => {
         </div>
         <template #footer>
           <div class="dialog-footer">
-            <el-button size="large" @click="currentNote = null">关闭</el-button>
+            <el-button size="large" @click="currentNote = null">{{ $t('tools.notes.close') }}</el-button>
             <el-button 
               type="primary" 
               size="large"
               :icon="Edit"
               @click="currentNote && editNote(currentNote)"
             >
-              编辑笔记
+              {{ $t('tools.notes.edit_note') }}
             </el-button>
           </div>
         </template>
@@ -450,9 +453,9 @@ onMounted(() => {
     </div>
 
     <!-- desc -->
-    <ToolDetail title="描述">
+    <ToolDetail :title="$t('tools.desc.title')"> <!-- Assuming tools.desc.title exists, if not use fallback or tools.common.desc -->
       <el-text>
-        在线笔记记录工具，支持创建、编辑、删除笔记，数据安全存储在云端。您可以随时记录想法、待办事项、学习笔记等，支持富文本编辑，数据实时同步。
+        {{ $t('tools.notes.desc') }}
       </el-text> 
     </ToolDetail>
   </div>

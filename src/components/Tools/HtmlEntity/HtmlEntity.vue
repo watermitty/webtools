@@ -1,38 +1,33 @@
 <script setup lang="ts">
-import { reactive,ref,onMounted } from 'vue'
+import { reactive, ref, onMounted } from 'vue'
+import { useI18n } from 'vue-i18n'
 import DetailHeader from '@/components/Layout/DetailHeader/DetailHeader.vue'
 import ToolDetail from '@/components/Layout/ToolDetail/ToolDetail.vue'
 import { escape, unescape } from 'lodash';
 import { copy } from '@/utils/string'
-const info = reactive({
-  title: "HTML实体转义",
-})
+
+const { t } = useI18n()
 
 const content = ref('')
 const cleanContent = ref('')
 
 const parser = (type: string) => {
   if (type == 'toHTML') {
-    //转html
     cleanContent.value = unescape(content.value)
   } else {
-    //转实体
     cleanContent.value = escape(content.value)
   }
 }
 
-//清空输入框
 const clear = () => {
   content.value = ''
   cleanContent.value = ''
 }
 
-// 新增：示例与填充方法
 const exampleRaw = '<div class="note">Tom & Jerry > Mickey & Minnie © 2025</div>'
 const exampleEntity = escape(exampleRaw)
 const fillRaw = () => { content.value = exampleRaw; cleanContent.value = '' }
 const fillEntity = () => { content.value = exampleEntity; cleanContent.value = '' }
-
 
 onMounted(() => {
 })
@@ -41,41 +36,41 @@ onMounted(() => {
 
 <template>
   <div class="flex flex-col mt-3 flex-1">
-    <DetailHeader :title="info.title"></DetailHeader>
+    <DetailHeader :title="$t('tools.htmlentity.title')"></DetailHeader>
 
     <div class="p-4 rounded-2xl bg-white ">
-      <!-- 输入区：增加提示与示例 -->
+      <!-- 输入区 -->
       <div class="mb-2 text-gray-500 text-sm">
-        在此输入 HTML 源码或包含实体的文本。点击下方按钮进行转换。
-        <el-link type="primary" class="ml-2" @click="copy(content)">复制输入</el-link>
+        {{ $t('tools.htmlentity.input_hint') }}
+        <el-link type="primary" class="ml-2" @click="copy(content)">{{ $t('tools.htmlentity.copy_input') }}</el-link>
       </div>
       <div class="mb-1 text-xs text-gray-500 break-all">
-        示例：{{ exampleRaw }}
-        <el-link type="primary" class="ml-2" @click="fillRaw">填充HTML示例</el-link>
+        {{ $t('tools.htmlentity.example') }}：{{ exampleRaw }}
+        <el-link type="primary" class="ml-2" @click="fillRaw">{{ $t('tools.htmlentity.fill_html') }}</el-link>
         <el-divider direction="vertical" />
-        实体示例：{{ exampleEntity }}
-        <el-link type="primary" class="ml-2" @click="fillEntity">填充实体示例</el-link>
+        {{ $t('tools.htmlentity.entity_example') }}：{{ exampleEntity }}
+        <el-link type="primary" class="ml-2" @click="fillEntity">{{ $t('tools.htmlentity.fill_entity') }}</el-link>
       </div>
       <el-input
         v-model="content"
         :rows="10"
         type="textarea"
-        placeholder="输入 HTML 或实体文本，点击下方按钮进行转换"
+        :placeholder="$t('tools.htmlentity.placeholder')"
         @change="parser"
       />
         <div class="mt-3">
-          <el-button type="primary" @click="parser('toEntity')">HTML转实体</el-button>
-          <el-button type="primary" @click="parser('toHTML')">实体转HTML</el-button>
-          <el-button type="primary" @click="copy(cleanContent)">复制结果</el-button>
-          <el-button type="primary" @click="clear">清除</el-button>
+          <el-button type="primary" @click="parser('toEntity')">{{ $t('tools.htmlentity.btn_to_entity') }}</el-button>
+          <el-button type="primary" @click="parser('toHTML')">{{ $t('tools.htmlentity.btn_to_html') }}</el-button>
+          <el-button type="primary" @click="copy(cleanContent)">{{ $t('tools.htmlentity.btn_copy') }}</el-button>
+          <el-button type="primary" @click="clear">{{ $t('tools.htmlentity.btn_clear') }}</el-button>
         </div>
       </div>
 
-      <!-- 结果区：增加说明与复制链接 -->
+      <!-- 结果区 -->
       <div class="mt-3 min-h-md bg-gray-100 p-3 mb-3">
         <div class="mb-2 text-gray-500 text-sm">
-          转换结果
-          <el-link type="primary" class="ml-2" @click="copy(cleanContent)">复制结果</el-link>
+          {{ $t('tools.htmlentity.result_title') }}
+          <el-link type="primary" class="ml-2" @click="copy(cleanContent)">{{ $t('tools.htmlentity.copy_result') }}</el-link>
         </div>
         <el-input
           v-html="cleanContent"
@@ -85,15 +80,14 @@ onMounted(() => {
         />
       </div>
 
-
-      <!-- desc（替换原有简短描述） -->
-      <ToolDetail title="描述">
+      <!-- desc -->
+      <ToolDetail :title="$t('tools.htmlentity.usage')">
         <div class="text-sm leading-7">
-          <p class="font-bold">使用方式</p>
-          <p>1) 在上方输入 HTML 源码或实体文本；点击“HTML转实体/实体转HTML”进行转换。</p>
-          <p>2) 可点击“填充HTML示例/填充实体示例”快速体验。</p>
+          <p class="font-bold">{{ $t('tools.htmlentity.usage') }}</p>
+          <p>{{ $t('tools.htmlentity.usage_1') }}</p>
+          <p>{{ $t('tools.htmlentity.usage_2') }}</p>
           <br>
-          <p class="font-bold">常见字符映射</p>
+          <p class="font-bold">{{ $t('tools.htmlentity.common_mapping') }}</p>
           <ul class="list-disc ml-5">
             <li><code>&lt;</code> → <code>&amp;lt;</code></li>
             <li><code>&gt;</code> → <code>&amp;gt;</code></li>

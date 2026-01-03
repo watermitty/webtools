@@ -1,17 +1,20 @@
 <script setup lang="ts">
-import { reactive, ref, onMounted, watch } from 'vue'
+import { reactive, ref, onMounted, watch, computed } from 'vue'
+import { useI18n } from 'vue-i18n'
 import DetailHeader from '@/components/Layout/DetailHeader/DetailHeader.vue'
 import ToolDetail from '@/components/Layout/ToolDetail/ToolDetail.vue'
 import {jwtDecode} from 'jwt-decode'
 import { ElMessage } from 'element-plus'
 import randomize from 'randomatic'
 
+const { t } = useI18n()
+
 // 添加tab状态
 const activeTab = ref('parse')
 
 const info = reactive({
-  title: "JWT工具",
-  token: '', // 移除硬编码的token
+  title: "tools.jwt.title",
+  token: '',
 })
 
 // JWT生成相关数据
@@ -61,14 +64,14 @@ const parser = () => {
 // 添加JWT签名校验功能
 const verifySignature = () => {
   if (!info.token || !verifySecret.value) {
-    ElMessage.warning('请输入Secret')
+    ElMessage.warning(t('tools.jwt.placeholder_secret'))
     return
   }
   
   try {
     const parts = info.token.split('.')
     if (parts.length !== 3) {
-      ElMessage.error('Token格式不正确')
+      ElMessage.error(t('tools.jwt.msg_invalid_token'))
       return
     }
     
@@ -82,15 +85,15 @@ const verifySignature = () => {
     if (signature === expectedSignature) {
       signatureValid.value = true
       signatureInvalid.value = false
-      ElMessage.success('签名校验成功！')
+      ElMessage.success(t('tools.jwt.msg_verify_success'))
     } else {
       signatureValid.value = false
       signatureInvalid.value = true
-      ElMessage.error('签名校验失败！')
+      ElMessage.error(t('tools.jwt.msg_verify_fail'))
     }
   } catch (e) {
     console.log('Verify signature error', e)
-    ElMessage.error('校验过程中发生错误')
+    ElMessage.error(t('tools.jwt.msg_verify_error'))
   }
 }
 
@@ -140,13 +143,13 @@ const clearGenerate = () => {
 
 // 添加过期时间选项
 const expirationOptions = [
-  { label: '1小时', value: 3600 },
-  { label: '5小时', value: 18000 },
-  { label: '1天', value: 86400 },
-  { label: '3天', value: 259200 },
-  { label: '7天', value: 604800 },
-  { label: '15天', value: 1296000 },
-  { label: '1个月', value: 2592000 }
+  { label: t('tools.jwt.exp_options.1h'), value: 3600, key: '1h' },
+  { label: t('tools.jwt.exp_options.5h'), value: 18000, key: '5h' },
+  { label: t('tools.jwt.exp_options.1d'), value: 86400, key: '1d' },
+  { label: t('tools.jwt.exp_options.3d'), value: 259200, key: '3d' },
+  { label: t('tools.jwt.exp_options.7d'), value: 604800, key: '7d' },
+  { label: t('tools.jwt.exp_options.15d'), value: 1296000, key: '15d' },
+  { label: t('tools.jwt.exp_options.1m'), value: 2592000, key: '1m' }
 ]
 
 const selectedExpiration = ref(3600) // 默认1小时
@@ -169,7 +172,7 @@ const copyJWT = async () => {
     if (navigator.clipboard && window.isSecureContext) {
       // 现代浏览器支持
       await navigator.clipboard.writeText(generateData.generatedToken)
-      ElMessage.success('JWT已复制到剪贴板')
+      ElMessage.success(t('tools.jwt.msg_copy_success') || 'Token copied')
     } else {
       // 兼容性处理：使用传统方法
       const textArea = document.createElement('textarea')
@@ -183,16 +186,16 @@ const copyJWT = async () => {
       
       try {
         document.execCommand('copy')
-        ElMessage.success('JWT已复制到剪贴板')
+        ElMessage.success(t('tools.jwt.msg_copy_success'))
       } catch (err) {
-        ElMessage.error('复制失败，请手动复制')
+        ElMessage.error(t('tools.jwt.msg_copy_fail'))
       } finally {
         document.body.removeChild(textArea)
       }
     }
   } catch (err) {
     console.error('复制失败:', err)
-    ElMessage.error('复制失败，请手动复制')
+    ElMessage.error(t('tools.jwt.msg_copy_fail'))
   }
 }
 
@@ -209,7 +212,7 @@ const generateRandomSecret = () => {
 const copySecret = () => {
   if (navigator.clipboard && window.isSecureContext) {
     navigator.clipboard.writeText(generateData.secret).then(() => {
-      ElMessage.success('Secret已复制到剪贴板')
+      ElMessage.success(t('tools.jwt.msg_copy_secret_success') || 'Secret copied')
     }).catch(err => {
       console.error('复制失败:', err)
       ElMessage.error('复制失败，请手动复制')
@@ -226,9 +229,9 @@ const copySecret = () => {
     
     try {
       document.execCommand('copy')
-      ElMessage.success('Secret已复制到剪贴板')
+      ElMessage.success(t('tools.jwt.msg_copy_secret_success'))
     } catch (err) {
-      ElMessage.error('复制失败，请手动复制')
+      ElMessage.error(t('tools.jwt.msg_copy_fail'))
     } finally {
       document.body.removeChild(textArea)
     }
@@ -280,39 +283,39 @@ watch(
     <!-- Tab切换 -->
     <div class="p-4 rounded-2xl bg-white mb-4">
       <el-tabs v-model="activeTab" class="w-full">
-        <el-tab-pane label="JWT解析" name="parse">
+        <el-tab-pane :label="$t('tools.jwt.tab_parse')" name="parse">
           <div class="mb-6">
-            <el-input v-model="info.token" :rows="5" type="textarea" placeholder="请输入Token" @change="parser"></el-input>
-            <el-text type="danger" v-if="invalidToken">Invalid token</el-text>
+            <el-input v-model="info.token" :rows="5" type="textarea" :placeholder="$t('tools.jwt.placeholder_token')" @change="parser"></el-input>
+            <el-text type="danger" v-if="invalidToken">{{ $t('tools.jwt.msg_invalid_token') }}</el-text>
             <div class="mt-3">
-              <el-button type="primary" @click="parser">解析</el-button>
-              <el-button type="primary" @click="clear">清除</el-button>
+              <el-button type="primary" @click="parser">{{ $t('tools.jwt.btn_parse') }}</el-button>
+              <el-button type="primary" @click="clear">{{ $t('tools.jwt.btn_clear') }}</el-button>
             </div>
           </div>
 
           <!-- Secret校验 -->
           <div class="mb-6">
-            <div class="mb-2 font-medium">Secret校验</div>
+            <div class="mb-2 font-medium">{{ $t('tools.jwt.label_secret_verify') }}</div>
             <div class="flex gap-2">
               <el-input
                 v-model="verifySecret"
-                placeholder="请输入用于校验的Secret"
+                :placeholder="$t('tools.jwt.placeholder_secret')"
                 :type="verifySecret ? 'text' : 'password'"
               />
-              <el-button type="success" @click="verifySignature">校验签名</el-button>
+              <el-button type="success" @click="verifySignature">{{ $t('tools.jwt.btn_verify') }}</el-button>
             </div>
             <!-- 校验结果提示 -->
             <div v-if="signatureValid" class="mt-2">
-              <el-text type="success">✓ 签名校验成功</el-text>
+              <el-text type="success">{{ $t('tools.jwt.msg_verify_success') }}</el-text>
             </div>
             <div v-if="signatureInvalid" class="mt-2">
-              <el-text type="danger">✗ 签名校验失败</el-text>
+              <el-text type="danger">{{ $t('tools.jwt.msg_verify_fail') }}</el-text>
             </div>
           </div>
 
           <!-- header -->
           <div v-if="decodeHeader">
-            <div class="mb-3">Header(头部)</div>
+            <div class="mb-3">{{ $t('tools.jwt.label_header') }}</div>
             <el-input
               v-model="decodeHeader"
               type="textarea"
@@ -324,7 +327,7 @@ watch(
 
           <!-- payload -->
           <div v-if="decodePayload">
-            <div class="mb-3 mt-3">Payload(载荷)</div>
+            <div class="mb-3 mt-3">{{ $t('tools.jwt.label_payload') }}</div>
             <el-input
               v-model="decodePayload"
               type="textarea"
@@ -335,30 +338,30 @@ watch(
           </div>
         </el-tab-pane>
 
-        <el-tab-pane label="JWT生成" name="generate">
+        <el-tab-pane :label="$t('tools.jwt.tab_generate')" name="generate">
           <div class="space-y-4">
             <!-- Header -->
             <div>
-              <div class="mb-2 font-medium">Header (头部)</div>
+              <div class="mb-2 font-medium">{{ $t('tools.jwt.label_header') }}</div>
               <el-input
                 v-model="generateData.header"
                 type="textarea"
                 :rows="4"
-                placeholder="请输入JWT头部信息"
+                :placeholder="$t('tools.jwt.placeholder_header')"
               />
             </div>
 
             <!-- Payload -->
             <div>
-              <div class="mb-2 font-medium">Payload (载荷)</div>
+              <div class="mb-2 font-medium">{{ $t('tools.jwt.label_payload') }}</div>
               <el-input
                 v-model="generateData.payload"
                 type="textarea"
                 :rows="7"
-                placeholder="请输入JWT载荷信息"
+                :placeholder="$t('tools.jwt.placeholder_payload')"
               />
               <div class="mt-2 flex items-center gap-2">
-                <el-select v-model="selectedExpiration" placeholder="选择过期时间" style="width: 120px;">
+                <el-select v-model="selectedExpiration" :placeholder="$t('tools.jwt.label_exp')" style="width: 150px;">
                   <el-option
                     v-for="option in expirationOptions"
                     :key="option.value"
@@ -366,34 +369,34 @@ watch(
                     :value="option.value"
                   />
                 </el-select>
-                <el-button size="small" @click="updateTimestamps">更新时间戳</el-button>
+                <el-button size="small" @click="updateTimestamps">{{ $t('tools.jwt.btn_update_time') }}</el-button>
               </div>
             </div>
 
             <!-- Secret -->
             <div>
               <div class="mb-2 flex items-center justify-between">
-                <div class="font-medium">Secret (密钥)</div>
+                <div class="font-medium">{{ $t('tools.jwt.label_secret') }}</div>
                 <div class="flex gap-2">
-                  <el-button size="small" @click="generateRandomSecret">随机生成</el-button>
-                  <el-button size="small" @click="copySecret" :disabled="!generateData.secret">复制Secret</el-button>
+                  <el-button size="small" @click="generateRandomSecret">{{ $t('tools.jwt.btn_random') }}</el-button>
+                  <el-button size="small" @click="copySecret" :disabled="!generateData.secret">{{ $t('tools.jwt.btn_copy_secret') }}</el-button>
                 </div>
               </div>
               <el-input
                 v-model="generateData.secret"
-                placeholder="请输入签名密钥"
+                :placeholder="$t('tools.jwt.placeholder_input_secret')"
               />
             </div>
 
             <!-- 操作按钮 -->
             <div class="flex gap-2">
-              <el-button type="primary" @click="generateJWT">生成JWT</el-button>
-              <el-button @click="clearGenerate">重置</el-button>
+              <el-button type="primary" @click="generateJWT">{{ $t('tools.jwt.btn_generate') }}</el-button>
+              <el-button @click="clearGenerate">{{ $t('tools.jwt.btn_reset') }}</el-button>
             </div>
 
             <!-- 生成的Token -->
             <div v-if="generateData.generatedToken">
-              <div class="mb-2 font-medium">生成的JWT Token</div>
+              <div class="mb-2 font-medium">{{ $t('tools.jwt.label_result_token') }}</div>
               <el-input
                 v-model="generateData.generatedToken"
                 type="textarea"
@@ -402,7 +405,7 @@ watch(
               />
               <div class="mt-2">
                 <el-button size="small" @click="copyJWT">
-                  复制Token
+                  {{ $t('tools.jwt.btn_copy_token') }}
                 </el-button>
               </div>
             </div>
@@ -412,28 +415,9 @@ watch(
     </div>
 
     <!-- desc -->
-    <ToolDetail title="描述">
+    <ToolDetail :title="$t('tools.jwt.tab_parse')">
       <el-text>
-        JWT (JSON Web Token) 工具，支持解析和生成JWT令牌。<br>
-        <br>
-        <strong>JWT解析功能：</strong><br>
-        • 解析和解码JSON Web Token并显示其内容<br>
-        • 支持Header(头部)和Payload(载荷)的详细查看<br>
-        • 提供Secret校验功能，验证JWT签名的有效性<br>
-        • 自动检测Token格式的有效性<br>
-        <br>
-        <strong>JWT生成功能：</strong><br>
-        • 自定义Header和Payload内容<br>
-        • 支持过期时间快速设置（1小时到15天）<br>
-        • 随机生成20-40位长度的安全密钥<br>
-        • 一键复制生成的JWT Token和Secret<br>
-        • 实时预览生成的JWT结构<br>
-        <br>
-        <strong>使用场景：</strong><br>
-        • 开发调试JWT认证系统<br>
-        • 测试和验证JWT令牌<br>
-        • 学习和理解JWT结构<br>
-        • API接口的Token生成和验证
+        {{ $t('tools.jwt.desc') }}
       </el-text>
     </ToolDetail>
 

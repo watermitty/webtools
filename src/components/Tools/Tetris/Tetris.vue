@@ -1,10 +1,13 @@
 <script setup lang="ts">
 import { reactive, ref, onMounted, onUnmounted } from 'vue'
+import { useI18n } from 'vue-i18n'
 import DetailHeader from '@/components/Layout/DetailHeader/DetailHeader.vue'
 import ToolDetail from '@/components/Layout/ToolDetail/ToolDetail.vue'
 
+const { t } = useI18n()
+
 const info = reactive({
-  title: "俄罗斯方块",
+  title: "tools.tetris.title",
 })
 
 // 游戏状态
@@ -392,28 +395,28 @@ onUnmounted(() => {
         <!-- 游戏信息 -->
         <div class="grid grid-cols-2 md:grid-cols-6 gap-4 mb-6">
           <div class="text-center bg-blue-50 p-3 rounded-lg border border-blue-200">
-            <h3 class="text-sm font-medium text-blue-900">得分</h3>
+            <h3 class="text-sm font-medium text-blue-900">{{ $t('tools.tetris.score') }}</h3>
             <p class="text-xl font-bold text-blue-600">{{ gameState.score }}</p>
           </div>
           <div class="text-center bg-green-50 p-3 rounded-lg border border-green-200">
-            <h3 class="text-sm font-medium text-green-900">最高分</h3>
+            <h3 class="text-sm font-medium text-green-900">{{ $t('tools.tetris.high_score') }}</h3>
             <p class="text-xl font-bold text-green-600">{{ gameState.highScore }}</p>
           </div>
           <div class="text-center bg-purple-50 p-3 rounded-lg border border-purple-200">
-            <h3 class="text-sm font-medium text-purple-900">等级</h3>
+            <h3 class="text-sm font-medium text-purple-900">{{ $t('tools.tetris.level') }}</h3>
             <p class="text-xl font-bold text-purple-600">{{ gameState.level }}</p>
           </div>
           <div class="text-center bg-orange-50 p-3 rounded-lg border border-orange-200">
-            <h3 class="text-sm font-medium text-orange-900">消除行数</h3>
+            <h3 class="text-sm font-medium text-orange-900">{{ $t('tools.tetris.lines') }}</h3>
             <p class="text-xl font-bold text-orange-600">{{ gameState.lines }}</p>
           </div>
           <div class="text-center bg-indigo-50 p-3 rounded-lg border border-indigo-200">
-            <h3 class="text-sm font-medium text-indigo-900">游戏板</h3>
+            <h3 class="text-sm font-medium text-indigo-900">{{ $t('tools.tetris.board') }}</h3>
             <p class="text-xl font-bold text-indigo-600">{{ config.boardWidth }}×{{ config.boardHeight }}</p>
           </div>
           <div class="text-center bg-red-50 p-3 rounded-lg border border-red-200">
-            <h3 class="text-sm font-medium text-red-900">速度</h3>
-            <p class="text-xl font-bold text-red-600">{{ config.speedLevel }}级</p>
+            <h3 class="text-sm font-medium text-red-900">{{ $t('tools.tetris.speed') }}</h3>
+            <p class="text-xl font-bold text-red-600">{{ config.speedLevel }}</p>
           </div>
         </div>
 
@@ -421,14 +424,14 @@ onUnmounted(() => {
         <div class="flex flex-col sm:flex-row justify-center items-center gap-4 mb-6">
           <!-- 速度控制 -->
           <div class="flex items-center gap-3 bg-gray-50 p-3 rounded-lg border border-gray-200">
-            <span class="text-sm font-medium text-gray-700">速度等级:</span>
+            <span class="text-sm font-medium text-gray-700">{{ $t('tools.tetris.label_speed_level') }}</span>
             <el-button 
               size="small" 
               @click="changeSpeedLevel(-1)"
               :disabled="config.speedLevel <= config.minSpeedLevel"
               class="bg-blue-500 hover:bg-blue-600"
             >
-              慢
+              {{ $t('tools.tetris.speed_slow') }}
             </el-button>
             <span class="text-sm font-bold text-gray-800 min-w-[40px] text-center">{{ config.speedLevel }}</span>
             <el-button 
@@ -437,9 +440,9 @@ onUnmounted(() => {
               :disabled="config.speedLevel >= config.maxSpeedLevel"
               class="bg-red-500 hover:bg-red-600"
             >
-              快
+              {{ $t('tools.tetris.speed_fast') }}
             </el-button>
-            <span class="text-xs text-gray-500">(1慢-10快)</span>
+            <span class="text-xs text-gray-500">{{ $t('tools.tetris.speed_tip') }}</span>
           </div>
           
           <!-- 游戏控制按钮 -->
@@ -451,7 +454,7 @@ onUnmounted(() => {
               :type="gameState.isPaused ? 'success' : 'warning'"
               :class="gameState.isPaused ? 'bg-green-500 hover:bg-green-600' : 'bg-yellow-500 hover:bg-yellow-600'"
             >
-              {{ gameState.isPaused ? '继续 (P)' : '暂停 (P)' }}
+              {{ gameState.isPaused ? $t('tools.tetris.btn_resume') : $t('tools.tetris.btn_pause') }}
             </el-button>
             
             <!-- 重新开始按钮 -->
@@ -461,7 +464,7 @@ onUnmounted(() => {
               type="danger"
               class="bg-red-500 hover:bg-red-600 border-red-600"
             >
-              重新开始
+              {{ $t('tools.tetris.btn_restart') }}
             </el-button>
           </div>
         </div>
@@ -474,7 +477,7 @@ onUnmounted(() => {
             type="primary"
             class="bg-blue-500 hover:bg-blue-600 border-blue-600"
           >
-            开始游戏
+            {{ $t('tools.tetris.btn_start') }}
           </el-button>
           <el-button 
             v-if="gameState.gameOver"
@@ -482,15 +485,15 @@ onUnmounted(() => {
             type="success"
             class="bg-green-500 hover:bg-green-600 border-green-600"
           >
-            重新开始
+            {{ $t('tools.tetris.btn_restart') }}
           </el-button>
         </div>
 
         <!-- 暂停提示 -->
         <div v-if="gameState.isPaused && gameState.isPlaying" class="text-center mb-6">
           <div class="bg-yellow-50 border-2 border-yellow-300 rounded-lg p-4 shadow-md">
-            <h3 class="text-lg font-medium text-yellow-900 mb-2">游戏已暂停</h3>
-            <p class="text-yellow-600">按 P 键或点击继续按钮恢复游戏</p>
+            <h3 class="text-lg font-medium text-yellow-900 mb-2">{{ $t('tools.tetris.paused_title') }}</h3>
+            <p class="text-yellow-600">{{ $t('tools.tetris.paused_desc') }}</p>
           </div>
         </div>
 
@@ -548,7 +551,7 @@ onUnmounted(() => {
 
             <!-- 下一个方块预览 -->
             <div class="bg-gray-100 p-4 rounded-lg shadow-lg">
-              <h3 class="text-lg font-medium text-gray-900 mb-3">下一个</h3>
+              <h3 class="text-lg font-medium text-gray-900 mb-3">{{ $t('tools.tetris.next_piece') }}</h3>
               <div 
                 class="border-2 border-gray-400 bg-gray-800 p-2"
                 :style="{
@@ -581,12 +584,12 @@ onUnmounted(() => {
         <!-- 游戏结束提示 -->
         <div v-if="gameState.gameOver" class="text-center mb-6">
           <div class="bg-red-50 border-2 border-red-300 rounded-lg p-4 shadow-md">
-            <h3 class="text-lg font-medium text-red-900 mb-2">游戏结束！</h3>
-            <p class="text-red-600">最终得分: {{ gameState.score }}</p>
-            <p class="text-red-600">消除行数: {{ gameState.lines }}</p>
-            <p class="text-red-600">达到等级: {{ gameState.level }}</p>
+            <h3 class="text-lg font-medium text-red-900 mb-2">{{ $t('tools.tetris.game_over') }}</h3>
+            <p class="text-red-600">{{ $t('tools.tetris.final_score') }} {{ gameState.score }}</p>
+            <p class="text-red-600">{{ $t('tools.tetris.final_lines') }} {{ gameState.lines }}</p>
+            <p class="text-red-600">{{ $t('tools.tetris.final_level') }} {{ gameState.level }}</p>
             <p v-if="gameState.score > gameState.highScore" class="text-yellow-600 font-medium mt-2">
-              新纪录！恭喜你创造了新的最高分！
+              {{ $t('tools.tetris.new_record') }}
             </p>
           </div>
         </div>
@@ -611,16 +614,9 @@ onUnmounted(() => {
     </div>
 
     <!-- 工具详情 -->
-    <ToolDetail title="描述">
+    <ToolDetail :title="$t('tools.tetris.desc_title')">
       <el-text>
-        经典俄罗斯方块游戏，考验你的空间思维和反应速度：<br><br>
-        
-        游戏特色：经典俄罗斯方块玩法，7种不同形状的方块，实时得分统计<br>
-        操作方式：方向键控制移动，空格键旋转方块，消除完整横行<br>
-        游戏目标：尽可能多地消除横行，获得高分，挑战更高等级<br>
-        训练效果：锻炼空间思维能力、反应速度和策略规划<br><br>
-        
-        适合所有年龄段，是经典的益智游戏。
+        {{ $t('tools.tetris.desc_content') }}
       </el-text>
     </ToolDetail>
   </div>

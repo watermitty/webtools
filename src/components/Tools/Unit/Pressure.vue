@@ -1,5 +1,8 @@
 <script setup lang="ts">
 import { reactive } from 'vue'
+import { useI18n } from 'vue-i18n'
+
+const { t } = useI18n()
 
 const info: {
   [key: string]: string|number
@@ -67,30 +70,30 @@ const tran = (key: string) => {
 <template>
     <div>
       <div>
-        <el-divider content-position="left">压力单位</el-divider>
+        <el-divider content-position="left">{{ $t('tools.unit.pressure.title') }}</el-divider>
         <!-- group -->
         <div class="custom-box">
           <div class="custom-box-single">
-            <el-text class="custom-box-text">帕(Pa)</el-text>
+            <el-text class="custom-box-text">{{ $t('tools.unit.pressure.pa') }}</el-text>
             <el-input
               v-model="info.pa"
               placeholder=""
               class="input-with-select"
             >
               <template #append>
-                <el-button @click="tran('pa')">转换</el-button>
+                <el-button @click="tran('pa')">{{ $t('tools.unit.common.convert') }}</el-button>
               </template>
             </el-input>
           </div>
           <div class="custom-box-single">
-            <el-text class="custom-box-text">百帕(hPa)</el-text>
+            <el-text class="custom-box-text">{{ $t('tools.unit.pressure.hpa') }}</el-text>
             <el-input
               v-model="info.hpa"
               placeholder=""
               class="input-with-select"
             >
               <template #append>
-                <el-button @click="tran('hpa')">转换</el-button>
+                <el-button @click="tran('hpa')">{{ $t('tools.unit.common.convert') }}</el-button>
               </template>
             </el-input>
           </div>
@@ -99,26 +102,26 @@ const tran = (key: string) => {
         <!-- group -->
         <div class="custom-box">
           <div class="custom-box-single">
-            <el-text class="custom-box-text">千帕(kPa)</el-text>
+            <el-text class="custom-box-text">{{ $t('tools.unit.pressure.kpa') }}</el-text>
             <el-input
               v-model="info.kpa"
               placeholder=""
               class="input-with-select"
             >
               <template #append>
-                <el-button @click="tran('kpa')">转换</el-button>
+                <el-button @click="tran('kpa')">{{ $t('tools.unit.common.convert') }}</el-button>
               </template>
             </el-input>
           </div>
           <div class="custom-box-single">
-            <el-text class="custom-box-text">兆帕(MPa)</el-text>
+            <el-text class="custom-box-text">{{ $t('tools.unit.pressure.mpa') }}</el-text>
             <el-input
               v-model="info.mpa"
               placeholder=""
               class="input-with-select"
             >
               <template #append>
-                <el-button @click="tran('mpa')">转换</el-button>
+                <el-button @click="tran('mpa')">{{ $t('tools.unit.common.convert') }}</el-button>
               </template>
             </el-input>
           </div>
@@ -127,26 +130,26 @@ const tran = (key: string) => {
         <!-- group -->
         <div class="custom-box">
           <div class="custom-box-single">
-            <el-text class="custom-box-text">巴(bar)</el-text>
+            <el-text class="custom-box-text">{{ $t('tools.unit.pressure.bar') }}</el-text>
             <el-input
               v-model="info.bar"
               placeholder=""
               class="input-with-select"
             >
               <template #append>
-                <el-button @click="tran('bar')">转换</el-button>
+                <el-button @click="tran('bar')">{{ $t('tools.unit.common.convert') }}</el-button>
               </template>
             </el-input>
           </div>
           <div class="custom-box-single">
-            <el-text class="custom-box-text">托(torr)</el-text>
+            <el-text class="custom-box-text">{{ $t('tools.unit.pressure.torr') }}</el-text>
             <el-input
               v-model="info.torr"
               placeholder=""
               class="input-with-select"
             >
               <template #append>
-                <el-button @click="tran('torr')">转换</el-button>
+                <el-button @click="tran('torr')">{{ $t('tools.unit.common.convert') }}</el-button>
               </template>
             </el-input>
           </div>
@@ -155,14 +158,14 @@ const tran = (key: string) => {
         <!-- group -->
         <div class="custom-box">
           <div class="custom-box-single">
-            <el-text class="custom-box-text" style="font-size: 0.8rem;;">磅力/平方英寸(psi)</el-text>
+            <el-text class="custom-box-text">{{ $t('tools.unit.pressure.psi') }}</el-text>
             <el-input
               v-model="info.psi"
               placeholder=""
               class="input-with-select"
             >
               <template #append>
-                <el-button @click="tran('psi')">转换</el-button>
+                <el-button @click="tran('psi')">{{ $t('tools.unit.common.convert') }}</el-button>
               </template>
             </el-input>
           </div>
@@ -171,7 +174,7 @@ const tran = (key: string) => {
       </div>
 
       <div class="w-full text-center">
-        <el-button type="primary" @click="clear">清除全部</el-button>
+        <el-button type="primary" @click="clear">{{ $t('tools.unit.common.clear') }}</el-button>
       </div>
     </div>
 </template>

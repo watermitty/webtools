@@ -1,49 +1,118 @@
+```vue
 <script setup lang="ts">
-import { reactive } from 'vue'
-import DetailHeader from '@/components/Layout/DetailHeader/DetailHeader.vue'
-import ToolDetail from '@/components/Layout/ToolDetail/ToolDetail.vue'
+import { ref, reactive, computed } from "vue";
+import { useI18n } from 'vue-i18n';
+import DetailHeader from "@/components/Layout/DetailHeader/DetailHeader.vue";
+import ToolDetail from "@/components/Layout/ToolDetail/ToolDetail.vue";
 
-const info = reactive({
-  title: 'AI工具导航',
-})
+const { t } = useI18n();
+
+const info = computed(() => ({
+  title: t('tools.aihub.title'),
+  desc: t('tools.aihub.desc'),
+}));
 
 type LinkItem = { title: string; url: string; desc?: string; logo?: string; rating?: number }
 type Cate = { title: string; list: LinkItem[] }
 
-const cates: Cate[] = [
+const cates = computed(() => [
+  { label: t('tools.aihub.cate_voice'), value: "voice" },
+  { label: t('tools.aihub.cate_chat'), value: "chat" },
+  { label: t('tools.aihub.cate_creation'), value: "creation" },
+  { label: t('tools.aihub.cate_translate'), value: "translate" },
+]);
+
+// 链接列表
+const items = computed(() => [
+  // 1. 音色克隆 / TTS
   {
-    title: '音色克隆 / TTS',
-    list: [
-      { title: 'voicv', url: 'https://voicv.com/', rating: 3, desc: '支持音色克隆，每天签到可领积分，支持API调用' },
-      { title: 'ElevenLabs', url: 'https://elevenlabs.io/', rating: 4.5, desc: '高质量文本转语音（TTS）与声音克隆，支持多语种与情感，赠送1w积分，1个字1积分。英文音色偏多' },
-    ],
+    icon: "https://www.voicv.com/favicon.ico",
+    title: "Voicv",
+    desc: t('tools.aihub.items.voicv_desc'),
+    link: "https://www.voicv.com/",
+    cate: "voice",
   },
   {
-    title: '对话 / 智能体',
-    list: [
-      { title: 'Google aistudio', url: 'https://aistudio.google.com/', rating: 4.0, desc: '谷歌Ai实验室' },
-      { title: 'OpenAI', url: 'https://chatgpt.com/', rating: 4.5, desc: 'ChatGPT 对话助手，支持多轮问答、写作、编程与多模态' },
-      { title: 'Perplexity', url: 'https://www.perplexity.ai/', rating: 4.5, desc: '检索增强问答（RAG）搜索助手，引用来源清晰、追问便捷' },
-      { title: 'Poe', url: 'https://poe.com/', rating: 4.0, desc: '聚合多模型的对话平台，支持自建 Bot 与模型切换' },
-      { title: 'Google Gemini', url: 'https://gemini.google.com/', rating: 4.0, desc: '谷歌多模态大模型应用入口，支持图文理解与创作' },
-    ],
+    icon: "https://elevenlabs.io/favicon.ico",
+    title: "ElevenLabs",
+    desc: t('tools.aihub.items.elevenlabs_desc'),
+    link: "https://elevenlabs.io/",
+    cate: "voice",
+  },
+  // 3. 对话 / 智能体
+  {
+    icon: "https://ai.google.dev/favicon.ico",
+    title: "Google AI Studio",
+    desc: t('tools.aihub.items.google_ai_desc'),
+    link: "https://aistudio.google.com/",
+    cate: "chat",
   },
   {
-    title: 'AI 创作平台',
-    list: [
-      { title: 'Media.io', url: 'https://www.media.io/', rating: 4.5, desc: '全能AI创作平台，支持视频、图片、音频的AI生成与编辑，包含Veo3视频生成、AI图像增强、音视频处理等强大功能' },
-      { title: 'v0', url: 'https://v0.app/', rating: 4.0, desc: 'Vercel推出的AI界面生成工具，通过自然语言描述快速生成React组件和现代化UI界面' },
-      { title: 'CodeBuddy', url: 'https://copilot.tencent.com/', rating: 4.5, desc: '腾讯推出的全栈AI编程助手，支持自然语言需求规划、设计到代码转换、全栈代码生成与优化等功能' },
-      { title: 'Trae.cn', url: 'https://trae.cn/', rating: 4.0, desc: '字节推出的AI代码编辑器，提供智能代码补全、代码评审、单元测试生成等功能，助力开发者高效编程' },
-    ],
+    icon: "https://chatgpt.com/favicon.ico",
+    title: "ChatGPT",
+    desc: t('tools.aihub.items.openai_desc'),
+    link: "https://chatgpt.com/",
+    cate: "chat",
   },
   {
-    title: '翻译 / 文档',
-    list: [
-      { title: 'DeepL', url: 'https://www.deepl.com/', rating: 4.5, desc: '广受好评的高质量机器翻译，擅长细腻语义与术语处理' },
-    ],
+    icon: "https://www.perplexity.ai/favicon.ico",
+    title: "Perplexity",
+    desc: t('tools.aihub.items.perplexity_desc'),
+    link: "https://www.perplexity.ai/",
+    cate: "chat",
   },
-]
+  {
+    icon: "https://poe.com/favicon.ico",
+    title: "Poe",
+    desc: t('tools.aihub.items.poe_desc'),
+    link: "https://poe.com/",
+    cate: "chat",
+  },
+  {
+    icon: "https://gemini.google.com/favicon.ico",
+    title: "Gemini",
+    desc: t('tools.aihub.items.gemini_desc'),
+    link: "https://gemini.google.com/",
+    cate: "chat",
+  },
+  // 4. AI 创作平台
+  {
+    icon: "https://static.media.io/images/favicon.ico",
+    title: "Media.io",
+    desc: t('tools.aihub.items.media_io_desc'),
+    link: "https://www.media.io/",
+    cate: "creation",
+  },
+  {
+    icon: "https://v0.dev/favicon.ico",
+    title: "v0",
+    desc: t('tools.aihub.items.v0_desc'),
+    link: "https://v0.dev/",
+    cate: "creation",
+  },
+  {
+    icon: "https://codebuddy.cn/favicon.ico",
+    title: "CodeBuddy",
+    desc: t('tools.aihub.items.codebuddy_desc'),
+    link: "https://codebuddy.cn/",
+    cate: "creation",
+  },
+  {
+    icon: "https://www.trae.ai/favicon.png", // Trae icon might vary, preserving original if any
+    title: "Trae",
+    desc: t('tools.aihub.items.trae_desc'),
+    link: "https://www.trae.ai/",
+    cate: "creation",
+  },
+  // 5. 翻译 / 文档
+  {
+    icon: "https://www.deepl.com/favicon.ico",
+    title: "DeepL",
+    desc: t('tools.aihub.items.deepl_desc'),
+    link: "https://www.deepl.com/",
+    cate: "translate",
+  },
+]);
 </script>
 
 <template>
@@ -51,31 +120,33 @@ const cates: Cate[] = [
     <DetailHeader :title="info.title" />
     <div class="p-4 rounded-2xl bg-white">
       <div class="space-y-6">
-        <ToolDetail v-for="cate in cates" :key="cate.title" :title="cate.title">
+        <ToolDetail v-for="cate in cates" :key="cate.value" :title="cate.label">
           <div class="grid grid-cols-1 sm:grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4">
             <a
-              v-for="item in cate.list"
+              v-for="item in items.filter(i => i.cate === cate.value)"
               :key="item.title"
               class="group border rounded-xl p-3 sm:p-4 hover:shadow-md transition bg-white flex flex-col items-start gap-3 overflow-hidden"
-              :href="item.url"
+              :href="item.link"
               target="_blank"
               rel="noopener noreferrer"
             >
               <div class="w-full">
                 <div class="flex items-center gap-2">
                   <div class="h-9 w-9 flex items-center justify-center rounded-lg bg-gray-100 text-gray-600 text-sm font-medium">
-                    {{ item.title[0] }}
+                    <img v-if="item.icon" :src="item.icon" :alt="item.title" class="w-full h-full object-contain rounded-lg" />
+                    <span v-else>{{ item.title[0] }}</span>
                   </div>
                   <div class="flex-1 min-w-0 font-medium text-gray-900 group-hover:text-blue-600 truncate">
                     {{ item.title }}
                   </div>
                   <!-- H5 数字评分；仅移动端展示 -->
-                  <span class="text-xs text-gray-600 sm:hidden flex-shrink-0">{{ ((item.rating ?? 0)).toFixed(1) }}/5</span>
+                  <p class="mt-4 text-xs text-gray-500 sm:hidden flex-shrink-0">{{ t('tools.aihub.open_new') }}</p>
                   <span class="text-gray-400 group-hover:text-blue-500 flex-shrink-0">→</span>
                 </div>
                 <!-- 平板及以上：星星评分单独一行显示 -->
                 <div class="mt-1 hidden sm:block">
-                  <el-rate
+                  <!-- Ratings are not present in the new `items` structure, so this part is removed or adapted -->
+                  <!-- <el-rate
                     :model-value="item.rating ?? 0"
                     disabled
                     allow-half

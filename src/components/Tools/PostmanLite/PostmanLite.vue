@@ -1,14 +1,17 @@
 <script setup lang="ts">
 import { ref, reactive, computed, onBeforeUnmount } from 'vue'
+import { useI18n } from 'vue-i18n'
 import DetailHeader from '@/components/Layout/DetailHeader/DetailHeader.vue'
 import ToolDetail from '@/components/Layout/ToolDetail/ToolDetail.vue'
 import { copy } from '@/utils/string'
+
+const { t } = useI18n()
 
 type KV = { key: string; value: string; enabled: boolean }
 
 type FormItem = { key: string; type: 'text' | 'file'; value?: string; files?: File[]; enabled: boolean }
 
-const info = reactive({ title: '在线请求调试' })
+const info = reactive({ title: 'tools.postman.title' })
 
 const method = ref<'GET'|'POST'|'PUT'|'DELETE'|'PATCH'|'HEAD'|'OPTIONS'>('GET')
 const url = ref('')
@@ -131,7 +134,7 @@ async function send() {
       respBody.value = ''
     } else {
       let text = ''
-      try { text = new TextDecoder('utf-8').decode(buf) } catch { text = '[二进制内容]' }
+      try { text = new TextDecoder('utf-8').decode(buf) } catch { text = t('tools.postman.msg.binary_content') }
       if (ct.includes('application/json')) {
         try { respBody.value = JSON.stringify(JSON.parse(text), null, 2) }
         catch { respBody.value = text }
@@ -140,7 +143,7 @@ async function send() {
       }
     }
   } catch (e: any) {
-    respStatus.value = '请求失败'
+    respStatus.value = t('tools.postman.msg.req_fail')
     respBody.value = String(e?.message || e)
   } finally {
     loading.value = false
@@ -206,7 +209,7 @@ function exportCurl() {
           const names = (i.files || []).map(f => f.name)
           if (names.length === 0) {
             // 未选择文件时导出占位
-            parts.push('-F', shellQuote(`${i.key}=@<选择文件路径>`))
+            parts.push('-F', shellQuote(`${i.key}=@${t('tools.postman.msg.file_placeholder')}`))
           } else {
             names.forEach(n => parts.push('-F', shellQuote(`${i.key}=@./${n}`)))
           }
@@ -346,39 +349,39 @@ function formatRespJson() {
           <el-option label="OPTIONS" value="OPTIONS" />
         </el-select>
         <el-input v-model="url" placeholder="https://api.example.com/path" />
-        <el-button type="primary" :loading="loading" @click="send">发送</el-button>
-        <el-button text @click="showCurlDialog = true">导入 cURL</el-button>
-        <el-button text @click="exportCurl">复制 cURL</el-button>
+        <el-button type="primary" :loading="loading" @click="send">{{ $t('tools.postman.btn_send') }}</el-button>
+        <el-button text @click="showCurlDialog = true">{{ $t('tools.postman.btn_import_curl') }}</el-button>
+        <el-button text @click="exportCurl">{{ $t('tools.postman.btn_copy_curl') }}</el-button>
       </div>
 
-      <div v-if="builtUrl && builtUrl !== url" class="text-xs text-gray-500">最终请求: {{ builtUrl }}</div>
+      <div v-if="builtUrl && builtUrl !== url" class="text-xs text-gray-500">{{ $t('tools.postman.label_final_url') }} {{ builtUrl }}</div>
 
       <el-tabs type="border-card">
-        <el-tab-pane label="Params">
+        <el-tab-pane :label="$t('tools.postman.tab_params')">
           <div class="space-y-2">
             <div v-for="(p, i) in params" :key="i" class="flex items-center gap-2">
               <el-checkbox v-model="p.enabled" />
-              <el-input v-model="p.key" placeholder="key" style="width: 220px" />
-              <el-input v-model="p.value" placeholder="value" />
-              <el-button text type="danger" @click="removeRow(params, i)">删除</el-button>
+              <el-input v-model="p.key" :placeholder="$t('tools.postman.placeholder_key')" style="width: 220px" />
+              <el-input v-model="p.value" :placeholder="$t('tools.postman.placeholder_value')" />
+              <el-button text type="danger" @click="removeRow(params, i)">{{ $t('tools.postman.btn_delete') }}</el-button>
             </div>
-            <el-button text type="primary" @click="addRow(params)">添加参数</el-button>
+            <el-button text type="primary" @click="addRow(params)">{{ $t('tools.postman.btn_add_param') }}</el-button>
           </div>
         </el-tab-pane>
 
-        <el-tab-pane label="Headers">
+        <el-tab-pane :label="$t('tools.postman.tab_headers')">
           <div class="space-y-2">
             <div v-for="(h, i) in headers" :key="i" class="flex items-center gap-2">
               <el-checkbox v-model="h.enabled" />
               <el-input v-model="h.key" placeholder="Header" style="width: 260px" />
               <el-input v-model="h.value" placeholder="Value" />
-              <el-button text type="danger" @click="removeRow(headers, i)">删除</el-button>
+              <el-button text type="danger" @click="removeRow(headers, i)">{{ $t('tools.postman.btn_delete') }}</el-button>
             </div>
-            <el-button text type="primary" @click="addRow(headers)">添加Header</el-button>
+            <el-button text type="primary" @click="addRow(headers)">{{ $t('tools.postman.btn_add_header') }}</el-button>
           </div>
         </el-tab-pane>
 
-        <el-tab-pane label="Body">
+        <el-tab-pane :label="$t('tools.postman.tab_body')">
           <div class="space-y-3">
             <el-radio-group v-model="bodyMode">
               <el-radio label="none">none</el-radio>
@@ -389,68 +392,68 @@ function formatRespJson() {
             </el-radio-group>
 
             <div v-if="bodyMode === 'json' || bodyMode === 'raw'">
-              <el-input v-model="bodyText" type="textarea" :rows="8" placeholder='JSON 或任意文本。JSON示例: {"a":1}' />
+              <el-input v-model="bodyText" type="textarea" :rows="8" :placeholder="$t('tools.postman.label_body_json_placeholder')" />
             </div>
 
             <div v-if="bodyMode === 'form'" class="space-y-2">
               <div v-for="(f, i) in formItems" :key="'f-'+i" v-show="f.type !== 'file'" class="flex items-center gap-2">
                 <el-checkbox v-model="f.enabled" />
-                <el-input v-model="f.key" placeholder="key" style="width: 220px" />
-                <el-input v-model="f.value" placeholder="value" />
-                <el-button text type="danger" @click="removeRow(formItems, i)">删除</el-button>
+                <el-input v-model="f.key" :placeholder="$t('tools.postman.placeholder_key')" style="width: 220px" />
+                <el-input v-model="f.value" :placeholder="$t('tools.postman.placeholder_value')" />
+                <el-button text type="danger" @click="removeRow(formItems, i)">{{ $t('tools.postman.btn_delete') }}</el-button>
               </div>
-              <el-button text type="primary" @click="addFormItem">添加字段</el-button>
+              <el-button text type="primary" @click="addFormItem">{{ $t('tools.postman.btn_add_field') }}</el-button>
             </div>
 
             <div v-if="bodyMode === 'form-data'" class="space-y-2">
               <div v-for="(f, i) in formItems" :key="'fd-'+i" class="flex flex-col gap-1">
                 <div class="flex items-center gap-2">
                   <el-checkbox v-model="f.enabled" />
-                  <el-input v-model="f.key" placeholder="key" style="width: 220px" />
-                  <el-select v-model="f.type" style="width: 120px">
-                    <el-option label="文本" value="text" />
-                    <el-option label="文件" value="file" />
-                  </el-select>
-                  <template v-if="f.type === 'text'">
-                    <el-input v-model="f.value" placeholder="value" />
-                  </template>
-                  <template v-else>
-                    <input type="file" multiple @change="onFileChange(i, $event)" />
-                  </template>
-                  <el-button text type="danger" @click="removeRow(formItems, i)">删除</el-button>
-                </div>
-                <div v-if="f.type === 'file' && f.files?.length" class="text-xs text-gray-500">
-                  已选: {{ f.files.map(ff => ff.name).join(', ') }}
-                </div>
+                <el-input v-model="f.key" :placeholder="$t('tools.postman.placeholder_key')" style="width: 220px" />
+                <el-select v-model="f.type" style="width: 120px">
+                  <el-option :label="$t('tools.postman.opt_text')" value="text" />
+                  <el-option :label="$t('tools.postman.opt_file')" value="file" />
+                </el-select>
+                <template v-if="f.type === 'text'">
+                  <el-input v-model="f.value" :placeholder="$t('tools.postman.placeholder_value')" />
+                </template>
+                <template v-else>
+                  <input type="file" multiple @change="onFileChange(i, $event)" />
+                </template>
+                <el-button text type="danger" @click="removeRow(formItems, i)">{{ $t('tools.postman.btn_delete') }}</el-button>
               </div>
-              <el-button text type="primary" @click="addFormItem">添加字段</el-button>
+              <div v-if="f.type === 'file' && f.files?.length" class="text-xs text-gray-500">
+                {{ $t('tools.postman.label_selected_files') }} {{ f.files.map(ff => ff.name).join(', ') }}
+              </div>
             </div>
+            <el-button text type="primary" @click="addFormItem">{{ $t('tools.postman.btn_add_field') }}</el-button>
+          </div>
           </div>
         </el-tab-pane>
       </el-tabs>
     </div>
 
-    <ToolDetail title="响应">
+    <ToolDetail :title="$t('tools.postman.label_resp')">
       <div class="space-y-2">
         <div class="text-sm">
-          状态: {{ respStatus }}
-          <span v-if="respTime !== null"> | 时间: {{ respTime }}ms</span>
-          <span v-if="respSize !== null"> | 大小: {{ (respSize/1024).toFixed(2) }} KB</span>
+          {{ $t('tools.postman.label_status') }} {{ respStatus }}
+          <span v-if="respTime !== null"> {{ $t('tools.postman.label_time') }} {{ respTime }}ms</span>
+          <span v-if="respSize !== null"> {{ $t('tools.postman.label_size') }} {{ (respSize/1024).toFixed(2) }} KB</span>
         </div>
         <el-tabs>
-          <el-tab-pane label="Body">
+          <el-tab-pane :label="$t('tools.postman.tab_resp_body')">
             <div v-if="respContentType.startsWith('image/')">
-              <img :src="respPreviewUrl || ''" alt="响应图片" style="max-width:100%;max-height:60vh;" />
+              <img :src="respPreviewUrl || ''" :alt="$t('tools.postman.label_resp_img')" style="max-width:100%;max-height:60vh;" />
             </div>
             <div v-else>
               <div class="mb-2 flex items-center gap-2">
-                <el-button size="small" @click="formatRespJson" v-if="respBody">美化 JSON</el-button>
-                <el-button size="small" @click="copy(respBody)" v-if="respBody">复制响应</el-button>
+                <el-button size="small" @click="formatRespJson" v-if="respBody">{{ $t('tools.postman.btn_format_json') }}</el-button>
+                <el-button size="small" @click="copy(respBody)" v-if="respBody">{{ $t('tools.postman.btn_copy_resp') }}</el-button>
               </div>
               <el-input type="textarea" :rows="12" v-model="respBody" />
             </div>
           </el-tab-pane>
-          <el-tab-pane label="Headers">
+          <el-tab-pane :label="$t('tools.postman.tab_resp_headers')">
             <el-table :data="respHeaders" size="small">
               <el-table-column prop="key" label="Header" width="260" />
               <el-table-column prop="value" label="Value" />
@@ -460,17 +463,17 @@ function formatRespJson() {
       </div>
     </ToolDetail>
 
-    <ToolDetail title="说明">
+    <ToolDetail :title="$t('tools.postman.label_desc')">
       <el-text>
-        仅支持目标接口已开启 CORS 或同源的请求；如需跨域访问，可在服务端增加通用代理后再使用。
+        {{ $t('tools.postman.msg_cors_warn') }}
       </el-text>
     </ToolDetail>
 
-    <el-dialog v-model="showCurlDialog" title="导入 cURL" width="600px">
-      <el-input v-model="curlText" type="textarea" :rows="10" placeholder="粘贴 curl 命令，例如：curl 'https://api.example.com' -X POST -H 'Content-Type: application/json'" />
+    <el-dialog v-model="showCurlDialog" :title="$t('tools.postman.dialog_import_title')" width="600px">
+      <el-input v-model="curlText" type="textarea" :rows="10" :placeholder="$t('tools.postman.placeholder_curl')" />
       <template #footer>
-        <el-button @click="showCurlDialog = false">取消</el-button>
-        <el-button type="primary" @click="confirmImportCurl">导入</el-button>
+        <el-button @click="showCurlDialog = false">{{ $t('tools.postman.btn_cancel') }}</el-button>
+        <el-button type="primary" @click="confirmImportCurl">{{ $t('tools.postman.btn_confirm') }}</el-button>
       </template>
     </el-dialog>
   </div>

@@ -1,13 +1,16 @@
 <script setup lang="ts">
 import { reactive, ref, shallowRef, onBeforeUnmount } from 'vue'
+import { useI18n } from 'vue-i18n'
 import DetailHeader from '@/components/Layout/DetailHeader/DetailHeader.vue'
 import ToolDetail from '@/components/Layout/ToolDetail/ToolDetail.vue'
 import html2canvas from "html2canvas";
 import '@wangeditor/editor/dist/css/style.css' // 引入富文本 css
 import { Editor, Toolbar } from '@wangeditor/editor-for-vue'  //富文本组件
-// import { copy } from '@/utils/string'
+
+const { t } = useI18n()
+
 const info = reactive({
-  title: "文本转图片",
+  title: "tools.texttoimg.title",
   mode: 'default',
   convasWidth: 860,
   convasBackgroundColor: '#fff',
@@ -27,11 +30,7 @@ const info = reactive({
 const editorRef = shallowRef()
 
 // 内容 HTML
-const valueHtml = ref(`文字转图片演示😀
-拥有丰富的样式选择
-可自由调整宽度背景色
-支持一键导出为长图
-`)
+const valueHtml = ref(t('tools.texttoimg.initial_content'))
 
 // 绑定  需要把那个内容生成图片
 const  poster  = ref();
@@ -46,7 +45,7 @@ const toolbarConfig = {
 }
 
 //编辑器配置
-const editorConfig = { placeholder: '请输入内容...' }
+const editorConfig = { placeholder: t('tools.texttoimg.placeholder') }
 
 const handleCreated = (editor) => {
   editorRef.value = editor // 记录 editor 实例，重要！
@@ -80,29 +79,24 @@ onBeforeUnmount(() => {
   if (editor == null) return
   editor.destroy()
 })
-
-//copy
-// const copyRes = async (resStr: string) => {
-//   copy(resStr)
-// }
 </script>
 
 <template>
   <div class="flex flex-col mt-3 flex-1">
-    <DetailHeader :title="info.title"></DetailHeader>
+    <DetailHeader :title="$t('tools.texttoimg.title')"></DetailHeader>
 
     <div class="p-4 rounded-2xl bg-white">
       <div>
         <div class="">
           
           <div class="flex items-center">
-            <el-text class="w-20">宽度：</el-text>
+            <el-text class="w-20">{{ $t('tools.texttoimg.label_width') }}</el-text>
             <el-slider v-model="info.convasWidth" show-input size="large" :min="260" :max="1920"/>
           </div>
         </div>
         <div class="mt-3 flex items-center justify-between">
           <div class="">
-            <el-text>背景颜色：</el-text>
+            <el-text>{{ $t('tools.texttoimg.label_bgcolor') }}</el-text>
             <el-color-picker v-model="info.convasBackgroundColor" size="large" />
           </div>
           <div class="flex">
@@ -114,7 +108,7 @@ onBeforeUnmount(() => {
                 :value="item.value"
               />
             </el-select>
-            <el-button type="primary" class="ml-2"  @click="goDown">下载</el-button> 
+            <el-button type="primary" class="ml-2"  @click="goDown">{{ $t('tools.texttoimg.btn_download') }}</el-button> 
           </div>
         </div>
       </div>
@@ -136,9 +130,9 @@ onBeforeUnmount(() => {
     </div>
 
     <!-- desc -->
-    <ToolDetail title="描述">
+    <ToolDetail :title="$t('tools.texttoimg.detail_title')">
       <el-text>
-        把文本转换成图片，生成长图，富文本自定义文字排版，可导出png，jpeg格式，可更换背景图，设置宽度，是好用的文本转图片工具
+        {{ $t('tools.texttoimg.detail_content') }}
       </el-text> 
     </ToolDetail>
   </div>
