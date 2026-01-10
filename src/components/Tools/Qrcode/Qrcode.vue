@@ -2,8 +2,10 @@
 import { reactive, ref, computed, onMounted, onUnmounted } from "vue";
 import { useI18n } from 'vue-i18n'
 import DetailHeader from "@/components/Layout/DetailHeader/DetailHeader.vue";
+// @ts-ignore
 import QRCodeVue3 from "qrcode-vue3";
 import { Delete, Plus } from "@element-plus/icons-vue";
+
 import { ElMessage, type UploadFile } from "element-plus";
 import { v4 as uuidv4 } from "uuid";
 import ToolDetail from '@/components/Layout/ToolDetail/ToolDetail.vue'

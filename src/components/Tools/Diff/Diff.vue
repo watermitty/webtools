@@ -1,11 +1,11 @@
 <script setup lang="ts">
 import { reactive } from 'vue'
-import { useI18n } from 'vue-i18n'
+
 import DetailHeader from '@/components/Layout/DetailHeader/DetailHeader.vue'
 import ToolDetail from '@/components/Layout/ToolDetail/ToolDetail.vue'
 import CodeDiff  from "v-code-diff";
 
-const { t } = useI18n()
+
 
 const info = reactive({
   leftTxt: '',

@@ -4,9 +4,7 @@ import DetailHeader from '@/components/Layout/DetailHeader/DetailHeader.vue'
 import ToolDetail from '@/components/Layout/ToolDetail/ToolDetail.vue'
 import { copy } from '@/utils/string'
 import figlet from 'figlet';
-import { useI18n } from 'vue-i18n'
 
-const { t } = useI18n()
 const info = reactive({
   title: "tools.asciiwordpic.title",
 })

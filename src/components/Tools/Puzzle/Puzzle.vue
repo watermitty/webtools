@@ -1,11 +1,9 @@
 <script setup lang="ts">
 import { reactive, ref, onMounted, onUnmounted, computed } from 'vue'
-import { useI18n } from 'vue-i18n'
 import DetailHeader from '@/components/Layout/DetailHeader/DetailHeader.vue'
 import ToolDetail from '@/components/Layout/ToolDetail/ToolDetail.vue'
 import { Refresh } from '@element-plus/icons-vue'
 
-const { t } = useI18n()
 
 const info = reactive({
   title: "tools.puzzle.title",

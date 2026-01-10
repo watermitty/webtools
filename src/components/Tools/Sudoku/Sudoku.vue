@@ -1,11 +1,9 @@
 <script setup lang="ts">
 import { reactive, ref, onMounted, computed, onUnmounted } from 'vue'
-import { useI18n } from 'vue-i18n'
 import DetailHeader from '@/components/Layout/DetailHeader/DetailHeader.vue'
 import ToolDetail from '@/components/Layout/ToolDetail/ToolDetail.vue'
 import { Refresh, Edit, Check } from '@element-plus/icons-vue'
 
-const { t } = useI18n()
 
 const info = reactive({
   title: "tools.sudoku.title",
@@ -500,7 +498,6 @@ onMounted(() => {
         </div>
         
         <el-button type="primary" @click="restartGame" :icon="Refresh">
-        <el-button type="primary" @click="restartGame" :icon="Refresh">
           {{ $t('tools.sudoku.btn_restart') }}
         </el-button>
         
@@ -508,7 +505,6 @@ onMounted(() => {
           {{ noteMode ? $t('tools.sudoku.mode_note') : $t('tools.sudoku.mode_input') }}
         </el-button>
         
-        <el-button type="warning" @click="getHint" :icon="Check" :disabled="!gameState.selectedCell">
         <el-button type="warning" @click="getHint" :icon="Check" :disabled="!gameState.selectedCell">
           {{ $t('tools.sudoku.btn_hint') }} ({{ gameState.hints }})
         </el-button>
@@ -580,7 +576,6 @@ onMounted(() => {
           </el-button>
           <el-button @click="inputNumber(0)" 
                      :type="gameState.selectedCell ? 'danger' : 'default'"
-                     :disabled="!gameState.selectedCell">
                      :disabled="!gameState.selectedCell">
             {{ $t('tools.sudoku.btn_clear') }}
           </el-button>

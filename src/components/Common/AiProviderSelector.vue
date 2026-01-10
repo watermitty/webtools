@@ -127,7 +127,63 @@ const availableProviders = computed(() => [
   }
 ])
 
-// ... (omit unrelated code)
+// 状态变量
+const selectedProvider = ref('')
+const selectedModel = ref('')
+const isLoadingModels = ref(false)
+const modelsLoadError = ref('')
+const pollinationsModels = ref<ModelData[]>([])
+const aitoolsModels = ref<ModelData[]>([
+  { name: 'gpt-4o-mini', description: 'GPT-4o Mini' },
+  { name: 'claude-3-haiku', description: 'Claude 3 Haiku' }
+])
+
+const fetchPollinationsModels = async () => {
+  if (pollinationsModels.value.length > 0) return
+  
+  isLoadingModels.value = true
+  modelsLoadError.value = ''
+  try {
+    const url = pollinationsTextUrl.value || 'https://text.pollinations.ai'
+    const response = await axios.get(`${url}/models`)
+    pollinationsModels.value = response.data
+  } catch (error: any) {
+    console.error('Failed to load models:', error)
+    modelsLoadError.value = t('tools.aichat.provider.msg_load_error')
+  } finally {
+    isLoadingModels.value = false
+  }
+}
+
+const handleProviderChange = () => {
+  selectedModel.value = ''
+  emit('update:modelValue', { provider: selectedProvider.value, model: '' })
+  emit('change', { provider: selectedProvider.value, model: '' })
+}
+
+const handleModelChange = () => {
+  const selection = { provider: selectedProvider.value, model: selectedModel.value }
+  emit('update:modelValue', selection)
+  emit('change', selection)
+  saveToLocalStorage(selection)
+}
+
+const loadFromLocalStorage = () => {
+  try {
+    const data = localStorage.getItem(props.storageKey)
+    return data ? JSON.parse(data) : {}
+  } catch (e) {
+    return {}
+  }
+}
+
+const saveToLocalStorage = (data: { provider: string, model: string }) => {
+  try {
+    localStorage.setItem(props.storageKey, JSON.stringify(data))
+  } catch (e) {
+    console.error('Failed to save selection:', e)
+  }
+}
 
 const getProviderDisplayName = (providerName: string) => {
   const provider = availableProviders.value.find(p => p.name === providerName)

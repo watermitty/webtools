@@ -6,7 +6,7 @@ import DetailHeader from '@/components/Layout/DetailHeader/DetailHeader.vue'
 import ToolDetail from '@/components/Layout/ToolDetail/ToolDetail.vue'
 import { copy } from '@/utils/string'
 
-const { t, tm } = useI18n()
+const { tm } = useI18n()
 
 const info = reactive({
   title: "tools.phonedirectory.title",

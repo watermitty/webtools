@@ -146,13 +146,7 @@ const items = computed(() => [
                 <!-- 平板及以上：星星评分单独一行显示 -->
                 <div class="mt-1 hidden sm:block">
                   <!-- Ratings are not present in the new `items` structure, so this part is removed or adapted -->
-                  <!-- <el-rate
-                    :model-value="item.rating ?? 0"
-                    disabled
-                    allow-half
-                    :max="5"
-                    size="small"
-                  />
+
                 </div>
                 <div class="text-gray-500 text-sm whitespace-pre-line break-words mt-2" v-if="item.desc">
                   {{ item.desc }}

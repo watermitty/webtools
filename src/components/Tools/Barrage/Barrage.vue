@@ -1,11 +1,9 @@
 <script setup lang="ts">
 import { onBeforeMount, reactive, ref } from 'vue'
-import { useI18n } from 'vue-i18n'
 import DetailHeader from '@/components/Layout/DetailHeader/DetailHeader.vue'
 import ToolDetail from '@/components/Layout/ToolDetail/ToolDetail.vue'
 import vueDanmaku from 'vue3-danmaku'
 
-const { t } = useI18n()
 
 const info = reactive({
   content: '工具坊',

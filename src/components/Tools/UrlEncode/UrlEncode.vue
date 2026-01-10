@@ -3,9 +3,7 @@ import { reactive, ref, watch } from 'vue'
 import DetailHeader from '@/components/Layout/DetailHeader/DetailHeader.vue'
 import ToolDetail from '@/components/Layout/ToolDetail/ToolDetail.vue'
 import { copy } from '@/utils/string'
-import { useI18n } from 'vue-i18n'
 
-const { t } = useI18n()
 
 const info = reactive({
   title: "tools.urlencode.title",

@@ -1,6 +1,5 @@
 <script setup lang="ts">
 import { ref, reactive } from "vue"
-import { useI18n } from 'vue-i18n'
 import  SignImageCore  from './SignImageCore.vue'
 import DetailHeader from '@/components/Layout/DetailHeader/DetailHeader.vue'
 import ToolDetail from '@/components/Layout/ToolDetail/ToolDetail.vue'
@@ -8,8 +7,6 @@ import { UploadProps, UploadInstance, UploadRawFile, genFileId } from 'element-p
 import { autoDown } from '@/utils/file'
 import { Jh_getTimeStamp } from '@/utils/time'
 
-// 图片处理
-const { t } = useI18n()
 const info = reactive({
   title:"tools.signimage.title",
   //图片地址

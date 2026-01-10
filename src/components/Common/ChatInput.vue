@@ -1,8 +1,8 @@
 <script setup lang="ts">
 import { ref } from 'vue'
-import { useI18n } from 'vue-i18n'
 
-const { t } = useI18n()
+
+
 
 const props = defineProps<{
   loading: boolean
@@ -61,7 +61,7 @@ const handleInput = () => {
         v-model="inputContent"
         @keydown="handleKeydown"
         @input="handleInput"
-        :placeholder="t('tools.aichat.input.placeholder')"
+        :placeholder="$t('tools.aichat.input.placeholder')"
         class="w-full px-4 py-2 border border-gray-300 rounded-lg resize-none focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-colors"
         :class="loading ? 'bg-gray-50 cursor-not-allowed' : 'bg-white'"
         :disabled="false"
@@ -78,10 +78,10 @@ const handleInput = () => {
       class="px-6 bg-blue-500 text-white rounded-lg hover:bg-blue-600 disabled:opacity-50 disabled:cursor-not-allowed transition-colors flex items-center justify-center"
       style="height: 40px; min-width: 80px;"
     >
-      <span v-if="!loading">{{ t('tools.aichat.input.send') }}</span>
+      <span v-if="!loading">{{ $t('tools.aichat.input.send') }}</span>
       <span v-else class="flex items-center">
         <div class="loading-spinner-white mr-2"></div>
-        {{ t('tools.aichat.input.sending') }}
+        {{ $t('tools.aichat.input.sending') }}
       </span>
     </button>
     
@@ -95,7 +95,7 @@ const handleInput = () => {
       <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
       </svg>
-      <span>{{ t('tools.aichat.input.stop') }}</span>
+      <span>{{ $t('tools.aichat.input.stop') }}</span>
     </button>
   </div>
 </template>

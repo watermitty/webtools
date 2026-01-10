@@ -10,11 +10,9 @@ import hwbPlugin from 'colord/plugins/hwb';
 import namesPlugin from 'colord/plugins/names';
 import lchPlugin from 'colord/plugins/lch';
 import labPlugin from 'colord/plugins/lab';
-import { useI18n } from 'vue-i18n'
 
 extend([cmykPlugin, hwbPlugin, namesPlugin, lchPlugin, labPlugin]);
 
-const { t } = useI18n()
 const info = reactive({
   title: "tools.colorpicker.title",
 })

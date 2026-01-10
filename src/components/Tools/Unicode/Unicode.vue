@@ -5,9 +5,7 @@ import ToolDetail from '@/components/Layout/ToolDetail/ToolDetail.vue'
 import { copy } from '@/utils/string'
 import Codemirror from "codemirror-editor-vue3";
 import "codemirror/mode/javascript/javascript.js";
-import { useI18n } from 'vue-i18n'
 
-const { t } = useI18n()
 
 const info = reactive({
   title: "tools.unicode.title",

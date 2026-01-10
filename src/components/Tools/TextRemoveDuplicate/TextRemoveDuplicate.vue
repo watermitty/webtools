@@ -1,11 +1,9 @@
 <script setup lang="ts">
 import { reactive, computed } from 'vue'
-import { useI18n } from 'vue-i18n'
 import DetailHeader from '@/components/Layout/DetailHeader/DetailHeader.vue'
 import ToolDetail from '@/components/Layout/ToolDetail/ToolDetail.vue'
 import { copy } from '@/utils/string'
 
-const { t } = useI18n()
 
 const info = reactive({
   content: '',

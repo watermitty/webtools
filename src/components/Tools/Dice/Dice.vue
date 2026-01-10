@@ -1,11 +1,11 @@
 <script setup lang="ts">
-import { ref, reactive } from 'vue'
-import { useI18n } from 'vue-i18n'
+import { ref } from 'vue'
+
 import DetailHeader from '@/components/Layout/DetailHeader/DetailHeader.vue'
 import ToolDetail from '@/components/Layout/ToolDetail/ToolDetail.vue'
 import DiceCore from "@/components/Tools/Dice/DiceCore.vue"
 
-const { t } = useI18n()
+
 
 const diceNum = ref(1)
 const genStatus = ref(false)

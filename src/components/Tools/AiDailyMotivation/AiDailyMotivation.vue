@@ -219,18 +219,22 @@ const copyMotivation = async (content: string) => {
 };
 
 // 格式化时间
+const formatTime = (date: Date) => {
   return date.toLocaleTimeString(locale.value === 'en' ? 'en-US' : 'zh-CN', {
     hour: "2-digit",
     minute: "2-digit",
     second: "2-digit",
   });
+};
 
 // 格式化日期
+const formatDate = (date: Date) => {
   return date.toLocaleDateString(locale.value === 'en' ? 'en-US' : 'zh-CN', {
     year: "numeric",
     month: "2-digit",
     day: "2-digit",
   });
+};
 
 // 新增：封面生成相关状态
 // 修改：每条鸡汤文独立的封面生成状态

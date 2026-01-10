@@ -1,9 +1,15 @@
 <script setup lang="ts">
-import { ref } from 'vue'
+import { ref, onMounted } from 'vue'
+import { ElSelect, ElOption } from 'element-plus'
+
 const langs = [
   { label: '中文', value: 'zh' },
   { label: 'English', value: 'en' },
 ]
+
+onMounted(() => {
+  console.log('LanguageSwitcher mounted', selected.value)
+})
 
 const selected = ref(localStorage.getItem('locale') || (navigator.language.startsWith('zh') ? 'zh' : 'en'))
 

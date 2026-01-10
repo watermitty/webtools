@@ -10,7 +10,7 @@ import jsPDF from 'jspdf'
 import type { FormRules } from 'element-plus'
 import { useI18n } from 'vue-i18n'
 
-const { t, locale } = useI18n()
+const { t } = useI18n()
 
 interface Resume {
   id: string

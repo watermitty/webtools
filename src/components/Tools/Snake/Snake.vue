@@ -1,6 +1,9 @@
 <script setup lang="ts">
 import { reactive, ref, onMounted, onUnmounted, computed } from "vue";
 import { useI18n } from 'vue-i18n'
+
+const { t } = useI18n()
+
 import DetailHeader from "@/components/Layout/DetailHeader/DetailHeader.vue";
 import ToolDetail from "@/components/Layout/ToolDetail/ToolDetail.vue";
 
@@ -10,7 +13,7 @@ interface Position {
   y: number;
 }
 
-const { t } = useI18n()
+
 
 const info = reactive({
   title: "tools.snake.title",

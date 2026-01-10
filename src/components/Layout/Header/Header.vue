@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { ref, reactive, onMounted, computed, onUnmounted, nextTick } from 'vue'
-import { useI18n } from 'vue-i18n'
+
 import LanguageSwitcher from '@/components/LanguageSwitcher/LanguageSwitcher.vue'
 import { Search } from '@element-plus/icons-vue';
 import { ElMessage } from 'element-plus'
@@ -14,7 +14,7 @@ import { useRouter } from 'vue-router'
 
 const router = useRouter()
 const routeLoading = ref(false)
-const { t } = useI18n()
+
 
 // 监听路由变化，显示加载状态
 router.beforeEach((_to, _from, next) => {
@@ -248,11 +248,11 @@ onUnmounted(() => {
               <el-tooltip
                 class="box-item"
                 effect="dark"
-                :content="t('header.user_tooltip')"
+                :content="$t('header.user_tooltip')"
                 placement="bottom"
               >
                 <el-button type="primary" size="large" class="bg-gradient-to-r from-warm-500 to-orange-500 hover:from-warm-600 hover:to-orange-600 w-20 border-none">
-                  {{ t('header.login') }}
+                  {{ $t('header.login') }}
                 </el-button>
               </el-tooltip>
           </router-link>
@@ -281,13 +281,13 @@ onUnmounted(() => {
                   class="px-4 py-2 hover:bg-warm-100 cursor-pointer text-warm-700"
                   @click.stop="goToUserInfo"
                 >
-                  {{ t('header.personal_center') }}
+                  {{ $t('header.personal_center') }}
                 </div>
                 <div 
                   class="px-4 py-2 hover:bg-warm-100 cursor-pointer text-red-600"
                   @click.stop="handleLogout"
                 >
-                  {{ t('header.logout') }}
+                  {{ $t('header.logout') }}
                 </div>
               </div>
             </div>
@@ -303,7 +303,7 @@ onUnmounted(() => {
   <div v-if="routeLoading" class="fixed top-0 left-0 w-full h-full bg-warm-900 bg-opacity-40 flex items-center justify-center z-50 loading-overlay">
       <div class="loading-container">
       <div class="loading-spinner"></div>
-      <div class="loading-text">{{ t('header.loading') }}</div>
+      <div class="loading-text">{{ $t('header.loading') }}</div>
     </div>
   </div>
 </template>

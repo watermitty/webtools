@@ -2,9 +2,9 @@
 import { reactive, onMounted, computed } from 'vue'
 import DetailHeader from '@/components/Layout/DetailHeader/DetailHeader.vue'
 import ToolDetail from '@/components/Layout/ToolDetail/ToolDetail.vue'
-import { useI18n } from 'vue-i18n'
 
-const { t } = useI18n()
+
+
 
 // 单位选项
 const units = [
