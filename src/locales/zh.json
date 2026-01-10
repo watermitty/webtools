@@ -29,6 +29,30 @@
     "copyright": "一个轻量的在线工具箱 © 2019 - 2025"
   },
   "tools": {
+    "randompassword": {
+      "title": "随机密码生成",
+      "desc": "密码生成器、随机字符串生成,批量生成",
+      "error_char_empty": "请选择字符类型",
+      "error_len_range": "密码长度不能超过100",
+      "error_num_range": "生成数量不能超过100",
+      "strength_none": "无",
+      "strength_weak": "弱",
+      "strength_medium": "中",
+      "strength_strong": "强",
+      "strength_very_strong": "非常强",
+      "password_combination": "密码组合",
+      "number": "数字",
+      "lower": "小写字母",
+      "upper": "大写字母",
+      "symbol": "特殊符号",
+      "include_chars": "包含字符",
+      "length": "密码长度",
+      "quantity": "生成数量",
+      "strength": "密码强度",
+      "generate": "生成密码",
+      "copy_all": "复制全部",
+      "strength_text": "说明：密码强度仅供参考，实际强度还取决于使用环境。"
+    },
     "uuid": {
       "title": "UUID生成器",
       "desc": "批量生成UUID",

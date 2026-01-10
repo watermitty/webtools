@@ -224,7 +224,7 @@ onUnmounted(() => {
           placeholder="输入关键词搜索，如文本、json、图片等"
           :remote-method="searchTools"
           :loading="loading"
-          class="ml-3 w-full"
+          class="ml-3 w-full header-search-select"
           size="large"
         >
           <el-option
@@ -320,13 +320,13 @@ onUnmounted(() => {
 }
 
 
-:deep(.el-select__wrapper) {
+.header-search-select :deep(.el-select__wrapper) {
     box-shadow: 0 0 0 0px var(--el-input-border-color, var(--el-border-color)) inset;
     cursor: default;
     @apply w-full;
 }
 
-.el-select :deep(.el-select__wrapper){
+.header-search-select :deep(.el-select__wrapper){
   background-color: rgba(254, 247, 237, 0.9);
   border-color: var(--warm-border);
 }
