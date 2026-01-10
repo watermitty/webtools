@@ -578,7 +578,7 @@ const handleActionAndClose = (prompt: string, type: string) => {
 
 <template>
   <div class="flex flex-col mt-3 flex-1 relative">
-    <DetailHeader :title="info.title"></DetailHeader>
+    <DetailHeader :title="$t(info.title)"></DetailHeader>
 
     <div class="flex flex-1 gap-4 relative">
       <!-- 移动端菜单按钮 -->

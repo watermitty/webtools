@@ -18,15 +18,19 @@ const info = reactive({
 })
 
 // JWT生成相关数据
+const siteUrl = import.meta.env.VITE_SITE_URL || 'https://tool.ranblogs.com'
+const domain = siteUrl.replace(/^https?:\/\//, '')
+const topDomain = domain.split('.').length > 1 ? domain.split('.')[1] : 'com'
+
 const generateData = reactive({
   header: JSON.stringify({
     "alg": "HS256",
     "typ": "JWT"
   }, null, 2),
   payload: JSON.stringify({
-    "iss": (import.meta.env.VITE_SITE_URL).replace(/^https?:\/\//, ''),
+    "iss": domain,
     "sub": "yifang",
-    "aud": (import.meta.env.VITE_SITE_URL).replace(/^https?:\/\//, '').split('.')[1],
+    "aud": topDomain,
     "iat": Math.floor(Date.now() / 1000),
     "exp": Math.floor(Date.now() / 1000) + 3600
   }, null, 2),
@@ -131,9 +135,9 @@ const clearGenerate = () => {
     "typ": "JWT"
   }, null, 2)
   generateData.payload = JSON.stringify({
-    "iss": (import.meta.env.VITE_SITE_URL).replace(/^https?:\/\//, ''),
+    "iss": domain,
     "sub": "yifang",
-    "aud": (import.meta.env.VITE_SITE_URL).replace(/^https?:\/\//, '').split('.')[1],
+    "aud": topDomain,
     "iat": Math.floor(Date.now() / 1000),
     "exp": Math.floor(Date.now() / 1000) + 3600
   }, null, 2)
@@ -278,7 +282,7 @@ watch(
 
 <template>
   <div class="flex flex-col mt-3 flex-1">
-    <DetailHeader :title="info.title"></DetailHeader>
+    <DetailHeader :title="$t(info.title)"></DetailHeader>
 
     <!-- Tab切换 -->
     <div class="p-4 rounded-2xl bg-white mb-4">

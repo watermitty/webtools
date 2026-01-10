@@ -16,6 +16,10 @@ const info = computed(() => ({
 const chatCoreRef = ref();
 const urlParamsProcessed = ref(false);
 
+const handleConversationStarted = () => {
+  console.log('Conversation started');
+};
+
 // ... (rest of script)
 
 // ...
@@ -25,7 +29,7 @@ const urlParamsProcessed = ref(false);
 
 <template>
   <div class="flex flex-col mt-3 flex-1">
-    <DetailHeader :title="info.title"></DetailHeader>
+    <DetailHeader :title="$t(info.title)"></DetailHeader>
 
     <!-- 使用公共聊天组件 -->
     <AiChatCore

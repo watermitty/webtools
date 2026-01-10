@@ -1,4 +1,4 @@
-<script setup lang="ts">
+﻿<script setup lang="ts">
 import { reactive, ref, computed } from 'vue'
 import { useI18n } from 'vue-i18n'
 import DetailHeader from '@/components/Layout/DetailHeader/DetailHeader.vue'
@@ -93,7 +93,7 @@ const info = reactive({
   ]
 })
 
-// 手机端Tab相关
+// 鎵嬫満绔疶ab鐩稿叧
 const currentTabIndex = ref(0)
 const tabList = [
   { name: 'second', label: 'tools.cron.unit.second' },
@@ -104,7 +104,7 @@ const tabList = [
   { name: 'week', label: 'tools.cron.unit.week' }
 ]
 
-// 使用cron-parser计算最近执行时间
+// 浣跨敤cron-parser璁＄畻鏈€杩戞墽琛屾椂闂?
 const calculateNextExecutions = () => {
   if (!info.cronExpression) {
     info.nextExecutions = []
@@ -126,12 +126,12 @@ const calculateNextExecutions = () => {
     
     info.nextExecutions = executions
   } catch (error) {
-    console.error('Cron表达式解析错误:', error)
+    console.error('Cron琛ㄨ揪寮忚В鏋愰敊璇?', error)
     info.nextExecutions = []
   }
 }
 
-// 生成cron表达式
+// 鐢熸垚cron琛ㄨ揪寮?
 const generateCron = () => {
   const config = info.cronConfig
   const cron = [
@@ -148,12 +148,12 @@ const generateCron = () => {
   calculateNextExecutions()
 }
 
-// 生成描述
+// 鐢熸垚鎻忚堪
 const generateDescription = () => {
   const parts = info.cronExpression.split(' ')
   let desc = t('tools.cron.meaning_prefix')
   
-  // 秒
+  // 绉?
   if (parts[0] === '*') {
     desc += t('tools.cron.every') + t('tools.cron.unit.second')
   } else if (parts[0].includes('/')) {
@@ -165,7 +165,7 @@ const generateDescription = () => {
     desc += t('tools.cron.at') + parts[0] + ' ' + t('tools.cron.unit.second')
   }
   
-  // 分
+  // 鍒?
   if (parts[1] === '*') {
     desc += t('tools.cron.every') + t('tools.cron.unit.minute')
   } else if (parts[1].includes('/')) {
@@ -177,7 +177,7 @@ const generateDescription = () => {
     desc += t('tools.cron.at') + parts[1] + ' ' + t('tools.cron.unit.minute')
   }
   
-  // 时
+  // 鏃?
   if (parts[2] === '*') {
     desc += t('tools.cron.every') + t('tools.cron.unit.hour')
   } else if (parts[2].includes('/')) {
@@ -189,7 +189,7 @@ const generateDescription = () => {
     desc += t('tools.cron.at') + parts[2] + ' ' + t('tools.cron.unit.hour')
   }
   
-  // 日
+  // 鏃?
   if (parts[3] === '*') {
     desc += t('tools.cron.every') + t('tools.cron.unit.day')
   } else if (parts[3].includes('/')) {
@@ -201,7 +201,7 @@ const generateDescription = () => {
     desc += t('tools.cron.at') + parts[3] + ' ' + t('tools.cron.unit.day')
   }
   
-  // 月
+  // 鏈?
   if (parts[4] === '*') {
     desc += t('tools.cron.every') + t('tools.cron.unit.month')
   } else if (parts[4].includes('/')) {
@@ -213,7 +213,7 @@ const generateDescription = () => {
     desc += t('tools.cron.at') + parts[4] + ' ' + t('tools.cron.unit.month')
   }
   
-  // 周
+  // 鍛?
   if (parts[5] === '?') {
     desc += ''
   } else if (parts[5] === 'MON') {
@@ -228,7 +228,7 @@ const generateDescription = () => {
   info.cronDescription = desc
 }
 
-// 更新配置函数，修复类型问题
+// 鏇存柊閰嶇疆鍑芥暟锛屼慨澶嶇被鍨嬮棶棰?
 const updateConfig = (field: string, type: string, value: any) => {
   const config = info.cronConfig[field as keyof typeof info.cronConfig]
   if (config) {
@@ -251,7 +251,7 @@ const updateConfig = (field: string, type: string, value: any) => {
   }
 }
 
-// 处理间隔范围变化
+// 澶勭悊闂撮殧鑼冨洿鍙樺寲
 const handleRangeStartChange = (field: string) => {
   const config = info.cronConfig[field as keyof typeof info.cronConfig]
   if (config && config.type === 'range') {
@@ -280,7 +280,7 @@ const handleRangeEndChange = (field: string) => {
   }
 }
 
-// 处理多选值变化
+// 澶勭悊澶氶€夊€煎彉鍖?
 const handleMultiSelectChange = (field: string, values: any[]) => {
   const config = info.cronConfig[field as keyof typeof info.cronConfig]
   if (config) {
@@ -290,7 +290,7 @@ const handleMultiSelectChange = (field: string, values: any[]) => {
   }
 }
 
-// 使用预设
+// 浣跨敤棰勮
 const usePreset = (cron: string) => {
   info.cronExpression = cron
   parseCronToConfig(cron)
@@ -298,28 +298,28 @@ const usePreset = (cron: string) => {
   calculateNextExecutions()
 }
 
-// 复制结果
+// 澶嶅埗缁撴灉
 const copyResult = async () => {
   if (info.cronExpression) {
     await copy(info.cronExpression)
   }
 }
 
-// 处理Cron表达式输入
+// 澶勭悊Cron琛ㄨ揪寮忚緭鍏?
 const onCronInput = () => {
   parseCronToConfig(info.cronExpression)
   generateDescription()
   calculateNextExecutions()
 }
 
-// 解析Cron表达式到配置项
+// 瑙ｆ瀽Cron琛ㄨ揪寮忓埌閰嶇疆椤?
 const parseCronToConfig = (cronExpression: string) => {
   const parts = cronExpression.split(' ')
   if (parts.length < 6) return
   
   const [second, minute, hour, day, month, weekday] = parts
   
-  // 解析秒
+  // 瑙ｆ瀽绉?
   if (second === '*') {
     info.cronConfig.second.type = 'every'
     info.cronConfig.second.value = '*'
@@ -351,7 +351,7 @@ const parseCronToConfig = (cronExpression: string) => {
     info.cronConfig.second.range = { start: 0, end: 59 }
   }
   
-  // 解析分
+  // 瑙ｆ瀽鍒?
   if (minute === '*') {
     info.cronConfig.minute.type = 'every'
     info.cronConfig.minute.value = '*'
@@ -383,7 +383,7 @@ const parseCronToConfig = (cronExpression: string) => {
     info.cronConfig.minute.range = { start: 0, end: 59 }
   }
   
-  // 解析时
+  // 瑙ｆ瀽鏃?
   if (hour === '*') {
     info.cronConfig.hour.type = 'every'
     info.cronConfig.hour.value = '*'
@@ -415,7 +415,7 @@ const parseCronToConfig = (cronExpression: string) => {
     info.cronConfig.hour.range = { start: 0, end: 23 }
   }
   
-  // 解析日
+  // 瑙ｆ瀽鏃?
   if (day === '*') {
     info.cronConfig.day.type = 'every'
     info.cronConfig.day.value = '*'
@@ -447,7 +447,7 @@ const parseCronToConfig = (cronExpression: string) => {
     info.cronConfig.day.range = { start: 1, end: 31 }
   }
   
-  // 解析月
+  // 瑙ｆ瀽鏈?
   if (month === '*') {
     info.cronConfig.month.type = 'every'
     info.cronConfig.month.value = '*'
@@ -479,7 +479,7 @@ const parseCronToConfig = (cronExpression: string) => {
     info.cronConfig.month.range = { start: 1, end: 12 }
   }
   
-  // 解析周
+  // 瑙ｆ瀽鍛?
   if (weekday === '?') {
     info.cronConfig.week.type = 'every'
     info.cronConfig.week.value = '?'
@@ -510,20 +510,20 @@ const parseCronToConfig = (cronExpression: string) => {
   }
 }
 
-// 初始化
+// 鍒濆鍖?
 generateCron()
 </script>
 
 <template>
 
     <div class="flex flex-col mt-3 flex-1">
-      <DetailHeader :title="info.title"></DetailHeader>
+      <DetailHeader :title="$t(info.title)"></DetailHeader>
   
-      <!-- 自定义配置区，使用Tab切换 -->
+      <!-- 鑷畾涔夐厤缃尯锛屼娇鐢═ab鍒囨崲 -->
       <div class="p-4 rounded-2xl bg-white mb-6">
         <el-text class="font-bold text-lg mb-3 block">{{ $t('tools.cron.config_title') }}</el-text>
         
-        <!-- 桌面端显示完整tabs -->
+        <!-- 妗岄潰绔樉绀哄畬鏁磘abs -->
         <div class="hidden md:block">
           <el-tabs 
             v-model="info.selectedType" 
@@ -538,7 +538,7 @@ generateCron()
                 <el-radio value="range">{{ $t('tools.cron.type.range') }}</el-radio>
               </el-radio-group>
               
-              <!-- 指定秒配置 -->
+              <!-- 鎸囧畾绉掗厤缃?-->
               <div v-if="info.cronConfig.second.type === 'specific'" class="mt-3">
                 <el-text class="text-sm text-gray-600 mb-2 block">{{ $t('tools.cron.specific_label', { unit: t('tools.cron.unit.second').toLowerCase() }) }}</el-text>
                 <el-checkbox-group 
@@ -557,7 +557,7 @@ generateCron()
                 </el-checkbox-group>
               </div>
               
-              <!-- 间隔秒配置 -->
+              <!-- 闂撮殧绉掗厤缃?-->
               <div v-if="info.cronConfig.second.type === 'step'" class="mt-3">
                 <el-text class="text-sm text-gray-600 mb-2 block">{{ $t('tools.cron.step_label_prefix') }}</el-text>
                 <el-input-number 
@@ -569,7 +569,7 @@ generateCron()
                 <el-text class="text-sm text-gray-600">{{ $t('tools.cron.step_label_suffix', { unit: t('tools.cron.unit.second') }) }}</el-text>
               </div>
               
-              <!-- 间隔范围配置 -->
+              <!-- 闂撮殧鑼冨洿閰嶇疆 -->
               <div v-if="info.cronConfig.second.type === 'range'" class="mt-3">
                 <div class="flex items-center gap-4">
                   <div class="flex items-center gap-2">
@@ -602,7 +602,7 @@ generateCron()
                 <el-radio value="range">{{ $t('tools.cron.type.range') }}</el-radio>
               </el-radio-group>
               
-              <!-- 指定分配置 -->
+              <!-- 鎸囧畾鍒嗛厤缃?-->
               <div v-if="info.cronConfig.minute.type === 'specific'" class="mt-3">
                 <el-text class="text-sm text-gray-600 mb-2 block">{{ $t('tools.cron.specific_label', { unit: t('tools.cron.unit.minute').toLowerCase() }) }}</el-text>
                 <el-checkbox-group 
@@ -621,7 +621,7 @@ generateCron()
                 </el-checkbox-group>
               </div>
               
-              <!-- 间隔分配置 -->
+              <!-- 闂撮殧鍒嗛厤缃?-->
               <div v-if="info.cronConfig.minute.type === 'step'" class="mt-3">
                 <el-text class="text-sm text-gray-600 mb-2 block">{{ $t('tools.cron.step_label_prefix') }}</el-text>
                 <el-input-number 
@@ -633,7 +633,7 @@ generateCron()
                 <el-text class="text-sm text-gray-600">{{ $t('tools.cron.step_label_suffix', { unit: t('tools.cron.unit.minute') }) }}</el-text>
               </div>
               
-              <!-- 间隔范围配置 -->
+              <!-- 闂撮殧鑼冨洿閰嶇疆 -->
               <div v-if="info.cronConfig.minute.type === 'range'" class="mt-3">
                 <div class="flex items-center gap-4">
                   <div class="flex items-center gap-2">
@@ -666,7 +666,7 @@ generateCron()
                 <el-radio value="range">{{ $t('tools.cron.type.range') }}</el-radio>
               </el-radio-group>
               
-              <!-- 指定时配置 -->
+              <!-- 鎸囧畾鏃堕厤缃?-->
               <div v-if="info.cronConfig.hour.type === 'specific'" class="mt-3">
                 <el-text class="text-sm text-gray-600 mb-2 block">{{ $t('tools.cron.specific_label', { unit: t('tools.cron.unit.hour').toLowerCase() }) }}</el-text>
                 <el-checkbox-group 
@@ -685,7 +685,7 @@ generateCron()
                 </el-checkbox-group>
               </div>
               
-              <!-- 间隔时配置 -->
+              <!-- 闂撮殧鏃堕厤缃?-->
               <div v-if="info.cronConfig.hour.type === 'step'" class="mt-3">
                 <el-text class="text-sm text-gray-600 mb-2 block">{{ $t('tools.cron.step_label_prefix') }}</el-text>
                 <el-input-number 
@@ -697,7 +697,7 @@ generateCron()
                 <el-text class="text-sm text-gray-600">{{ $t('tools.cron.step_label_suffix', { unit: t('tools.cron.unit.hour') }) }}</el-text>
               </div>
               
-              <!-- 间隔范围配置 -->
+              <!-- 闂撮殧鑼冨洿閰嶇疆 -->
               <div v-if="info.cronConfig.hour.type === 'range'" class="mt-3">
                 <div class="flex items-center gap-4">
                   <div class="flex items-center gap-2">
@@ -730,7 +730,7 @@ generateCron()
                 <el-radio value="range">{{ $t('tools.cron.type.range') }}</el-radio>
               </el-radio-group>
               
-              <!-- 指定日配置 -->
+              <!-- 鎸囧畾鏃ラ厤缃?-->
               <div v-if="info.cronConfig.day.type === 'specific'" class="mt-3">
                 <el-text class="text-sm text-gray-600 mb-2 block">{{ $t('tools.cron.specific_label', { unit: t('tools.cron.unit.day').toLowerCase() }) }}</el-text>
                 <el-checkbox-group 
@@ -749,7 +749,7 @@ generateCron()
                 </el-checkbox-group>
               </div>
               
-              <!-- 间隔日配置 -->
+              <!-- 闂撮殧鏃ラ厤缃?-->
               <div v-if="info.cronConfig.day.type === 'step'" class="mt-3">
                 <el-text class="text-sm text-gray-600 mb-2 block">{{ $t('tools.cron.step_label_prefix') }}</el-text>
                 <el-input-number 
@@ -761,7 +761,7 @@ generateCron()
                 <el-text class="text-sm text-gray-600">{{ $t('tools.cron.step_label_suffix', { unit: t('tools.cron.unit.day') }) }}</el-text>
               </div>
               
-              <!-- 间隔范围配置 -->
+              <!-- 闂撮殧鑼冨洿閰嶇疆 -->
               <div v-if="info.cronConfig.day.type === 'range'" class="mt-3">
                 <div class="flex items-center gap-4">
                   <div class="flex items-center gap-2">
@@ -786,7 +786,7 @@ generateCron()
               </div>
             </el-tab-pane>
             
-            <el-tab-pane label="月" name="month">
+            <el-tab-pane label="鏈? name="month">
               <el-radio-group v-model="info.cronConfig.month.type" @change="(val) => updateConfig('month', typeof val === 'string' ? val : 'every', '*')">
                 <el-radio value="every">{{ $t('tools.cron.type.every', { unit: t('tools.cron.unit.month') }) }}</el-radio>
                 <el-radio value="specific">{{ $t('tools.cron.type.specific', { unit: t('tools.cron.unit.month') }) }}</el-radio>
@@ -794,7 +794,7 @@ generateCron()
                 <el-radio value="range">{{ $t('tools.cron.type.range') }}</el-radio>
               </el-radio-group>
               
-              <!-- 指定月配置 -->
+              <!-- 鎸囧畾鏈堥厤缃?-->
               <div v-if="info.cronConfig.month.type === 'specific'" class="mt-3">
                 <el-text class="text-sm text-gray-600 mb-2 block">{{ $t('tools.cron.specific_label', { unit: t('tools.cron.unit.month').toLowerCase() }) }}</el-text>
                 <el-checkbox-group 
@@ -813,23 +813,23 @@ generateCron()
                 </el-checkbox-group>
               </div>
               
-              <!-- 间隔月配置 -->
+              <!-- 闂撮殧鏈堥厤缃?-->
               <div v-if="info.cronConfig.month.type === 'step'" class="mt-3">
-                <el-text class="text-sm text-gray-600 mb-2 block">{{ $t('tools.crongen.step_label_prefix') }}</el-text>
+                <el-text class="text-sm text-gray-600 mb-2 block">{{ $t('tools.cron.step_label_prefix') }}</el-text>
                 <el-input-number 
                   v-model="info.cronConfig.month.step" 
                   :min="1" 
                   :max="12"
                   @change="updateConfig('month', 'step', '*')"
                 />
-                <el-text class="text-sm text-gray-600">{{ $t('tools.crongen.step_label_suffix', { unit: t('tools.crongen.unit.month') }) }}</el-text>
+                <el-text class="text-sm text-gray-600">{{ $t('tools.cron.step_label_suffix', { unit: t('tools.cron.unit.month') }) }}</el-text>
               </div>
               
-              <!-- 间隔范围配置 -->
+              <!-- 闂撮殧鑼冨洿閰嶇疆 -->
               <div v-if="info.cronConfig.month.type === 'range'" class="mt-3">
                 <div class="flex items-center gap-4">
                   <div class="flex items-center gap-2">
-                    <el-text>{{ $t('tools.crongen.range_from') }}</el-text>
+                    <el-text>{{ $t('tools.cron.range_from') }}</el-text>
                     <el-input-number 
                       v-model="info.cronConfig.month.range.start" 
                       :min="1" 
@@ -838,7 +838,7 @@ generateCron()
                     />
                   </div>
                   <div class="flex items-center gap-2">
-                    <el-text>{{ $t('tools.crongen.range_to') }}</el-text>
+                    <el-text>{{ $t('tools.cron.range_to') }}</el-text>
                     <el-input-number 
                       v-model="info.cronConfig.month.range.end" 
                       :min="1" 
@@ -850,17 +850,17 @@ generateCron()
               </div>
             </el-tab-pane>
             
-            <el-tab-pane :label="$t('tools.crongen.unit.month')" name="month">
+            <el-tab-pane :label="$t('tools.cron.unit.month')" name="month">
               <el-radio-group v-model="info.cronConfig.month.type" @change="(val) => updateConfig('month', typeof val === 'string' ? val : 'every', '*')">
-                <el-radio value="every">{{ $t('tools.crongen.type.every', { unit: t('tools.crongen.unit.month') }) }}</el-radio>
-                <el-radio value="specific">{{ $t('tools.crongen.type.specific', { unit: t('tools.crongen.unit.month') }) }}</el-radio>
-                <el-radio value="step">{{ $t('tools.crongen.type.step', { unit: t('tools.crongen.unit.month') }) }}</el-radio>
-                <el-radio value="range">{{ $t('tools.crongen.type.range') }}</el-radio>
+                <el-radio value="every">{{ $t('tools.cron.type.every', { unit: t('tools.cron.unit.month') }) }}</el-radio>
+                <el-radio value="specific">{{ $t('tools.cron.type.specific', { unit: t('tools.cron.unit.month') }) }}</el-radio>
+                <el-radio value="step">{{ $t('tools.cron.type.step', { unit: t('tools.cron.unit.month') }) }}</el-radio>
+                <el-radio value="range">{{ $t('tools.cron.type.range') }}</el-radio>
               </el-radio-group>
               
-              <!-- 指定月配置 -->
+              <!-- 鎸囧畾鏈堥厤缃?-->
               <div v-if="info.cronConfig.month.type === 'specific'" class="mt-3">
-                <el-text class="text-sm text-gray-600 mb-2 block">{{ $t('tools.crongen.specific_label', { unit: t('tools.crongen.unit.month').toLowerCase() }) }}</el-text>
+                <el-text class="text-sm text-gray-600 mb-2 block">{{ $t('tools.cron.specific_label', { unit: t('tools.cron.unit.month').toLowerCase() }) }}</el-text>
                 <el-checkbox-group 
                   v-model="info.cronConfig.month.selectedValues"
                   @change="handleMultiSelectChange('month', $event)"
@@ -877,23 +877,23 @@ generateCron()
                 </el-checkbox-group>
               </div>
               
-              <!-- 间隔月配置 -->
+              <!-- 闂撮殧鏈堥厤缃?-->
               <div v-if="info.cronConfig.month.type === 'step'" class="mt-3">
-                <el-text class="text-sm text-gray-600 mb-2 block">{{ $t('tools.crongen.step_label_prefix') }}</el-text>
+                <el-text class="text-sm text-gray-600 mb-2 block">{{ $t('tools.cron.step_label_prefix') }}</el-text>
                 <el-input-number 
                   v-model="info.cronConfig.month.step" 
                   :min="1" 
                   :max="12"
                   @change="updateConfig('month', 'step', '*')"
                 />
-                <el-text class="text-sm text-gray-600">{{ $t('tools.crongen.step_label_suffix', { unit: t('tools.crongen.unit.month') }) }}</el-text>
+                <el-text class="text-sm text-gray-600">{{ $t('tools.cron.step_label_suffix', { unit: t('tools.cron.unit.month') }) }}</el-text>
               </div>
               
-              <!-- 间隔范围配置 -->
+              <!-- 闂撮殧鑼冨洿閰嶇疆 -->
               <div v-if="info.cronConfig.month.type === 'range'" class="mt-3">
                 <div class="flex items-center gap-4">
                   <div class="flex items-center gap-2">
-                    <el-text>{{ $t('tools.crongen.range_from') }}</el-text>
+                    <el-text>{{ $t('tools.cron.range_from') }}</el-text>
                     <el-input-number 
                       v-model="info.cronConfig.month.range.start" 
                       :min="1" 
@@ -902,7 +902,7 @@ generateCron()
                     />
                   </div>
                   <div class="flex items-center gap-2">
-                    <el-text>{{ $t('tools.crongen.range_to') }}</el-text>
+                    <el-text>{{ $t('tools.cron.range_to') }}</el-text>
                     <el-input-number 
                       v-model="info.cronConfig.month.range.end" 
                       :min="1" 
@@ -914,36 +914,36 @@ generateCron()
               </div>
             </el-tab-pane>
             
-            <el-tab-pane :label="$t('tools.crongen.unit.week')" name="week">
+            <el-tab-pane :label="$t('tools.cron.unit.week')" name="week">
               <el-radio-group v-model="info.cronConfig.week.type" @change="(val) => updateConfig('week', typeof val === 'string' ? val : 'every', '?')">
-                <el-radio value="every">{{ $t('tools.crongen.type.none') }}</el-radio>
-                <el-radio value="specific">{{ $t('tools.crongen.type.specific', { unit: t('tools.crongen.unit.week') }) }}</el-radio>
-                <el-radio value="range">{{ $t('tools.crongen.type.range') }}</el-radio>
+                <el-radio value="every">{{ $t('tools.cron.type.none') }}</el-radio>
+                <el-radio value="specific">{{ $t('tools.cron.type.specific', { unit: t('tools.cron.unit.week') }) }}</el-radio>
+                <el-radio value="range">{{ $t('tools.cron.type.range') }}</el-radio>
               </el-radio-group>
               
-              <!-- 指定星期配置 -->
+              <!-- 鎸囧畾鏄熸湡閰嶇疆 -->
               <div v-if="info.cronConfig.week.type === 'specific'" class="mt-3">
-                <el-text class="text-sm text-gray-600 mb-2 block">{{ $t('tools.crongen.specific_label', { unit: t('tools.crongen.unit.week').toLowerCase() }) }}</el-text>
+                <el-text class="text-sm text-gray-600 mb-2 block">{{ $t('tools.cron.specific_label', { unit: t('tools.cron.unit.week').toLowerCase() }) }}</el-text>
                 <el-checkbox-group 
                   v-model="info.cronConfig.week.selectedValues"
                   @change="handleMultiSelectChange('week', $event)"
                   class="flex flex-wrap gap-2"
                 >
-                  <el-checkbox label="SUN">{{ $t('tools.crongen.week_days_short')[0] }}</el-checkbox>
-                  <el-checkbox label="MON">{{ $t('tools.crongen.week_days_short')[1] }}</el-checkbox>
-                  <el-checkbox label="TUE">{{ $t('tools.crongen.week_days_short')[2] }}</el-checkbox>
-                  <el-checkbox label="WED">{{ $t('tools.crongen.week_days_short')[3] }}</el-checkbox>
-                  <el-checkbox label="THU">{{ $t('tools.crongen.week_days_short')[4] }}</el-checkbox>
-                  <el-checkbox label="FRI">{{ $t('tools.crongen.week_days_short')[5] }}</el-checkbox>
-                  <el-checkbox label="SAT">{{ $t('tools.crongen.week_days_short')[6] }}</el-checkbox>
+                  <el-checkbox label="SUN">{{ $t('tools.cron.week_days_short')[0] }}</el-checkbox>
+                  <el-checkbox label="MON">{{ $t('tools.cron.week_days_short')[1] }}</el-checkbox>
+                  <el-checkbox label="TUE">{{ $t('tools.cron.week_days_short')[2] }}</el-checkbox>
+                  <el-checkbox label="WED">{{ $t('tools.cron.week_days_short')[3] }}</el-checkbox>
+                  <el-checkbox label="THU">{{ $t('tools.cron.week_days_short')[4] }}</el-checkbox>
+                  <el-checkbox label="FRI">{{ $t('tools.cron.week_days_short')[5] }}</el-checkbox>
+                  <el-checkbox label="SAT">{{ $t('tools.cron.week_days_short')[6] }}</el-checkbox>
                 </el-checkbox-group>
               </div>
               
-              <!-- 间隔范围配置 -->
+              <!-- 闂撮殧鑼冨洿閰嶇疆 -->
               <div v-if="info.cronConfig.week.type === 'range'" class="mt-3">
                 <div class="flex items-center gap-4">
                   <div class="flex items-center gap-2">
-                    <el-text>{{ $t('tools.crongen.range_from') }}</el-text>
+                    <el-text>{{ $t('tools.cron.range_from') }}</el-text>
                     <el-input-number 
                       v-model="info.cronConfig.week.range.start" 
                       :min="1" 
@@ -952,7 +952,7 @@ generateCron()
                     />
                   </div>
                   <div class="flex items-center gap-2">
-                    <el-text>{{ $t('tools.crongen.range_to') }}</el-text>
+                    <el-text>{{ $t('tools.cron.range_to') }}</el-text>
                     <el-input-number 
                       v-model="info.cronConfig.week.range.end" 
                       :min="1" 
@@ -966,7 +966,7 @@ generateCron()
           </el-tabs>
         </div>
         
-        <!-- 手机端显示滑动tabs -->
+        <!-- 鎵嬫満绔樉绀烘粦鍔╰abs -->
         <div class="block md:hidden">
           <div class="flex justify-between items-center mb-3">
             <el-button 
@@ -974,7 +974,7 @@ generateCron()
               @click="currentTabIndex--"
               size="small"
             >
-              {{ $t('tools.crongen.prev_tab') }}
+              {{ $t('tools.cron.prev_tab') }}
             </el-button>
             <el-text class="text-sm">{{ currentTabIndex + 1 }} / {{ tabList.length }}</el-text>
             <el-button 
@@ -982,7 +982,7 @@ generateCron()
               @click="currentTabIndex++"
               size="small"
             >
-              {{ $t('tools.crongen.next_tab') }}
+              {{ $t('tools.cron.next_tab') }}
             </el-button>
           </div>
           
@@ -995,15 +995,15 @@ generateCron()
             >
               <div v-if="tab.name === 'second'">
                 <el-radio-group v-model="info.cronConfig.second.type" @change="(val) => updateConfig('second', typeof val === 'string' ? val : 'every', '*')">
-                  <el-radio value="every">{{ $t('tools.crongen.type.every', { unit: t('tools.crongen.unit.second') }) }}</el-radio>
-                  <el-radio value="specific">{{ $t('tools.crongen.type.specific', { unit: t('tools.crongen.unit.second') }) }}</el-radio>
-                  <el-radio value="step">{{ $t('tools.crongen.type.step', { unit: t('tools.crongen.unit.second') }) }}</el-radio>
-                  <el-radio value="range">{{ $t('tools.crongen.type.range') }}</el-radio>
+                  <el-radio value="every">{{ $t('tools.cron.type.every', { unit: t('tools.cron.unit.second') }) }}</el-radio>
+                  <el-radio value="specific">{{ $t('tools.cron.type.specific', { unit: t('tools.cron.unit.second') }) }}</el-radio>
+                  <el-radio value="step">{{ $t('tools.cron.type.step', { unit: t('tools.cron.unit.second') }) }}</el-radio>
+                  <el-radio value="range">{{ $t('tools.cron.type.range') }}</el-radio>
                 </el-radio-group>
                 
-                <!-- 指定秒配置 -->
+                <!-- 鎸囧畾绉掗厤缃?-->
                 <div v-if="info.cronConfig.second.type === 'specific'" class="mt-3">
-                  <el-text class="text-sm text-gray-600 mb-2 block">{{ $t('tools.crongen.specific_label', { unit: t('tools.crongen.unit.second').toLowerCase() }) }}</el-text>
+                  <el-text class="text-sm text-gray-600 mb-2 block">{{ $t('tools.cron.specific_label', { unit: t('tools.cron.unit.second').toLowerCase() }) }}</el-text>
                   <el-checkbox-group 
                     v-model="info.cronConfig.second.selectedValues"
                     @change="handleMultiSelectChange('second', $event)"
@@ -1020,23 +1020,23 @@ generateCron()
                   </el-checkbox-group>
                 </div>
                 
-                <!-- 间隔秒配置 -->
+                <!-- 闂撮殧绉掗厤缃?-->
                 <div v-if="info.cronConfig.second.type === 'step'" class="mt-3">
-                  <el-text class="text-sm text-gray-600 mb-2 block">{{ $t('tools.crongen.step_label_prefix') }}</el-text>
+                  <el-text class="text-sm text-gray-600 mb-2 block">{{ $t('tools.cron.step_label_prefix') }}</el-text>
                   <el-input-number 
                     v-model="info.cronConfig.second.step" 
                     :min="1" 
                     :max="59"
                     @change="updateConfig('second', 'step', '*')"
                   />
-                  <el-text class="text-sm text-gray-600">{{ $t('tools.crongen.step_label_suffix', { unit: t('tools.crongen.unit.second') }) }}</el-text>
+                  <el-text class="text-sm text-gray-600">{{ $t('tools.cron.step_label_suffix', { unit: t('tools.cron.unit.second') }) }}</el-text>
                 </div>
                 
-                <!-- 间隔范围配置 -->
+                <!-- 闂撮殧鑼冨洿閰嶇疆 -->
                 <div v-if="info.cronConfig.second.type === 'range'" class="mt-3">
                   <div class="flex items-center gap-4">
                     <div class="flex items-center gap-2">
-                      <el-text>{{ $t('tools.crongen.range_from') }}</el-text>
+                      <el-text>{{ $t('tools.cron.range_from') }}</el-text>
                       <el-input-number 
                         v-model="info.cronConfig.second.range.start" 
                         :min="0" 
@@ -1045,7 +1045,7 @@ generateCron()
                       />
                     </div>
                     <div class="flex items-center gap-2">
-                      <el-text>{{ $t('tools.crongen.range_to') }}</el-text>
+                      <el-text>{{ $t('tools.cron.range_to') }}</el-text>
                       <el-input-number 
                         v-model="info.cronConfig.second.range.end" 
                         :min="0" 
@@ -1059,15 +1059,15 @@ generateCron()
               
               <div v-else-if="tab.name === 'minute'">
                 <el-radio-group v-model="info.cronConfig.minute.type" @change="(val) => updateConfig('minute', typeof val === 'string' ? val : 'every', '*')">
-                  <el-radio value="every">{{ $t('tools.crongen.type.every', { unit: t('tools.crongen.unit.minute') }) }}</el-radio>
-                  <el-radio value="specific">{{ $t('tools.crongen.type.specific', { unit: t('tools.crongen.unit.minute') }) }}</el-radio>
-                  <el-radio value="step">{{ $t('tools.crongen.type.step', { unit: t('tools.crongen.unit.minute') }) }}</el-radio>
-                  <el-radio value="range">{{ $t('tools.crongen.type.range') }}</el-radio>
+                  <el-radio value="every">{{ $t('tools.cron.type.every', { unit: t('tools.cron.unit.minute') }) }}</el-radio>
+                  <el-radio value="specific">{{ $t('tools.cron.type.specific', { unit: t('tools.cron.unit.minute') }) }}</el-radio>
+                  <el-radio value="step">{{ $t('tools.cron.type.step', { unit: t('tools.cron.unit.minute') }) }}</el-radio>
+                  <el-radio value="range">{{ $t('tools.cron.type.range') }}</el-radio>
                 </el-radio-group>
                 
-                <!-- 指定分配置 -->
+                <!-- 鎸囧畾鍒嗛厤缃?-->
                 <div v-if="info.cronConfig.minute.type === 'specific'" class="mt-3">
-                  <el-text class="text-sm text-gray-600 mb-2 block">{{ $t('tools.crongen.specific_label', { unit: t('tools.crongen.unit.minute').toLowerCase() }) }}</el-text>
+                  <el-text class="text-sm text-gray-600 mb-2 block">{{ $t('tools.cron.specific_label', { unit: t('tools.cron.unit.minute').toLowerCase() }) }}</el-text>
                   <el-checkbox-group 
                     v-model="info.cronConfig.minute.selectedValues"
                     @change="handleMultiSelectChange('minute', $event)"
@@ -1084,22 +1084,22 @@ generateCron()
                   </el-checkbox-group>
                 </div>
                 
-                <!-- 间隔分配置 -->
+                <!-- 闂撮殧鍒嗛厤缃?-->
                 <div v-if="info.cronConfig.minute.type === 'step'" class="mt-3">
-                  <el-text class="text-sm text-gray-600 mb-2 block">{{ $t('tools.crongen.step_label_prefix') }}</el-text>
+                  <el-text class="text-sm text-gray-600 mb-2 block">{{ $t('tools.cron.step_label_prefix') }}</el-text>
                   <el-input-number 
                     v-model="info.cronConfig.minute.step"                   :min="1" 
                   :max="59"
                   @change="updateConfig('minute', 'step', '*')"
                 />
-                <el-text class="text-sm text-gray-600">{{ $t('tools.crongen.step_label_suffix', { unit: t('tools.crongen.unit.minute') }) }}</el-text>
+                <el-text class="text-sm text-gray-600">{{ $t('tools.cron.step_label_suffix', { unit: t('tools.cron.unit.minute') }) }}</el-text>
               </div>
               
-              <!-- 间隔范围配置 -->
+              <!-- 闂撮殧鑼冨洿閰嶇疆 -->
               <div v-if="info.cronConfig.minute.type === 'range'" class="mt-3">
                 <div class="flex items-center gap-4">
                   <div class="flex items-center gap-2">
-                    <el-text>{{ $t('tools.crongen.range_from') }}</el-text>
+                    <el-text>{{ $t('tools.cron.range_from') }}</el-text>
                     <el-input-number 
                       v-model="info.cronConfig.minute.range.start" 
                       :min="0" 
@@ -1108,7 +1108,7 @@ generateCron()
                     />
                   </div>
                   <div class="flex items-center gap-2">
-                    <el-text>{{ $t('tools.crongen.range_to') }}</el-text>
+                    <el-text>{{ $t('tools.cron.range_to') }}</el-text>
                     <el-input-number 
                       v-model="info.cronConfig.minute.range.end" 
                       :min="0" 
@@ -1122,15 +1122,15 @@ generateCron()
             
             <div v-else-if="tab.name === 'hour'">
               <el-radio-group v-model="info.cronConfig.hour.type" @change="(val) => updateConfig('hour', typeof val === 'string' ? val : 'every', '*')">
-                <el-radio value="every">{{ $t('tools.crongen.type.every', { unit: t('tools.crongen.unit.hour') }) }}</el-radio>
-                <el-radio value="specific">{{ $t('tools.crongen.type.specific', { unit: t('tools.crongen.unit.hour') }) }}</el-radio>
-                <el-radio value="step">{{ $t('tools.crongen.type.step', { unit: t('tools.crongen.unit.hour') }) }}</el-radio>
-                <el-radio value="range">{{ $t('tools.crongen.type.range') }}</el-radio>
+                <el-radio value="every">{{ $t('tools.cron.type.every', { unit: t('tools.cron.unit.hour') }) }}</el-radio>
+                <el-radio value="specific">{{ $t('tools.cron.type.specific', { unit: t('tools.cron.unit.hour') }) }}</el-radio>
+                <el-radio value="step">{{ $t('tools.cron.type.step', { unit: t('tools.cron.unit.hour') }) }}</el-radio>
+                <el-radio value="range">{{ $t('tools.cron.type.range') }}</el-radio>
               </el-radio-group>
               
-              <!-- 指定时配置 -->
+              <!-- 鎸囧畾鏃堕厤缃?-->
               <div v-if="info.cronConfig.hour.type === 'specific'" class="mt-3">
-                <el-text class="text-sm text-gray-600 mb-2 block">{{ $t('tools.crongen.specific_label', { unit: t('tools.crongen.unit.hour').toLowerCase() }) }}</el-text>
+                <el-text class="text-sm text-gray-600 mb-2 block">{{ $t('tools.cron.specific_label', { unit: t('tools.cron.unit.hour').toLowerCase() }) }}</el-text>
                 <el-checkbox-group 
                   v-model="info.cronConfig.hour.selectedValues"
                   @change="handleMultiSelectChange('hour', $event)"
@@ -1147,23 +1147,23 @@ generateCron()
                 </el-checkbox-group>
               </div>
               
-              <!-- 间隔时配置 -->
+              <!-- 闂撮殧鏃堕厤缃?-->
               <div v-if="info.cronConfig.hour.type === 'step'" class="mt-3">
-                <el-text class="text-sm text-gray-600 mb-2 block">{{ $t('tools.crongen.step_label_prefix') }}</el-text>
+                <el-text class="text-sm text-gray-600 mb-2 block">{{ $t('tools.cron.step_label_prefix') }}</el-text>
                 <el-input-number 
                   v-model="info.cronConfig.hour.step" 
                   :min="1" 
                   :max="23"
                   @change="updateConfig('hour', 'step', '*')"
                 />
-                <el-text class="text-sm text-gray-600">{{ $t('tools.crongen.step_label_suffix', { unit: t('tools.crongen.unit.hour') }) }}</el-text>
+                <el-text class="text-sm text-gray-600">{{ $t('tools.cron.step_label_suffix', { unit: t('tools.cron.unit.hour') }) }}</el-text>
               </div>
               
-              <!-- 间隔范围配置 -->
+              <!-- 闂撮殧鑼冨洿閰嶇疆 -->
               <div v-if="info.cronConfig.hour.type === 'range'" class="mt-3">
                 <div class="flex items-center gap-4">
                   <div class="flex items-center gap-2">
-                    <el-text>{{ $t('tools.crongen.range_from') }}</el-text>
+                    <el-text>{{ $t('tools.cron.range_from') }}</el-text>
                     <el-input-number 
                       v-model="info.cronConfig.hour.range.start" 
                       :min="0" 
@@ -1172,7 +1172,7 @@ generateCron()
                     />
                   </div>
                   <div class="flex items-center gap-2">
-                    <el-text>{{ $t('tools.crongen.range_to') }}</el-text>
+                    <el-text>{{ $t('tools.cron.range_to') }}</el-text>
                     <el-input-number 
                       v-model="info.cronConfig.hour.range.end" 
                       :min="0" 
@@ -1186,15 +1186,15 @@ generateCron()
             
             <div v-else-if="tab.name === 'day'">
               <el-radio-group v-model="info.cronConfig.day.type" @change="(val) => updateConfig('day', typeof val === 'string' ? val : 'every', '*')">
-                <el-radio value="every">{{ $t('tools.crongen.type.every', { unit: t('tools.crongen.unit.day') }) }}</el-radio>
-                <el-radio value="specific">{{ $t('tools.crongen.type.specific', { unit: t('tools.crongen.unit.day') }) }}</el-radio>
-                <el-radio value="step">{{ $t('tools.crongen.type.step', { unit: t('tools.crongen.unit.day') }) }}</el-radio>
-                <el-radio value="range">{{ $t('tools.crongen.type.range') }}</el-radio>
+                <el-radio value="every">{{ $t('tools.cron.type.every', { unit: t('tools.cron.unit.day') }) }}</el-radio>
+                <el-radio value="specific">{{ $t('tools.cron.type.specific', { unit: t('tools.cron.unit.day') }) }}</el-radio>
+                <el-radio value="step">{{ $t('tools.cron.type.step', { unit: t('tools.cron.unit.day') }) }}</el-radio>
+                <el-radio value="range">{{ $t('tools.cron.type.range') }}</el-radio>
               </el-radio-group>
               
-              <!-- 指定日配置 -->
+              <!-- 鎸囧畾鏃ラ厤缃?-->
               <div v-if="info.cronConfig.day.type === 'specific'" class="mt-3">
-                <el-text class="text-sm text-gray-600 mb-2 block">{{ $t('tools.crongen.specific_label', { unit: t('tools.crongen.unit.day').toLowerCase() }) }}</el-text>
+                <el-text class="text-sm text-gray-600 mb-2 block">{{ $t('tools.cron.specific_label', { unit: t('tools.cron.unit.day').toLowerCase() }) }}</el-text>
                 <el-checkbox-group 
                   v-model="info.cronConfig.day.selectedValues"
                   @change="handleMultiSelectChange('day', $event)"
@@ -1211,23 +1211,23 @@ generateCron()
                 </el-checkbox-group>
               </div>
               
-              <!-- 间隔日配置 -->
+              <!-- 闂撮殧鏃ラ厤缃?-->
               <div v-if="info.cronConfig.day.type === 'step'" class="mt-3">
-                <el-text class="text-sm text-gray-600 mb-2 block">{{ $t('tools.crongen.step_label_prefix') }}</el-text>
+                <el-text class="text-sm text-gray-600 mb-2 block">{{ $t('tools.cron.step_label_prefix') }}</el-text>
                 <el-input-number 
                   v-model="info.cronConfig.day.step" 
                   :min="1" 
                   :max="31"
                   @change="updateConfig('day', 'step', '*')"
                 />
-                <el-text class="text-sm text-gray-600">{{ $t('tools.crongen.step_label_suffix', { unit: t('tools.crongen.unit.day') }) }}</el-text>
+                <el-text class="text-sm text-gray-600">{{ $t('tools.cron.step_label_suffix', { unit: t('tools.cron.unit.day') }) }}</el-text>
               </div>
               
-              <!-- 间隔范围配置 -->
+              <!-- 闂撮殧鑼冨洿閰嶇疆 -->
               <div v-if="info.cronConfig.day.type === 'range'" class="mt-3">
                 <div class="flex items-center gap-4">
                   <div class="flex items-center gap-2">
-                    <el-text>{{ $t('tools.crongen.range_from') }}</el-text>
+                    <el-text>{{ $t('tools.cron.range_from') }}</el-text>
                     <el-input-number 
                       v-model="info.cronConfig.day.range.start" 
                       :min="1" 
@@ -1236,7 +1236,7 @@ generateCron()
                     />
                   </div>
                   <div class="flex items-center gap-2">
-                    <el-text>{{ $t('tools.crongen.range_to') }}</el-text>
+                    <el-text>{{ $t('tools.cron.range_to') }}</el-text>
                     <el-input-number 
                       v-model="info.cronConfig.day.range.end" 
                       :min="1" 
@@ -1250,15 +1250,15 @@ generateCron()
             
             <div v-else-if="tab.name === 'month'">
               <el-radio-group v-model="info.cronConfig.month.type" @change="(val) => updateConfig('month', typeof val === 'string' ? val : 'every', '*')">
-                <el-radio value="every">{{ $t('tools.crongen.type.every', { unit: t('tools.crongen.unit.month') }) }}</el-radio>
-                <el-radio value="specific">{{ $t('tools.crongen.type.specific', { unit: t('tools.crongen.unit.month') }) }}</el-radio>
-                <el-radio value="step">{{ $t('tools.crongen.type.step', { unit: t('tools.crongen.unit.month') }) }}</el-radio>
-                <el-radio value="range">{{ $t('tools.crongen.type.range') }}</el-radio>
+                <el-radio value="every">{{ $t('tools.cron.type.every', { unit: t('tools.cron.unit.month') }) }}</el-radio>
+                <el-radio value="specific">{{ $t('tools.cron.type.specific', { unit: t('tools.cron.unit.month') }) }}</el-radio>
+                <el-radio value="step">{{ $t('tools.cron.type.step', { unit: t('tools.cron.unit.month') }) }}</el-radio>
+                <el-radio value="range">{{ $t('tools.cron.type.range') }}</el-radio>
               </el-radio-group>
               
-              <!-- 指定月配置 -->
+              <!-- 鎸囧畾鏈堥厤缃?-->
               <div v-if="info.cronConfig.month.type === 'specific'" class="mt-3">
-                <el-text class="text-sm text-gray-600 mb-2 block">{{ $t('tools.crongen.specific_label', { unit: t('tools.crongen.unit.month').toLowerCase() }) }}</el-text>
+                <el-text class="text-sm text-gray-600 mb-2 block">{{ $t('tools.cron.specific_label', { unit: t('tools.cron.unit.month').toLowerCase() }) }}</el-text>
                 <el-checkbox-group 
                   v-model="info.cronConfig.month.selectedValues"
                   @change="handleMultiSelectChange('month', $event)"
@@ -1275,23 +1275,23 @@ generateCron()
                 </el-checkbox-group>
               </div>
               
-              <!-- 间隔月配置 -->
+              <!-- 闂撮殧鏈堥厤缃?-->
               <div v-if="info.cronConfig.month.type === 'step'" class="mt-3">
-                <el-text class="text-sm text-gray-600 mb-2 block">{{ $t('tools.crongen.step_label_prefix') }}</el-text>
+                <el-text class="text-sm text-gray-600 mb-2 block">{{ $t('tools.cron.step_label_prefix') }}</el-text>
                 <el-input-number 
                   v-model="info.cronConfig.month.step" 
                   :min="1" 
                   :max="12"
                   @change="updateConfig('month', 'step', '*')"
                 />
-                <el-text class="text-sm text-gray-600">{{ $t('tools.crongen.step_label_suffix', { unit: t('tools.crongen.unit.month') }) }}</el-text>
+                <el-text class="text-sm text-gray-600">{{ $t('tools.cron.step_label_suffix', { unit: t('tools.cron.unit.month') }) }}</el-text>
               </div>
               
-              <!-- 间隔范围配置 -->
+              <!-- 闂撮殧鑼冨洿閰嶇疆 -->
               <div v-if="info.cronConfig.month.type === 'range'" class="mt-3">
                 <div class="flex items-center gap-4">
                   <div class="flex items-center gap-2">
-                    <el-text>{{ $t('tools.crongen.range_from') }}</el-text>
+                    <el-text>{{ $t('tools.cron.range_from') }}</el-text>
                     <el-input-number 
                       v-model="info.cronConfig.month.range.start" 
                       :min="1" 
@@ -1300,7 +1300,7 @@ generateCron()
                     />
                   </div>
                   <div class="flex items-center gap-2">
-                    <el-text>{{ $t('tools.crongen.range_to') }}</el-text>
+                    <el-text>{{ $t('tools.cron.range_to') }}</el-text>
                     <el-input-number 
                       v-model="info.cronConfig.month.range.end" 
                       :min="1" 
@@ -1314,34 +1314,34 @@ generateCron()
             
             <div v-else-if="tab.name === 'week'">
               <el-radio-group v-model="info.cronConfig.week.type" @change="(val) => updateConfig('week', typeof val === 'string' ? val : 'every', '?')">
-                <el-radio value="every">{{ $t('tools.crongen.type.none') }}</el-radio>
-                <el-radio value="specific">{{ $t('tools.crongen.type.specific', { unit: t('tools.crongen.unit.week') }) }}</el-radio>
-                <el-radio value="range">{{ $t('tools.crongen.type.range') }}</el-radio>
+                <el-radio value="every">{{ $t('tools.cron.type.none') }}</el-radio>
+                <el-radio value="specific">{{ $t('tools.cron.type.specific', { unit: t('tools.cron.unit.week') }) }}</el-radio>
+                <el-radio value="range">{{ $t('tools.cron.type.range') }}</el-radio>
               </el-radio-group>
               
-              <!-- 指定星期配置 -->
+              <!-- 鎸囧畾鏄熸湡閰嶇疆 -->
               <div v-if="info.cronConfig.week.type === 'specific'" class="mt-3">
-                <el-text class="text-sm text-gray-600 mb-2 block">{{ $t('tools.crongen.specific_label', { unit: t('tools.crongen.unit.week').toLowerCase() }) }}</el-text>
+                <el-text class="text-sm text-gray-600 mb-2 block">{{ $t('tools.cron.specific_label', { unit: t('tools.cron.unit.week').toLowerCase() }) }}</el-text>
                 <el-checkbox-group 
                   v-model="info.cronConfig.week.selectedValues"
                   @change="handleMultiSelectChange('week', $event)"
                   class="flex flex-wrap gap-2"
                 >
-                  <el-checkbox label="SUN">{{ t('tools.crongen.week_days_short_list')[0] }}</el-checkbox>
-                  <el-checkbox label="MON">{{ t('tools.crongen.week_days_short_list')[1] }}</el-checkbox>
-                  <el-checkbox label="TUE">{{ t('tools.crongen.week_days_short_list')[2] }}</el-checkbox>
-                  <el-checkbox label="WED">{{ t('tools.crongen.week_days_short_list')[3] }}</el-checkbox>
-                  <el-checkbox label="THU">{{ t('tools.crongen.week_days_short_list')[4] }}</el-checkbox>
-                  <el-checkbox label="FRI">{{ t('tools.crongen.week_days_short_list')[5] }}</el-checkbox>
-                  <el-checkbox label="SAT">{{ t('tools.crongen.week_days_short_list')[6] }}</el-checkbox>
+                  <el-checkbox label="SUN">{{ t('tools.cron.week_days_short_list')[0] }}</el-checkbox>
+                  <el-checkbox label="MON">{{ t('tools.cron.week_days_short_list')[1] }}</el-checkbox>
+                  <el-checkbox label="TUE">{{ t('tools.cron.week_days_short_list')[2] }}</el-checkbox>
+                  <el-checkbox label="WED">{{ t('tools.cron.week_days_short_list')[3] }}</el-checkbox>
+                  <el-checkbox label="THU">{{ t('tools.cron.week_days_short_list')[4] }}</el-checkbox>
+                  <el-checkbox label="FRI">{{ t('tools.cron.week_days_short_list')[5] }}</el-checkbox>
+                  <el-checkbox label="SAT">{{ t('tools.cron.week_days_short_list')[6] }}</el-checkbox>
                 </el-checkbox-group>
               </div>
               
-              <!-- 间隔范围配置 -->
+              <!-- 闂撮殧鑼冨洿閰嶇疆 -->
               <div v-if="info.cronConfig.week.type === 'range'" class="mt-3">
                 <div class="flex items-center gap-4">
                   <div class="flex items-center gap-2">
-                    <el-text>{{ $t('tools.crongen.range_from') }}</el-text>
+                    <el-text>{{ $t('tools.cron.range_from') }}</el-text>
                     <el-input-number 
                       v-model="info.cronConfig.week.range.start" 
                       :min="1" 
@@ -1350,7 +1350,7 @@ generateCron()
                     />
                   </div>
                   <div class="flex items-center gap-2">
-                    <el-text>{{ $t('tools.crongen.range_to') }}</el-text>
+                    <el-text>{{ $t('tools.cron.range_to') }}</el-text>
                     <el-input-number 
                       v-model="info.cronConfig.week.range.end" 
                       :min="1" 
@@ -1366,35 +1366,35 @@ generateCron()
       </div>
     </div>
 
-    <!-- 结果区域 -->
+    <!-- 缁撴灉鍖哄煙 -->
     <div class="p-4 rounded-2xl bg-white mb-6">
-      <el-text class="font-bold text-lg mb-3 block">{{ $t('tools.crongen.result_title') }}</el-text>
+      <el-text class="font-bold text-lg mb-3 block">{{ $t('tools.cron.result_title') }}</el-text>
       <div class="flex items-center gap-3 mb-3">
         <el-input 
           v-model="info.cronExpression" 
           class="flex-1"
-          :placeholder="$t('tools.crongen.placeholder')"
+          :placeholder="$t('tools.cron.placeholder')"
           @input="onCronInput"
         />
-        <el-button type="primary" @click="copyResult">{{ $t('tools.crongen.btn_copy') }}</el-button>
+        <el-button type="primary" @click="copyResult">{{ $t('tools.cron.btn_copy') }}</el-button>
       </div>
       
-      <!-- 执行次数配置 -->
+      <!-- 鎵ц娆℃暟閰嶇疆 -->
       <div class="flex items-center gap-3 mb-3">
-        <el-text>{{ $t('tools.crongen.exec_count_label') }}</el-text>
+        <el-text>{{ $t('tools.cron.exec_count_label') }}</el-text>
         <el-input-number 
           v-model="info.executionCount" 
           :min="1" 
           :max="200"
           @change="calculateNextExecutions"
         />
-        <el-text>{{ $t('tools.crongen.exec_count_suffix') }}</el-text>
+        <el-text>{{ $t('tools.cron.exec_count_suffix') }}</el-text>
       </div>
       
       <el-text class="text-sm text-gray-600 mb-3 block">{{ info.cronDescription }}</el-text>
       
       <div v-if="info.nextExecutions.length > 0">
-        <el-text class="font-bold text-lg mb-3 block">{{ $t('tools.crongen.next_exec_title', { count: info.executionCount }) }}</el-text>
+        <el-text class="font-bold text-lg mb-3 block">{{ $t('tools.cron.next_exec_title', { count: info.executionCount }) }}</el-text>
         <div class="space-y-2">
           <div 
             v-for="(execution, index) in info.nextExecutions" 
@@ -1407,9 +1407,9 @@ generateCron()
       </div>
     </div>
 
-    <!-- 预设示例 -->
+    <!-- 棰勮绀轰緥 -->
     <div class="mb-6">
-      <el-text class="font-bold text-lg mb-3 block">{{ $t('tools.crongen.examples_title') }}</el-text>
+      <el-text class="font-bold text-lg mb-3 block">{{ $t('tools.cron.examples_title') }}</el-text>
       <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-3">
         <el-card 
           v-for="(example, index) in info.presetExamples" 
@@ -1428,29 +1428,29 @@ generateCron()
       </div>
     </div>
 
-    <!-- 使用文档 -->
+    <!-- 浣跨敤鏂囨。 -->
     <div class="mb-6">
-      <el-text class="font-bold text-lg mb-3 block">{{ $t('tools.crongen.usage_title') }}</el-text>
+      <el-text class="font-bold text-lg mb-3 block">{{ $t('tools.cron.usage_title') }}</el-text>
       <div class="space-y-4 text-sm text-gray-700">
         <div>
-          <h4 class="font-bold mb-2">{{ $t('tools.crongen.usage.format_title') }}</h4>
-          <p class="mb-2">{{ $t('tools.crongen.usage.format_desc') }}</p>
-          <p class="text-xs text-gray-500">{{ $t('tools.crongen.usage.format_example') }}</p>
+          <h4 class="font-bold mb-2">{{ $t('tools.cron.usage.format_title') }}</h4>
+          <p class="mb-2">{{ $t('tools.cron.usage.format_desc') }}</p>
+          <p class="text-xs text-gray-500">{{ $t('tools.cron.usage.format_example') }}</p>
         </div>
         
         <div>
-          <h4 class="font-bold mb-2">{{ $t('tools.crongen.usage.char_title') }}</h4>
+          <h4 class="font-bold mb-2">{{ $t('tools.cron.usage.char_title') }}</h4>
           <ul class="list-disc list-inside space-y-1 text-xs">
-            <li v-for="(char, idx) in $t('tools.crongen.usage.chars')" :key="idx">
+            <li v-for="(char, idx) in $t('tools.cron.usage.chars')" :key="idx">
               <code>{{ char.split(':')[0] }}</code>: {{ char.split(':')[1] }}
             </li>
           </ul>
         </div>
         
         <div>
-          <h4 class="font-bold mb-2">{{ $t('tools.crongen.usage.caution_title') }}</h4>
+          <h4 class="font-bold mb-2">{{ $t('tools.cron.usage.caution_title') }}</h4>
           <ul class="list-disc list-inside space-y-1 text-xs">
-            <li v-for="(caution, idx) in $t('tools.crongen.usage.cautions')" :key="idx">
+            <li v-for="(caution, idx) in $t('tools.cron.usage.cautions')" :key="idx">
               {{ caution }}
             </li>
           </ul>
@@ -1459,9 +1459,9 @@ generateCron()
     </div>
 
     <!-- desc -->
-    <ToolDetail :title="$t('tools.crongen.detail_title')">
+    <ToolDetail :title="$t('tools.cron.detail_title')">
       <el-text>
-        {{ $t('tools.crongen.detail_content') }}
+        {{ $t('tools.cron.detail_content') }}
       </el-text> 
     </ToolDetail>
   </div>

@@ -1,11 +1,14 @@
 <script setup lang="ts">
 import { reactive, ref, onMounted, onUnmounted, computed } from 'vue'
+import { useI18n } from 'vue-i18n'
 import DetailHeader from '@/components/Layout/DetailHeader/DetailHeader.vue'
 import ToolDetail from '@/components/Layout/ToolDetail/ToolDetail.vue'
 
-const info = reactive({
-  title: "记忆力翻牌",
-})
+const { t } = useI18n()
+
+const info = computed(() => ({
+  title: 'tools.memory.title'
+}))
 
 // 游戏状态
 const gameState = reactive({
@@ -240,30 +243,30 @@ onUnmounted(() => {
 
 <template>
   <div class="flex flex-col mt-3 ml-4 flex-1 mr-3">
-    <DetailHeader :title="info.title"></DetailHeader>
+    <DetailHeader :title="$t(info.title)"></DetailHeader>
 
     <div class="p-6 rounded-2xl bg-white shadow-sm border border-gray-200">
       <div class="max-w-2xl mx-auto">
         <!-- 游戏信息 -->
         <div class="grid grid-cols-2 md:grid-cols-5 gap-4 mb-6">
           <div class="text-center bg-blue-50 p-3 rounded-lg border border-blue-200">
-            <h3 class="text-sm font-medium text-blue-900">得分</h3>
+            <h3 class="text-sm font-medium text-blue-900">{{ $t('tools.memory.score') }}</h3>
             <p class="text-xl font-bold text-blue-600">{{ gameState.score }}</p>
           </div>
           <div class="text-center bg-green-50 p-3 rounded-lg border border-green-200">
-            <h3 class="text-sm font-medium text-green-900">最高分</h3>
+            <h3 class="text-sm font-medium text-green-900">{{ $t('tools.memory.high_score') }}</h3>
             <p class="text-xl font-bold text-green-600">{{ gameState.highScore }}</p>
           </div>
           <div class="text-center bg-purple-50 p-3 rounded-lg border border-purple-200">
-            <h3 class="text-sm font-medium text-purple-900">步数</h3>
+            <h3 class="text-sm font-medium text-purple-900">{{ $t('tools.memory.moves') }}</h3>
             <p class="text-xl font-bold text-purple-600">{{ gameState.moves }}</p>
           </div>
           <div class="text-center bg-orange-50 p-3 rounded-lg border border-orange-200">
-            <h3 class="text-sm font-medium text-orange-900">时间</h3>
+            <h3 class="text-sm font-medium text-orange-900">{{ $t('tools.memory.time') }}</h3>
             <p class="text-xl font-bold text-orange-600">{{ formatTime(gameState.time) }}</p>
           </div>
           <div class="text-center bg-indigo-50 p-3 rounded-lg border border-indigo-200">
-            <h3 class="text-sm font-medium text-indigo-900">格子数</h3>
+            <h3 class="text-sm font-medium text-indigo-900">{{ $t('tools.memory.grid_size') }}</h3>
             <p class="text-xl font-bold text-indigo-600">{{ selectedGridSize }}×{{ selectedGridSize }}</p>
           </div>
         </div>
@@ -271,7 +274,7 @@ onUnmounted(() => {
         <!-- 格子数选择 -->
         <div v-if="!isMobile" class="flex justify-center mb-6">
           <div class="bg-gray-50 p-4 rounded-lg border border-gray-200">
-            <h3 class="text-sm font-medium text-gray-700 mb-3 text-center">选择格子数</h3>
+            <h3 class="text-sm font-medium text-gray-700 mb-3 text-center">{{ $t('tools.memory.select_grid') }}</h3>
             <div class="flex gap-2">
               <el-button
                 v-for="option in availableGridSizeOptions"
@@ -295,7 +298,7 @@ onUnmounted(() => {
             type="primary"
             class="bg-blue-500 hover:bg-blue-600 border-blue-600"
           >
-            开始游戏
+            {{ $t('tools.memory.btn_start') }}
           </el-button>
           <el-button 
             v-if="gameState.isPlaying"
@@ -303,7 +306,7 @@ onUnmounted(() => {
             type="warning"
             class="bg-orange-500 hover:bg-orange-600 border-orange-600"
           >
-            重新开始
+            {{ $t('tools.memory.btn_restart') }}
           </el-button>
           <el-button 
             v-if="gameState.gameOver"
@@ -311,7 +314,7 @@ onUnmounted(() => {
             type="success"
             class="bg-green-500 hover:bg-green-600 border-green-600"
           >
-            再来一局
+            {{ $t('tools.memory.btn_play_again') }}
           </el-button>
           <el-button 
             v-if="gameState.isPlaying || gameState.gameOver"
@@ -319,7 +322,7 @@ onUnmounted(() => {
             type="info"
             class="bg-gray-500 hover:bg-gray-600 border-gray-600"
           >
-            重置游戏
+            {{ $t('tools.memory.btn_reset') }}
           </el-button>
         </div>
 
@@ -372,55 +375,48 @@ onUnmounted(() => {
         <!-- 游戏结束提示 -->
         <div v-if="gameState.gameOver" class="text-center mb-6">
           <div class="bg-green-50 border-2 border-green-300 rounded-lg p-4 shadow-md">
-            <h3 class="text-lg font-medium text-green-900 mb-2">恭喜完成！</h3>
-            <p class="text-green-600">最终得分: {{ gameState.score }}</p>
-            <p class="text-green-600">用时: {{ formatTime(gameState.time) }}</p>
-            <p class="text-green-600">步数: {{ gameState.moves }}</p>
+            <h3 class="text-lg font-medium text-green-900 mb-2">{{ $t('tools.memory.congrats') }}</h3>
+            <p class="text-green-600">{{ $t('tools.memory.final_score') }}{{ gameState.score }}</p>
+            <p class="text-green-600">{{ $t('tools.memory.time_used') }}{{ formatTime(gameState.time) }}</p>
+            <p class="text-green-600">{{ $t('tools.memory.moves_used') }}{{ gameState.moves }}</p>
             <p v-if="gameState.score > gameState.highScore" class="text-yellow-600 font-medium mt-2">
-              新纪录！恭喜你创造了新的最高分！
+              {{ $t('tools.memory.new_record') }}
             </p>
           </div>
         </div>
 
         <!-- 游戏说明 -->
         <div class="bg-gray-50 rounded-lg p-4 border-2 border-gray-200 shadow-sm">
-          <h3 class="text-lg font-medium text-gray-900 mb-3">游戏说明</h3>
+          <h3 class="text-lg font-medium text-gray-900 mb-3">{{ $t('tools.memory.instructions') }}</h3>
           <div class="grid grid-cols-1 md:grid-cols-2 gap-4 text-sm text-gray-600">
             <div class="bg-white p-3 rounded border border-gray-200">
-              <p><strong class="text-blue-600">游戏目标：</strong>找到所有相同的卡片配对</p>
-              <p><strong class="text-blue-600">操作方式：</strong>点击卡片翻开，找到相同的两张卡片</p>
+              <p><strong class="text-blue-600">{{ $t('tools.memory.goal_label') }}</strong>{{ $t('tools.memory.goal_content') }}</p>
+              <p><strong class="text-blue-600">{{ $t('tools.memory.controls_label') }}</strong>{{ $t('tools.memory.controls_content') }}</p>
             </div>
             <div class="bg-white p-3 rounded border border-gray-200">
-              <p><strong class="text-green-600">得分规则：</strong>每对匹配+10分，时间越短得分越高</p>
-              <p><strong class="text-red-600">挑战：</strong>用最少的步数和时间完成游戏</p>
+              <p><strong class="text-green-600">{{ $t('tools.memory.score_rule_label') }}</strong>{{ $t('tools.memory.score_rule_content') }}</p>
+              <p><strong class="text-red-600">{{ $t('tools.memory.challenge_label') }}</strong>{{ $t('tools.memory.challenge_content') }}</p>
             </div>
           </div>
         </div>
 
         <!-- 底部说明 -->
         <div class="mt-6 bg-blue-50 rounded-lg p-4 border border-blue-200">
-          <h3 class="text-sm font-medium text-blue-900 mb-2">设备适配说明</h3>
+          <h3 class="text-sm font-medium text-blue-900 mb-2">{{ $t('tools.memory.device_note_title') }}</h3>
           <div class="text-xs text-blue-700 space-y-1">
-            <p><strong>移动端（手机/平板）：</strong>自动适配为4×4格子，确保最佳游戏体验</p>
-            <p><strong>桌面端（电脑）：</strong>支持6×6到9×9多种格子数，可根据难度选择</p>
-            <p><strong>操作提示：</strong>移动端点击卡片，桌面端支持鼠标点击</p>
-            <p><strong>性能优化：</strong>大格子数游戏建议在性能较好的设备上运行</p>
+            <p><strong>{{ $t('tools.memory.device_mobile') }}</strong>{{ $t('tools.memory.device_mobile_desc') }}</p>
+            <p><strong>{{ $t('tools.memory.device_desktop') }}</strong>{{ $t('tools.memory.device_desktop_desc') }}</p>
+            <p><strong>{{ $t('tools.memory.device_tip') }}</strong>{{ $t('tools.memory.device_tip_desc') }}</p>
+            <p><strong>{{ $t('tools.memory.device_perf') }}</strong>{{ $t('tools.memory.device_perf_desc') }}</p>
           </div>
         </div>
       </div>
     </div>
 
     <!-- 工具详情 -->
-    <ToolDetail title="描述">
+    <ToolDetail :title="$t('tools.memory.desc_title')">
       <el-text>
-        记忆力翻牌配对游戏，考验你的记忆力：<br><br>
-        
-        游戏特色：经典翻牌配对玩法，多种可爱表情符号，实时得分统计<br>
-        操作方式：点击卡片翻开，找到相同的两张卡片进行配对<br>
-        游戏目标：用最少的步数和时间找到所有卡片配对<br>
-        训练效果：锻炼记忆力、观察力和反应速度<br><br>
-        
-        适合所有年龄段，是训练大脑记忆能力的益智游戏。
+        {{ $t('tools.memory.desc_content') }}
       </el-text>
     </ToolDetail>
   </div>

@@ -261,7 +261,7 @@ onMounted(() => {
 
 <template>
   <div class="flex flex-col mt-3 flex-1">
-    <DetailHeader :title="info.title"></DetailHeader>
+    <DetailHeader :title="$t(info.title)"></DetailHeader>
 
     <!-- 面试配置阶段 -->
     <div v-if="!showChat" class="space-y-6">

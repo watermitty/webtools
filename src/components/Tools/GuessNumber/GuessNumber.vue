@@ -1,12 +1,15 @@
 <script setup lang="ts">
-import { reactive, ref, nextTick } from 'vue'
+import { reactive, ref, nextTick, computed } from 'vue'
+import { useI18n } from 'vue-i18n'
 import DetailHeader from '@/components/Layout/DetailHeader/DetailHeader.vue'
 import ToolDetail from '@/components/Layout/ToolDetail/ToolDetail.vue'
 import { ElMessage } from 'element-plus'
 
-const info = reactive({
-  title: "猜数字游戏",
-})
+const { t } = useI18n()
+
+const info = computed(() => ({
+  title: 'tools.guessnum.title'
+}))
 
 // 范围选项
 const rangeOptions = [
@@ -145,7 +148,7 @@ const getCurrentDifficulty = () => {
 
 <template>
   <div class="flex flex-col mt-3 flex-1">
-    <DetailHeader :title="info.title"></DetailHeader>
+    <DetailHeader :title="$t(info.title)"></DetailHeader>
 
     <div class="p-4 rounded-2xl bg-white shadow-sm">
       <!-- 游戏主界面 -->
@@ -153,8 +156,8 @@ const getCurrentDifficulty = () => {
         <!-- 游戏标题和说明 -->
         <div class="text-center mb-6">
           <div class="text-3xl mb-2">🎯</div>
-          <h2 class="text-xl font-bold text-gray-800 mb-2">猜数字游戏</h2>
-          <p class="text-gray-600 text-sm">选择难度，挑战你的逻辑推理能力</p>
+          <h2 class="text-xl font-bold text-gray-800 mb-2">{{ $t('tools.guessnum.game_title') }}</h2>
+          <p class="text-gray-600 text-sm">{{ $t('tools.guessnum.game_subtitle') }}</p>
         </div>
 
         <!-- 游戏未开始 -->
@@ -165,7 +168,7 @@ const getCurrentDifficulty = () => {
             
             <!-- 难度选择 -->
             <div class="mb-4">
-              <label class="block text-sm font-medium text-gray-700 mb-2">选择难度</label>
+              <label class="block text-sm font-medium text-gray-700 mb-2">{{ $t('tools.guessnum.select_difficulty') }}</label>
               <select 
                 v-model="gameState.selectedRangeIndex"
                 class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none"
@@ -180,7 +183,7 @@ const getCurrentDifficulty = () => {
               @click="startNewGame"
               class="w-full bg-gradient-to-r from-blue-500 to-purple-500 text-white py-3 px-6 rounded-lg font-medium hover:from-blue-600 hover:to-purple-600 transition-all duration-200 transform hover:scale-105"
             >
-              开始游戏
+              {{ $t('tools.guessnum.start_game') }}
             </button>
           </div>
         </div>
@@ -217,7 +220,7 @@ const getCurrentDifficulty = () => {
                 :disabled="!gameState.userGuess"
                 class="px-6 py-3 bg-blue-500 text-white rounded-lg font-medium hover:bg-blue-600 disabled:bg-gray-300 disabled:cursor-not-allowed transition-colors duration-200"
               >
-                猜测
+                {{ $t('tools.guessnum.guess') }}
               </button>
             </div>
             <p class="text-xs text-gray-500 text-center mt-2">按 Enter 键快速提交</p>
@@ -236,7 +239,7 @@ const getCurrentDifficulty = () => {
           <div v-if="gameState.gameStatus === 'won'" class="text-center mb-4">
             <div class="bg-gradient-to-r from-green-50 to-emerald-50 rounded-xl p-6">
               <div class="text-4xl mb-3">🎉</div>
-              <h3 class="text-xl font-bold text-green-600 mb-2">游戏胜利！</h3>
+              <h3 class="text-xl font-bold text-green-600 mb-2">{{ $t('tools.guessnum.you_win') }}</h3>
               <p class="text-gray-700 mb-2">你用了 <span class="font-bold text-green-600">{{ gameState.attempts }}</span> 次就猜中了</p>
               <p class="text-sm text-gray-600 mb-3">难度: {{ getCurrentDifficulty().difficulty }} ({{ getCurrentDifficulty().label }})</p>
               <div class="mb-4">
@@ -248,14 +251,14 @@ const getCurrentDifficulty = () => {
                 @click="startNewGame"
                 class="w-full bg-gradient-to-r from-green-500 to-emerald-500 text-white py-3 px-6 rounded-lg font-medium hover:from-green-600 hover:to-emerald-600 transition-all duration-200 transform hover:scale-105"
               >
-                再玩一局
+                {{ $t('tools.guessnum.play_again') }}
               </button>
             </div>
           </div>
 
           <!-- 游戏历史 -->
           <div v-if="gameState.gameHistory.length > 0" class="mb-4">
-            <h4 class="text-sm font-medium text-gray-700 mb-2">猜测历史</h4>
+            <h4 class="text-sm font-medium text-gray-700 mb-2">{{ $t('tools.guessnum.history') }}</h4>
             <div class="space-y-2">
               <div 
                 v-for="(record, index) in gameState.gameHistory.slice().reverse()" 
@@ -278,14 +281,14 @@ const getCurrentDifficulty = () => {
                 @click="startNewGame"
                 class="text-blue-500 hover:text-blue-700 text-sm underline transition-colors duration-200"
               >
-                重新开始
+                {{ $t('tools.guessnum.restart') }}
               </button>
               <span v-if="gameState.attempts > 0 || gameState.gameHistory.length > 0" class="text-gray-300">|</span>
               <button 
                 @click="resetToSelection"
                 class="text-gray-500 hover:text-gray-700 text-sm underline transition-colors duration-200"
               >
-                选择难度
+                {{ $t('tools.guessnum.change_difficulty') }}
               </button>
             </div>
           </div>
@@ -294,14 +297,14 @@ const getCurrentDifficulty = () => {
     </div>
 
     <!-- 游戏说明 -->
-    <ToolDetail title="游戏说明">
+    <ToolDetail :title="$t('tools.guessnum.instructions_title')">
       <div class="space-y-2 text-sm text-gray-600">
-        <p>• 选择不同的难度等级，挑战不同范围的数字猜测</p>
-        <p>• 系统会根据你选择的范围随机选择一个数字</p>
-        <p>• 每次猜测后会给出"太大了"或"太小了"的提示</p>
-        <p>• 尽量用最少的次数猜中答案</p>
-        <p>• 难度越高，获得好评价需要的猜测次数也会相应调整</p>
-        <p>• 理论最少次数基于二分查找算法计算</p>
+        <p>{{ $t('tools.guessnum.instruction_1') }}</p>
+        <p>{{ $t('tools.guessnum.instruction_2') }}</p>
+        <p>{{ $t('tools.guessnum.instruction_3') }}</p>
+        <p>{{ $t('tools.guessnum.instruction_4') }}</p>
+        <p>{{ $t('tools.guessnum.instruction_5') }}</p>
+        <p>{{ $t('tools.guessnum.instruction_6') }}</p>
       </div>
     </ToolDetail>
   </div>

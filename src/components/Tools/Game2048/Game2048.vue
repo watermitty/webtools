@@ -1,11 +1,14 @@
 <script setup lang="ts">
-import { reactive, ref, onMounted, onUnmounted } from 'vue'
+import { reactive, ref, onMounted, onUnmounted, computed } from 'vue'
+import { useI18n } from 'vue-i18n'
 import DetailHeader from '@/components/Layout/DetailHeader/DetailHeader.vue'
 import ToolDetail from '@/components/Layout/ToolDetail/ToolDetail.vue'
 
-const info = reactive({
-  title: "2048",
-})
+const { t } = useI18n()
+
+const info = computed(() => ({
+  title: 'tools.game2048.title'
+}))
 
 // 游戏状态
 const gameState = reactive({
@@ -522,26 +525,26 @@ onUnmounted(() => {
 
 <template>
   <div class="flex flex-col mt-3 ml-4 flex-1 mr-3">
-    <DetailHeader :title="info.title"></DetailHeader>
+    <DetailHeader :title="$t(info.title)"></DetailHeader>
 
     <div class="p-6 rounded-2xl bg-white shadow-sm border border-gray-200">
       <div class="max-w-2xl mx-auto">
         <!-- 游戏信息 -->
         <div class="grid grid-cols-2 md:grid-cols-4 gap-4 mb-6">
           <div class="text-center bg-blue-50 p-3 rounded-lg border border-blue-200">
-            <h3 class="text-sm font-medium text-blue-900">得分</h3>
+            <h3 class="text-sm font-medium text-blue-900">{{ $t('tools.game2048.score') }}</h3>
             <p class="text-xl font-bold text-blue-600">{{ gameState.score }}</p>
           </div>
           <div class="text-center bg-green-50 p-3 rounded-lg border border-green-200">
-            <h3 class="text-sm font-medium text-green-900">最高分</h3>
+            <h3 class="text-sm font-medium text-green-900">{{ $t('tools.game2048.high_score') }}</h3>
             <p class="text-xl font-bold text-green-600">{{ gameState.highScore }}</p>
           </div>
           <div class="text-center bg-purple-50 p-3 rounded-lg border border-purple-200">
-            <h3 class="text-sm font-medium text-purple-900">最佳方块</h3>
+            <h3 class="text-sm font-medium text-purple-900">{{ $t('tools.game2048.best_tile') }}</h3>
             <p class="text-xl font-bold text-purple-600">{{ gameState.bestTile }}</p>
           </div>
           <div class="text-center bg-indigo-50 p-3 rounded-lg border border-indigo-200">
-            <h3 class="text-sm font-medium text-indigo-900">游戏板</h3>
+            <h3 class="text-sm font-medium text-indigo-900">{{ $t('tools.game2048.board') }}</h3>
             <p class="text-xl font-bold text-indigo-600">{{ config.gridSize }}×{{ config.gridSize }}</p>
           </div>
         </div>
@@ -554,7 +557,7 @@ onUnmounted(() => {
             type="success"
             class="bg-green-500 hover:bg-green-600 border-green-600"
           >
-            重新开始
+            {{ $t('tools.game2048.btn_restart') }}
           </el-button>
         </div>
 
@@ -592,34 +595,34 @@ onUnmounted(() => {
         <!-- 获胜提示 -->
         <div v-if="gameState.won && !gameState.gameOver" class="text-center mb-6">
           <div class="bg-yellow-50 border-2 border-yellow-300 rounded-lg p-4 shadow-md">
-            <h3 class="text-lg font-medium text-yellow-900 mb-2">恭喜获胜！</h3>
-            <p class="text-yellow-600">你已经达到了2048！可以继续游戏挑战更高分数</p>
+            <h3 class="text-lg font-medium text-yellow-900 mb-2">{{ $t('tools.game2048.congrats_win') }}</h3>
+            <p class="text-yellow-600">{{ $t('tools.game2048.continue_playing') }}</p>
           </div>
         </div>
 
         <!-- 游戏结束提示 -->
         <div v-if="gameState.gameOver" class="text-center mb-6">
           <div class="bg-red-50 border-2 border-red-300 rounded-lg p-4 shadow-md">
-            <h3 class="text-lg font-medium text-red-900 mb-2">游戏结束！</h3>
-            <p class="text-red-600">最终得分: {{ gameState.score }}</p>
-            <p class="text-red-600">最佳方块: {{ gameState.bestTile }}</p>
+            <h3 class="text-lg font-medium text-red-900 mb-2">{{ $t('tools.game2048.game_over') }}</h3>
+            <p class="text-red-600">{{ $t('tools.game2048.final_score') }}{{ gameState.score }}</p>
+            <p class="text-red-600">{{ $t('tools.game2048.best_tile_label') }}{{ gameState.bestTile }}</p>
             <p v-if="gameState.score > gameState.highScore" class="text-yellow-600 font-medium mt-2">
-              新纪录！恭喜你创造了新的最高分！
+              {{ $t('tools.game2048.new_record') }}
             </p>
           </div>
         </div>
 
         <!-- 游戏说明 -->
         <div class="bg-gray-50 rounded-lg p-4 border-2 border-gray-200 shadow-sm">
-          <h3 class="text-lg font-medium text-gray-900 mb-3">游戏说明</h3>
+          <h3 class="text-lg font-medium text-gray-900 mb-3">{{ $t('tools.game2048.instructions') }}</h3>
           <div class="grid grid-cols-1 md:grid-cols-2 gap-4 text-sm text-gray-600">
             <div class="bg-white p-3 rounded border border-gray-200">
-              <p><strong class="text-blue-600">游戏目标：</strong>通过滑动合并相同数字，达到2048</p>
-              <p><strong class="text-blue-600">操作方式：</strong>键盘方向键/WASD，鼠标拖拽，触摸滑动</p>
+              <p><strong class="text-blue-600">{{ $t('tools.game2048.goal_label') }}</strong>{{ $t('tools.game2048.goal_content') }}</p>
+              <p><strong class="text-blue-600">{{ $t('tools.game2048.controls_label') }}</strong>{{ $t('tools.game2048.controls_content') }}</p>
             </div>
             <div class="bg-white p-3 rounded border border-gray-200">
-              <p><strong class="text-green-600">合并规则：</strong>相同数字的方块相撞时会合并</p>
-              <p><strong class="text-red-600">挑战：</strong>每次移动后会随机出现新的数字</p>
+              <p><strong class="text-green-600">{{ $t('tools.game2048.merge_label') }}</strong>{{ $t('tools.game2048.merge_content') }}</p>
+              <p><strong class="text-red-600">{{ $t('tools.game2048.challenge_label') }}</strong>{{ $t('tools.game2048.challenge_content') }}</p>
             </div>
           </div>
         </div>
@@ -627,16 +630,9 @@ onUnmounted(() => {
     </div>
 
     <!-- 工具详情 -->
-    <ToolDetail title="描述">
+    <ToolDetail :title="$t('tools.game2048.desc_title')">
       <el-text>
-        经典2048益智游戏，考验你的策略思维和数字逻辑：<br><br>
-        
-        游戏特色：经典2048玩法，数字合并机制，实时得分统计<br>
-        操作方式：使用方向键控制方块移动，相同数字自动合并<br>
-        游戏目标：通过策略性移动，将数字合并到2048或更高<br>
-        训练效果：锻炼逻辑思维、策略规划和空间布局能力<br><br>
-        
-        适合所有年龄段，是经典的益智游戏。
+        {{ $t('tools.game2048.desc_content') }}
       </el-text>
     </ToolDetail>
   </div>

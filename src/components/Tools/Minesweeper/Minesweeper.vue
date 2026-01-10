@@ -1,11 +1,14 @@
 <script setup lang="ts">
-import { reactive, ref, onMounted, onUnmounted } from 'vue'
+import { reactive, ref, onMounted, onUnmounted, computed } from 'vue'
+import { useI18n } from 'vue-i18n'
 import DetailHeader from '@/components/Layout/DetailHeader/DetailHeader.vue'
 import ToolDetail from '@/components/Layout/ToolDetail/ToolDetail.vue'
 
-const info = reactive({
-  title: "扫雷",
-})
+const { t } = useI18n()
+
+const info = computed(() => ({
+  title: 'tools.minesweeper.title'
+}))
 
 // 游戏状态
 const gameState = reactive({
@@ -354,30 +357,30 @@ onUnmounted(() => {
 
 <template>
   <div class="flex flex-col mt-3 ml-4 flex-1 mr-3">
-    <DetailHeader :title="info.title"></DetailHeader>
+    <DetailHeader :title="$t(info.title)"></DetailHeader>
 
     <div class="p-6 rounded-2xl bg-white shadow-sm border border-gray-200">
       <div class="max-w-4xl mx-auto">
         <!-- 游戏信息 -->
         <div class="grid grid-cols-2 md:grid-cols-5 gap-4 mb-6">
           <div class="text-center bg-blue-50 p-3 rounded-lg border border-blue-200">
-            <h3 class="text-sm font-medium text-blue-900">时间</h3>
+            <h3 class="text-sm font-medium text-blue-900">{{ $t('tools.minesweeper.time') }}</h3>
             <p class="text-xl font-bold text-blue-600">{{ formatTime(gameState.time) }}</p>
           </div>
           <div class="text-center bg-green-50 p-3 rounded-lg border border-green-200">
-            <h3 class="text-sm font-medium text-green-900">最高分</h3>
+            <h3 class="text-sm font-medium text-green-900">{{ $t('tools.minesweeper.best_time') }}</h3>
             <p class="text-xl font-bold text-green-600">{{ formatTime(gameState.highScore) }}</p>
           </div>
           <div class="text-center bg-red-50 p-3 rounded-lg border border-red-200">
-            <h3 class="text-sm font-medium text-red-900">剩余地雷</h3>
+            <h3 class="text-sm font-medium text-red-900">{{ $t('tools.minesweeper.mines_left') }}</h3>
             <p class="text-xl font-bold text-red-600">{{ gameState.minesLeft }}</p>
           </div>
           <div class="text-center bg-purple-50 p-3 rounded-lg border border-purple-200">
-            <h3 class="text-sm font-medium text-purple-900">游戏板</h3>
+            <h3 class="text-sm font-medium text-purple-900">{{ $t('tools.minesweeper.board') }}</h3>
             <p class="text-xl font-bold text-purple-600">{{ config.width }}×{{ config.height }}</p>
           </div>
           <div class="text-center bg-orange-50 p-3 rounded-lg border border-orange-200">
-            <h3 class="text-sm font-medium text-orange-900">地雷数</h3>
+            <h3 class="text-sm font-medium text-orange-900">{{ $t('tools.minesweeper.mine_count') }}</h3>
             <p class="text-xl font-bold text-orange-600">{{ config.mines }}</p>
           </div>
         </div>
@@ -390,7 +393,7 @@ onUnmounted(() => {
             type="success"
             class="bg-green-500 hover:bg-green-600 border-green-600"
           >
-            重新开始
+            {{ $t('tools.minesweeper.btn_restart') }}
           </el-button>
         </div>
 
@@ -431,10 +434,10 @@ onUnmounted(() => {
         <!-- 获胜提示 -->
         <div v-if="gameState.won" class="text-center mb-6">
           <div class="bg-green-50 border-2 border-green-300 rounded-lg p-4 shadow-md">
-            <h3 class="text-lg font-medium text-green-900 mb-2">恭喜获胜！</h3>
-            <p class="text-green-600">用时: {{ formatTime(gameState.time) }}</p>
+            <h3 class="text-lg font-medium text-green-900 mb-2">{{ $t('tools.minesweeper.congrats') }}</h3>
+            <p class="text-green-600">{{ $t('tools.minesweeper.time_used') }}{{ formatTime(gameState.time) }}</p>
             <p v-if="gameState.time < gameState.highScore || gameState.highScore === 0" class="text-yellow-600 font-medium mt-2">
-              新纪录！恭喜你创造了新的最快时间！
+              {{ $t('tools.minesweeper.new_record') }}
             </p>
           </div>
         </div>
@@ -442,9 +445,9 @@ onUnmounted(() => {
         <!-- 游戏结束提示 -->
         <div v-if="gameState.gameOver" class="text-center mb-6">
           <div class="bg-red-50 border-2 border-red-300 rounded-lg p-4 shadow-md">
-            <h3 class="text-lg font-medium text-red-900 mb-2">游戏结束！</h3>
-            <p class="text-red-600">用时: {{ formatTime(gameState.time) }}</p>
-            <p class="text-red-600">踩到地雷了，再接再厉！</p>
+            <h3 class="text-lg font-medium text-red-900 mb-2">{{ $t('tools.minesweeper.game_over') }}</h3>
+            <p class="text-red-600">{{ $t('tools.minesweeper.time_used') }}{{ formatTime(gameState.time) }}</p>
+            <p class="text-red-600">{{ $t('tools.minesweeper.hit_mine') }}</p>
           </div>
         </div>
 
@@ -503,16 +506,9 @@ onUnmounted(() => {
     </div>
 
     <!-- 工具详情 -->
-    <ToolDetail title="描述">
+    <ToolDetail :title="$t('tools.minesweeper.desc_title')">
       <el-text>
-        经典扫雷游戏，考验你的逻辑推理能力：<br><br>
-        
-        游戏特色：经典扫雷玩法，数字提示系统，实时计时统计<br>
-        操作方式：左键点击揭示格子，右键标记地雷，数字表示周围地雷数<br>
-        游戏目标：找出所有地雷，避免踩到地雷，挑战最快时间<br>
-        训练效果：锻炼逻辑思维、推理能力和空间判断能力<br><br>
-        
-        适合所有年龄段，是经典的益智游戏。
+        {{ $t('tools.minesweeper.desc_content') }}
       </el-text>
     </ToolDetail>
   </div>

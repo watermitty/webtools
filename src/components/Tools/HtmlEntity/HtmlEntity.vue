@@ -24,7 +24,7 @@ const clear = () => {
   cleanContent.value = ''
 }
 
-const exampleRaw = '<div class="note">Tom & Jerry > Mickey & Minnie © 2025</div>'
+const exampleRaw = '<div class="note">Tom & Jerry > Mickey & Minnie © 2026</div>'
 const exampleEntity = escape(exampleRaw)
 const fillRaw = () => { content.value = exampleRaw; cleanContent.value = '' }
 const fillEntity = () => { content.value = exampleEntity; cleanContent.value = '' }

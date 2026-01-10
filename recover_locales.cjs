@@ -33,7 +33,7 @@ const commonZh = {
         "12": "好物网站"
     },
     "footer": {
-        "copyright": "一个轻量的在线工具箱 © 2019 - 2025"
+        "copyright": "一个轻量的在线工具箱 © 2019 - 2026"
     }
 };
 
@@ -65,7 +65,7 @@ const commonEn = {
         "12": "Useful Sites"
     },
     "footer": {
-        "copyright": "A lightweight online toolbox © 2019 - 2025"
+        "copyright": "A lightweight online toolbox © 2019 - 2026"
     }
 };
 
