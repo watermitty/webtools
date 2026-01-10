@@ -1744,6 +1744,161 @@
       "detail_title": "Description",
       "detail_content": "Facing a tough choice? Flip a coin online!"
     },
+    "barrage": {
+      "title": "Danmaku/Barrage",
+      "desc": "Create full-screen scrolling text effects.",
+      "content": "Content",
+      "speed": "Speed",
+      "text_size": "Text Size",
+      "text_color": "Text Color",
+      "bg_color": "Background",
+      "play": "Play",
+      "pause": "Pause",
+      "exit_hint": "Double-click to exit full screen",
+      "detail_title": "Description",
+      "detail_content": "Create scrolling text animations for presentations or fun."
+    },
+    "colorpicker": {
+      "title": "Color Picker",
+      "desc": "Pick colors and convert between formats.",
+      "select_color": "Select Color",
+      "copy_tooltip": "Click to copy",
+      "detail_title": "Description",
+      "desc_intro": "Convert colors between different formats:<br/>",
+      "desc_rgb": "RGB: Red, Green, Blue values (0-255)",
+      "desc_hex": "Hex: Hexadecimal color code<br/>",
+      "desc_hsl": "HSL: Hue, Saturation, Lightness<br/>",
+      "desc_hsv": "HSV: Hue, Saturation, Value",
+      "desc_hwb": "HWB: Hue, Whiteness, Blackness<br/>",
+      "desc_lab": "LAB: CIELAB color space<br/>",
+      "desc_lch": "LCH: Lightness, Chroma, Hue<br/>",
+      "desc_cmyk": "CMYK: Cyan, Magenta, Yellow, Key (Black)<br/>"
+    },
+    "wordcount": {
+      "title": "Word Counter",
+      "desc": "Count words, characters, and punctuation.",
+      "placeholder": "Enter text to count",
+      "total": "Total Characters:",
+      "chinese": "Chinese:",
+      "letters": "Letters:",
+      "numbers": "Numbers:",
+      "punct_half": "Half-width Punctuation:",
+      "punct_full": "Full-width Punctuation:",
+      "whitespace": "Whitespace:",
+      "detail_title": "Description",
+      "detail_content": "Count words, Chinese characters, punctuation, numbers, and letters.",
+      "punct_note": "Punctuation Note:",
+      "punct_half_desc": "Half-width (ASCII): ! \" # $ % & ' ( ) * + , - . / : ; < = > ? @ [ \\ ] ^ _ ` { | } ~",
+      "punct_full_desc": "Full-width (Chinese): 。？！，、；： etc."
+    },
+    "textunique": {
+      "title": "Remove Duplicates",
+      "desc": "Remove duplicate lines from text.",
+      "placeholder": "Enter text, one item per line",
+      "result_placeholder": "Deduplicated result",
+      "copy_result": "Copy Result",
+      "clear": "Clear",
+      "detail_title": "Description",
+      "detail_content": "Remove duplicate lines from text or strings."
+    },
+    "diff": {
+      "title": "Text Diff",
+      "desc": "Compare text differences, supports Chinese, English, code.",
+      "old_text": "Old Text",
+      "new_text": "New Text",
+      "detail_title": "Description",
+      "detail_content": "Online text diff comparison supporting Chinese, English, and code."
+    },
+    "namingcase": {
+      "title": "Naming Case Converter",
+      "desc": "Convert between snake_case, camelCase, PascalCase, kebab-case.",
+      "hint": "Enter a name to convert to all four styles.",
+      "fill_example": "Fill Example",
+      "by_line": "Line by Line",
+      "whole": "Whole Text",
+      "clear": "Clear",
+      "placeholder": "e.g.: user_name or helloWorld or order-item",
+      "copy": "Copy",
+      "detail_title": "Description",
+      "detail_content": "Generate four naming styles simultaneously; supports line-by-line conversion."
+    },
+    "hash": {
+      "title": "Hash/HMAC",
+      "desc": "SHA-1/256/512, HMAC-SHA256, text/file digest.",
+      "select_algo": "Select Algorithm",
+      "hmac_key": "HMAC Key (text)",
+      "text_hash": "Text Hash/HMAC",
+      "file_hash": "File Hash/HMAC",
+      "fill_example": "Fill Example",
+      "placeholder": "Enter text here",
+      "copy_result": "Copy Result",
+      "clear": "Clear",
+      "result": "Result:",
+      "file": "File:",
+      "bytes": "bytes",
+      "computing": "Computing",
+      "error_crypto": "Web Crypto not supported",
+      "detail_title": "Description",
+      "detail_content": "Supports SHA-1, SHA-256, SHA-512 and HMAC-SHA256; text/file digest; hex output."
+    },
+    "urlparams": {
+      "title": "URL Parameter Parser",
+      "desc": "Parse and build URL query parameters.",
+      "intro": "Enter a URL or query string (?a=1&b=2), click Parse to edit and rebuild.",
+      "link_example": "Fill Example",
+      "placeholder_input": "Enter URL or ?a=1&b=2 query string",
+      "btn_parse": "Parse",
+      "btn_build": "Rebuild",
+      "label_auto_encode": "Auto Encode",
+      "label_raw": "Keep Raw",
+      "btn_clear": "Clear",
+      "label_base_url": "Base URL (auto-extracted, can modify):",
+      "placeholder_base": "e.g.: https://example.com/path",
+      "label_params": "Parameters",
+      "btn_add": "Add Parameter",
+      "placeholder_key": "key",
+      "placeholder_value": "value",
+      "btn_delete": "Delete",
+      "label_result_query": "Query String Result:",
+      "btn_copy_query": "Copy Query",
+      "label_result_full": "Full URL Result:",
+      "btn_copy_full": "Copy Full URL",
+      "detail_title": "Description",
+      "detail_content": "Parse URL query parameters, edit and rebuild; supports URL encoding."
+    },
+    "ip": {
+      "title": "IP Lookup",
+      "desc": "Query IP address info, location, and ISP.",
+      "placeholder": "Enter IP address",
+      "btn_search": "Search",
+      "label_result": "Your IP Info",
+      "label_isp": "ISP: ",
+      "label_ip": "Resolved IP: ",
+      "label_pos": "Location: ",
+      "msg_invalid_ip": "Invalid IP address"
+    },
+    "asciiword": {
+      "title": "ASCII Art Generator",
+      "desc": "Generate ASCII art from text."
+    },
+    "asciiwordpic": {
+      "title": "ASCII Art Generator",
+      "desc": "Generate ASCII art from text."
+    },
+    "markdown": {
+      "title": "Markdown Editor",
+      "desc": "Create/edit Markdown with live preview and export."
+    },
+    "richtext": {
+      "title": "Rich Text Editor",
+      "desc": "Online rich text editing with HTML export."
+    },
+    "qrscan": {
+      "title": "QR Code Scanner",
+      "desc": "Scan QR codes from images or camera.",
+      "tab_image": "Image Scan",
+      "tab_camera": "Camera Scan"
+    },
     "dice": {
       "title": "Dice Roller",
       "desc": "Roll custom dice online.",
@@ -1753,6 +1908,93 @@
       "reset": "Reset",
       "detail_title": "Description",
       "detail_content": "Online dice roller with customizable dice count."
+    },
+    "mysqltogo": {
+      "title": "MySQL to Go Struct",
+      "desc": "Convert MySQL DDL to Go structs with GORM/XORM tags.",
+      "label_ddl": "MySQL DDL",
+      "placeholder_ddl": "Enter MySQL CREATE TABLE statement",
+      "label_error": "Error",
+      "label_warning": "Warning",
+      "label_json_tag": "JSON Tag",
+      "label_gorm_tag": "GORM Tag",
+      "label_xorm_tag": "XORM Tag",
+      "label_gin_tag": "Gin Tag",
+      "label_pointer": "Use Pointer",
+      "label_time_pkg": "Use time pkg",
+      "label_null": "Nullable Types",
+      "btn_example": "Load Example",
+      "btn_clear": "Clear",
+      "label_result": "Result",
+      "btn_copy": "Copy Result",
+      "detail_title": "Description"
+    },
+    "postman": {
+      "title": "API Request Tester",
+      "desc": "Lightweight online Postman, supports various HTTP methods and cURL import.",
+      "btn_send": "Send",
+      "btn_import_curl": "Import cURL",
+      "btn_copy_curl": "Copy cURL",
+      "label_final_url": "Request URL:",
+      "tab_params": "Params",
+      "tab_headers": "Headers",
+      "tab_body": "Body",
+      "placeholder_key": "key",
+      "placeholder_value": "value",
+      "btn_delete": "Delete",
+      "btn_add_param": "Add Param",
+      "btn_add_header": "Add Header",
+      "label_resp": "Response",
+      "label_status": "Status: ",
+      "label_time": " | Time: ",
+      "label_size": " | Size: ",
+      "btn_format_json": "Format JSON",
+      "btn_copy_resp": "Copy Response"
+    },
+    "numbermemory": {
+      "title": "Number Memory",
+      "desc": "Test your memory with numbers.",
+      "score": "Score",
+      "high_score": "High Score",
+      "level": "Level",
+      "number_count": "Numbers",
+      "grid_size": "Grid Size",
+      "max_count": "Max: {count}",
+      "show_coords": "Show Coords",
+      "hide_coords": "Hide Coords",
+      "remember": "Remember!",
+      "time_left": "Time Left:",
+      "seconds": "s",
+      "start_now": "Start Now",
+      "click_order": "Click in Order",
+      "next_num": "Next Number:",
+      "game_over": "Game Over!",
+      "final_score": "Final Score:",
+      "level_reached": "Level Reached:",
+      "new_record": "New Record!",
+      "start_game": "Start Game",
+      "restart": "Restart",
+      "play_again": "Play Again",
+      "reset": "Reset",
+      "instructions_title": "Instructions",
+      "goal_label": "Goal: ",
+      "goal_text": "Remember numbers and click in order",
+      "how_label": "How: ",
+      "how_text": "Watch, then click 1, 2, 3...",
+      "score_rule_label": "Scoring: ",
+      "score_rule_text": "10 points per correct click",
+      "fail_label": "Fail: ",
+      "fail_text": "Wrong click or miss ends game",
+      "design_title": "Design Notes",
+      "design_mobile": "Mobile: Fixed 4x4 grid",
+      "design_pc": "PC: Choose 4x4 to 10x10",
+      "design_infinite": "Infinite mode after max numbers",
+      "design_difficulty": "Difficulty increases each level",
+      "design_time": "Time adjusts to difficulty",
+      "design_coords": "Toggle coordinates for help",
+      "design_fast": "Skip wait time with button",
+      "description": "Description",
+      "desc": "Number memory game. Test and train your memory."
     },
     "numtochinese": {
       "title": "Number to Chinese",
@@ -1764,6 +2006,254 @@
       "clear": "Clear",
       "detail_title": "Description",
       "detail_content": "Converts Arabic numerals to Chinese uppercase currency format. For example, 100 becomes \"壹佰\"."
+    },
+    "ascii": {
+      "title": "ASCII Code Table",
+      "desc": "Complete ASCII character code reference table.",
+      "group_control": "Control Characters (0-31)",
+      "group_standard": "Standard ASCII (32-127)",
+      "group_extended": "Extended ASCII (128-255)",
+      "col_dec": "DEC",
+      "col_oct": "OCT",
+      "col_hex": "HEX",
+      "col_sym": "Symbol",
+      "col_desc": "Description",
+      "detail_content": "ASCII (American Standard Code for Information Interchange) is a character encoding standard for electronic communication.",
+      "codes": {
+        "0": "Null",
+        "1": "Start of Heading",
+        "2": "Start of Text",
+        "3": "End of Text",
+        "4": "End of Transmission",
+        "5": "Enquiry",
+        "6": "Acknowledge",
+        "7": "Bell",
+        "8": "Backspace",
+        "9": "Horizontal Tab",
+        "10": "Line Feed",
+        "11": "Vertical Tab",
+        "12": "Form Feed",
+        "13": "Carriage Return",
+        "14": "Shift Out",
+        "15": "Shift In",
+        "16": "Data Link Escape",
+        "17": "Device Control 1",
+        "18": "Device Control 2",
+        "19": "Device Control 3",
+        "20": "Device Control 4",
+        "21": "Negative Acknowledge",
+        "22": "Synchronous Idle",
+        "23": "End of Trans. Block",
+        "24": "Cancel",
+        "25": "End of Medium",
+        "26": "Substitute",
+        "27": "Escape",
+        "28": "File Separator",
+        "29": "Group Separator",
+        "30": "Record Separator",
+        "31": "Unit Separator",
+        "32": "Space",
+        "127": "Delete",
+        "160": "Non-breaking Space"
+      }
+    },
+    "morse": {
+      "title": "Morse Code Converter",
+      "desc": "Convert text to Morse code and vice versa.",
+      "placeholder": "Enter text or Morse code...",
+      "result_placeholder": "Result will appear here...",
+      "encode": "Text to Morse",
+      "decode": "Morse to Text",
+      "copy_result": "Copy Result",
+      "clear": "Clear",
+      "detail_title": "Description",
+      "detail_content": "Morse code is a method of encoding text using sequences of dots (.) and dashes (-)."
+    },
+    "minimumwage": {
+      "title": "Minimum Wage Query",
+      "desc": "Query minimum wage standards by region in China."
+    },
+    "palettes": {
+      "title": "Color Palettes",
+      "desc": "Browse and copy beautiful color palettes."
+    },
+    "unicode": {
+      "title": "Unicode Converter",
+      "desc": "Convert between Unicode and Chinese text.",
+      "placeholder": "Enter text to convert...",
+      "result_placeholder": "Result will appear here...",
+      "btn_to_chinese": "Unicode to Chinese",
+      "btn_to_unicode": "Chinese to Unicode",
+      "btn_copy": "Copy Result",
+      "btn_clear": "Clear"
+    },
+    "scaletran": {
+      "title": "Base Converter",
+      "desc": "Convert between binary, octal, decimal, and hexadecimal."
+    },
+    "unit": {
+      "title": "Unit Converter",
+      "desc": "Convert between various units of measurement."
+    },
+    "signimage": {
+      "title": "Signature Pad",
+      "desc": "Create digital signatures and download as image."
+    },
+    "imgcut": {
+      "title": "Image Cropper",
+      "desc": "Crop and resize images online."
+    },
+    "pdftoimage": {
+      "title": "PDF to Image",
+      "desc": "Convert PDF pages to images."
+    },
+    "imagecompress": {
+      "title": "Image Compressor",
+      "desc": "Compress images to reduce file size."
+    },
+    "imagetobase64": {
+      "title": "Image to Base64",
+      "desc": "Convert images to Base64 encoded strings."
+    },
+    "texttoimg": {
+      "title": "Text to Image",
+      "desc": "Convert text to beautiful image."
+    },
+    "webinfo": {
+      "title": "Website Info",
+      "desc": "Get website metadata and SEO information."
+    },
+    "qa": {
+      "title": "Q&A Knowledge Base",
+      "desc": "Browse common questions and answers."
+    },
+    "notes": {
+      "title": "Notes",
+      "desc": "Simple note-taking tool."
+    },
+    "goodsites": {
+      "title": "Useful Websites",
+      "desc": "Collection of useful websites."
+    },
+    "radiation": {
+      "title": "Radiation Sampler",
+      "desc": "Sample radiation data visualization."
+    },
+    "algorithmviz": {
+      "title": "Algorithm Visualization",
+      "desc": "Visualize sorting and pathfinding algorithms."
+    },
+    "mathequation3d": {
+      "title": "3D Math Plotter",
+      "desc": "Plot 3D mathematical equations."
+    },
+    "companycompare": {
+      "title": "Company Compare",
+      "desc": "Compare job offers from different companies."
+    },
+    "aiinterview": {
+      "title": "AI Interview Prep",
+      "desc": "Practice job interviews with AI."
+    },
+    "ainame": {
+      "title": "AI Name Generator",
+      "desc": "Generate creative names using AI."
+    },
+    "aiprompt": {
+      "title": "AI Prompt Library",
+      "desc": "Browse and use AI prompt templates."
+    },
+    "aitexttoimage": {
+      "title": "AI Text to Image",
+      "desc": "Generate images from text using AI."
+    },
+    "aitranslate": {
+      "title": "AI Translator",
+      "desc": "Translate text using AI."
+    },
+    "aivariablename": {
+      "title": "AI Variable Namer",
+      "desc": "Generate variable names using AI."
+    },
+    "aiessay": {
+      "title": "AI Essay Writer",
+      "desc": "Generate essays using AI."
+    },
+    "aidailymotivation": {
+      "title": "AI Daily Motivation",
+      "desc": "Get daily motivational content from AI."
+    },
+    "aitexttospeech": {
+      "title": "AI Text to Speech",
+      "desc": "Convert text to speech using AI."
+    },
+    "aichat": {
+      "title": "AI Chat",
+      "desc": "Chat with AI assistant."
+    },
+    "aihub": {
+      "title": "AI Hub",
+      "desc": "Collection of AI tools and resources."
+    },
+    "resume": {
+      "title": "Resume Builder",
+      "desc": "Create professional resumes online."
+    },
+    "jsformat": {
+      "title": "JS Formatter",
+      "desc": "Format and beautify JavaScript code."
+    },
+    "qrcode": {
+      "title": "QR Code Generator",
+      "desc": "Generate QR codes from text or URLs."
+    },
+    "textedit": {
+      "title": "Text Editor",
+      "desc": "Simple online text editor."
+    },
+    "random": {
+      "title": "Random Generator",
+      "desc": "Generate random numbers and selections."
+    },
+    "regtest": {
+      "title": "Regex Tester",
+      "desc": "Test regular expressions online."
+    },
+    "chart": {
+      "title": "Chart Generator",
+      "desc": "Create charts and graphs online."
+    },
+    "barchart": {
+      "title": "Bar Chart",
+      "desc": "Create bar charts online."
+    },
+    "linechart": {
+      "title": "Line Chart",
+      "desc": "Create line charts online."
+    },
+    "piechart": {
+      "title": "Pie Chart",
+      "desc": "Create pie charts online."
+    },
+    "phonedirectory": {
+      "title": "Phone Directory",
+      "desc": "Query phone number information."
+    },
+    "hundredbillion": {
+      "title": "Spend 10 Billion",
+      "desc": "Simulation: How would you spend 10 billion?"
+    },
+    "billion": {
+      "title": "Spend 10 Billion",
+      "desc": "Simulation: How would you spend 10 billion?"
+    },
+    "example": {
+      "title": "Example Tool",
+      "desc": "Example tool template."
+    },
+    "md5": {
+      "title": "MD5 Hash",
+      "desc": "Generate MD5 hash from text."
     },
     "barrage": {
       "title": "Handheld Barrage",
