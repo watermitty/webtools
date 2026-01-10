@@ -51,11 +51,18 @@ const gotoAnchor = async (anchor: string) => {
     if (current === anchor) {
       componentStore.setleftComDrawerStatus(false);
       await nextTick();
-      document?.getElementById(anchor)?.scrollIntoView({
-        behavior: "smooth",
-        block: "start",
-        inline: "start",
-      });
+      const element = document.getElementById(anchor);
+      if (element) {
+        componentStore.setIsJumping(true);
+        const top = element.getBoundingClientRect().top + window.scrollY - 20;
+        window.scrollTo({
+          top,
+          behavior: "smooth",
+        });
+        setTimeout(() => {
+          componentStore.setIsJumping(false);
+        }, 1200);
+      }
       return;
     }
     componentStore.setleftComDrawerStatus(false);

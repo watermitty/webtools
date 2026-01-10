@@ -6,9 +6,14 @@ export const useComponentStore = defineStore('component', {
     leftCom: false,
     leftComDrawer: false,
     activeCategory: '', // 新增：当前活跃的分类ID
+    isJumping: false, // 新增：是否正在进行程序化滚动
   }),
   //方法
   actions: {
+    //设置当前是否正在滚动跳转
+    setIsJumping(status: boolean) {
+      this.isJumping = status
+    },
     //设置左侧组件状态
     setLeftComStatus(status: boolean) {
       // console.log(1)

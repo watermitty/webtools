@@ -11,27 +11,40 @@ const toolsStore = useToolsStore()
 const componentStore = useComponentStore()
 const route = useRoute()
 const router = useRouter()
-// const getToolsCate = async () => {
-//   try {
-//     await toolsStore.getToolCate()
-//   } catch (error: any) {
-//     ElMessage.error(error.message)
-//   }
-// }
-
 
 const scrollToAnchor = async () => {
   const v = route.query?.value as any
   const anchor = Array.isArray(v) ? v[0] : v
   if (typeof anchor !== 'string' || !anchor) return
+  
+  const element = document.getElementById(anchor)
+  if (!element) return
+
+  componentStore.setIsJumping(true)
   await nextTick()
-  requestAnimationFrame(() => {
-    document?.getElementById(anchor)?.scrollIntoView({
-      behavior: 'smooth',
-      block: 'start',
-      inline: 'start',
-    })
+  
+  // 使用 window.scrollTo 以支持偏移量 (偏移20px避免紧贴顶部)
+  const top = element.getBoundingClientRect().top + window.scrollY - 20
+  
+  window.scrollTo({
+    top,
+    behavior: 'smooth'
   })
+
+  // 监听滚动结束以恢复自动追踪
+  const handleScrollEnd = () => {
+    componentStore.setIsJumping(false)
+    window.removeEventListener('scrollend', handleScrollEnd)
+  }
+  
+  if ('onscrollend' in window) {
+    window.addEventListener('scrollend', handleScrollEnd)
+  }
+  
+  // 保险起见，1.2秒后重置标记（平滑滚动通常在1s内完成）
+  setTimeout(() => {
+    componentStore.setIsJumping(false)
+  }, 1200)
 }
 
 // 滚动监听相关
@@ -39,7 +52,7 @@ const isScrollListenerActive = ref(false)
 
 // 滚动监听函数
 const handleScroll = () => {
-  if (!isScrollListenerActive.value) return
+  if (!isScrollListenerActive.value || componentStore.isJumping) return
   
   const categories = toolsStore.cates
   if (categories.length === 0) return
@@ -96,12 +109,7 @@ const gotoAnchor = async (anchor: string) => {
 
   if (route.path === "/") {
     if (current === anchor) {
-      await nextTick()
-      document?.getElementById(anchor)?.scrollIntoView({
-        behavior: 'smooth',
-        block: 'start',
-        inline: 'start',
-      })
+      scrollToAnchor()
       return
     }
     await router.replace({
