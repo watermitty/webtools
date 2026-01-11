@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { onMounted, reactive, ref, computed, watch } from 'vue'
+import { reactive, ref, computed, watch } from 'vue'
 import { UploadProps, UploadRawFile, genFileId } from 'element-plus'
 import DetailHeader from '@/components/Layout/DetailHeader/DetailHeader.vue'
 import ToolDetail from '@/components/Layout/ToolDetail/ToolDetail.vue'
@@ -83,15 +83,11 @@ const cutImgStyle = computed(() => {
 watch(cutImgStyle, () => {
   if (fileList.value) cut();
 })
-
-onMounted(() => {
-
-})
 </script>
 
 <template>
   <div class="flex flex-col mt-3 flex-1">
-    <DetailHeader :title="$t('tools.imgcut.title')"></DetailHeader>
+    <DetailHeader :title="$t(info.title)"></DetailHeader>
 
     <div class="p-4 rounded-2xl bg-white">
       <el-upload

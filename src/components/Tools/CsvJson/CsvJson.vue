@@ -11,7 +11,7 @@ const { t } = useI18n()
 type Mode = 'csv2json' | 'json2csv'
 type DelimKey = 'comma' | 'tab' | 'semicolon' | 'pipe' | 'custom'
 
-const info = reactive({ title: 'tools.csvjson.title' })
+// const info = reactive({ title: 'tools.csvjson.title' })
 
 const mode = ref<Mode>('csv2json')
 const csvInput = ref('')

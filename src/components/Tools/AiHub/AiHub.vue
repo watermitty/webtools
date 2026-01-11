@@ -1,6 +1,6 @@
 ```vue
 <script setup lang="ts">
-import { ref, reactive, computed } from "vue";
+import { computed } from "vue";
 import { useI18n } from 'vue-i18n';
 import DetailHeader from "@/components/Layout/DetailHeader/DetailHeader.vue";
 import ToolDetail from "@/components/Layout/ToolDetail/ToolDetail.vue";
@@ -12,8 +12,7 @@ const info = computed(() => ({
   desc: t('tools.aihub.desc'),
 }));
 
-type LinkItem = { title: string; url: string; desc?: string; logo?: string; rating?: number }
-type Cate = { title: string; list: LinkItem[] }
+
 
 const cates = computed(() => [
   { label: t('tools.aihub.cate_voice'), value: "voice" },

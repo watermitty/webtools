@@ -4,10 +4,11 @@
   "version": "0.0.0",
   "type": "module",
   "scripts": {
+    "generate:sitemap": "node scripts/generate-sitemap.cjs",
     "dev": "vite",
-    "build": "node --max_old_space_size=8192 node_modules/vite/bin/vite.js build --mode development",
+    "build": "npm run generate:sitemap && node --max_old_space_size=8192 node_modules/vite/bin/vite.js build --mode development",
     "postbuild": "node scripts/inject-ads.cjs",
-    "build:pro": "vue-tsc --noEmit && node --max_old_space_size=8192 node_modules/vite/bin/vite.js build --mode production",
+    "build:pro": "npm run generate:sitemap && vue-tsc --noEmit && node --max_old_space_size=8192 node_modules/vite/bin/vite.js build --mode production",
     "preview": "vite preview"
   },
   "dependencies": {

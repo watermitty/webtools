@@ -84,7 +84,7 @@ onBeforeUnmount(() => {
 
 <template>
   <div class="flex flex-col mt-3 flex-1">
-    <DetailHeader :title="$t('tools.texttoimg.title')"></DetailHeader>
+    <DetailHeader :title="$t(info.title)"></DetailHeader>
 
     <div class="p-4 rounded-2xl bg-white">
       <div>

@@ -4,7 +4,7 @@ import { useI18n } from 'vue-i18n'
 import DetailHeader from '@/components/Layout/DetailHeader/DetailHeader.vue'
 import ToolDetail from '@/components/Layout/ToolDetail/ToolDetail.vue'
 
-const { t } = useI18n()
+useI18n()
 
 const info = computed(() => ({
   title: 'tools.memory.title'

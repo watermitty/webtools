@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { ref } from 'vue';
 const appDesc = ref(import.meta.env.VITE_APP_DESC || '')
-const gitUrl = ref(import.meta.env.VITE_GIT_URL || '')
+
 </script>
 
 <template>

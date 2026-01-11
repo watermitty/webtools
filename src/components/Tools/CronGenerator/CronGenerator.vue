@@ -1,5 +1,5 @@
 ﻿<script setup lang="ts">
-import { reactive, ref, computed } from 'vue'
+import { reactive, ref } from 'vue'
 import { useI18n } from 'vue-i18n'
 import DetailHeader from '@/components/Layout/DetailHeader/DetailHeader.vue'
 import ToolDetail from '@/components/Layout/ToolDetail/ToolDetail.vue'
@@ -786,7 +786,7 @@ generateCron()
               </div>
             </el-tab-pane>
             
-            <el-tab-pane label="鏈? name="month">
+            <el-tab-pane :label="$t('tools.cron.unit.month')" name="month">
               <el-radio-group v-model="info.cronConfig.month.type" @change="(val) => updateConfig('month', typeof val === 'string' ? val : 'every', '*')">
                 <el-radio value="every">{{ $t('tools.cron.type.every', { unit: t('tools.cron.unit.month') }) }}</el-radio>
                 <el-radio value="specific">{{ $t('tools.cron.type.specific', { unit: t('tools.cron.unit.month') }) }}</el-radio>

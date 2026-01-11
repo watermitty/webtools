@@ -138,6 +138,15 @@ const aitoolsModels = ref<ModelData[]>([
   { name: 'claude-3-haiku', description: 'Claude 3 Haiku' }
 ])
 
+const availableModels = computed(() => {
+  if (selectedProvider.value === 'pollinations') {
+    return pollinationsModels.value
+  } else if (selectedProvider.value === 'aitools') {
+    return aitoolsModels.value
+  }
+  return []
+})
+
 const fetchPollinationsModels = async () => {
   if (pollinationsModels.value.length > 0) return
   

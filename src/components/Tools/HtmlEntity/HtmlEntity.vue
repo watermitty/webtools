@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { reactive, ref, onMounted } from 'vue'
+import { ref } from 'vue'
 
 import DetailHeader from '@/components/Layout/DetailHeader/DetailHeader.vue'
 import ToolDetail from '@/components/Layout/ToolDetail/ToolDetail.vue'
@@ -29,8 +29,7 @@ const exampleEntity = escape(exampleRaw)
 const fillRaw = () => { content.value = exampleRaw; cleanContent.value = '' }
 const fillEntity = () => { content.value = exampleEntity; cleanContent.value = '' }
 
-onMounted(() => {
-})
+
 
 </script>
 

@@ -1,20 +1,18 @@
 <script setup lang="ts">
-import { computed, ref, onMounted } from "vue";
+import { computed } from "vue";
 import { useI18n } from 'vue-i18n';
-import { useRoute } from 'vue-router';
 import DetailHeader from "@/components/Layout/DetailHeader/DetailHeader.vue";
 import ToolDetail from "@/components/Layout/ToolDetail/ToolDetail.vue";
 import AiChatCore from "@/components/Common/AiChatCore.vue";
 
 const { t } = useI18n();
-const route = useRoute();
 
 const info = computed(() => ({
   title: t('tools.aichat.title'),
 }));
 
-const chatCoreRef = ref();
-const urlParamsProcessed = ref(false);
+// const chatCoreRef = ref();
+
 
 const handleConversationStarted = () => {
   console.log('Conversation started');
@@ -33,7 +31,7 @@ const handleConversationStarted = () => {
 
     <!-- 使用公共聊天组件 -->
     <AiChatCore
-      ref="chatCoreRef"
+
       :title="info.title"
       storage-key="ai-chat-provider-selection"
       @conversation-started="handleConversationStarted"

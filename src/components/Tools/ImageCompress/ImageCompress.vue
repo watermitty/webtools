@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { ref, reactive, onUnmounted, onMounted, computed } from 'vue'
+import { ref, reactive, onUnmounted, onMounted } from 'vue'
 import { useI18n } from 'vue-i18n'
 import DetailHeader from '@/components/Layout/DetailHeader/DetailHeader.vue'
 import ToolDetail from '@/components/Layout/ToolDetail/ToolDetail.vue'
@@ -268,7 +268,7 @@ onUnmounted(() => {
 
 <template>
   <div class="flex flex-col mt-3 flex-1">
-    <DetailHeader :title="$t('tools.imgcompress.title')"></DetailHeader>
+    <DetailHeader :title="$t(info.title)"></DetailHeader>
 
     <div class="p-4 rounded-2xl bg-white">
       <!-- 压缩配置 -->
